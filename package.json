@@ -3,14 +3,25 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && next export",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.6.0",
+    "@emotion/styled": "^11.6.0",
+    "@mui/icons-material": "^5.2.0",
+    "@mui/material": "^5.2.0",
+    "@reduxjs/toolkit": "^1.6.2",
+    "@types/react-redux": "^7.1.20",
+    "formik": "^2.2.9",
     "next": "12.0.4",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "react-redux": "^7.2.6",
+    "react-table": "^7.7.0",
+    "sass": "^1.43.4",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@types/node": "16.11.10",
