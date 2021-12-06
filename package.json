@@ -26,6 +26,7 @@
   "devDependencies": {
     "@types/node": "16.11.10",
     "@types/react": "17.0.36",
+    "@types/react-table": "^7.7.8",
     "eslint": "7.32.0",
     "eslint-config-next": "12.0.4",
     "typescript": "4.5.2"

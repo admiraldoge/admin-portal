@@ -12,7 +12,7 @@ import {margin} from "@mui/system";
 import {useFormik} from "formik";
 import * as yup from 'yup';
 import {useAppDispatch} from "../../redux/hooks";
-import {login} from "../../services/login";
+import {auth} from "../../services/auth";
 import {useRouter} from "next/router";
 
 const Login: NextPage = () => {
@@ -37,7 +37,7 @@ const Login: NextPage = () => {
 		},
 		validationSchema: validationSchema,
 		onSubmit: async (values) => {
-			await dispatch(login(values));
+			await dispatch(auth(values));
 			router.push('/');
 		},
 	});

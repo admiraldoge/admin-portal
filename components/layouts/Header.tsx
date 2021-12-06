@@ -21,6 +21,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import {useRouter} from "next/router";
 import Box from '@mui/material/Box';
+import {logout} from "../../services/auth";
 
 type headerProps = {
 
@@ -127,6 +128,11 @@ const Header: React.FunctionComponent<headerProps> = ({}) => {
 		setMobileMoreAnchorEl(event.currentTarget);
 	};
 
+	const handleLogout = async () => {
+		await dispatch(logout());
+		router.push("/login");
+	}
+
 	const menuId = 'primary-search-account-menu';
 	const renderMenu = (
 		<Menu
@@ -144,8 +150,9 @@ const Header: React.FunctionComponent<headerProps> = ({}) => {
 			open={isMenuOpen}
 			onClose={handleMenuClose}
 		>
-			<MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-			<MenuItem onClick={handleMenuClose}>My account</MenuItem>
+			<MenuItem onClick={handleMenuClose}>Mi perfil</MenuItem>
+			<MenuItem onClick={handleMenuClose}>Mi cuenta</MenuItem>
+			<MenuItem onClick={handleLogout}>Salir</MenuItem>
 		</Menu>
 	);
 

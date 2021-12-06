@@ -1,9 +1,11 @@
+import {setMe} from "../redux/actions";
 
 type loginCredentials = {
 	username: string,
 	password: string
 }
-export const login = (credentials: loginCredentials) => async (dispatch:any) => {
+export const auth = (credentials: loginCredentials) => async (dispatch:any) => {
+	dispatch(setMe({error: {}}))
 	const request
 		= await fetch(`${process.env.NEXT_PUBLIC_PANAMA_HOST}/auth`,
 		{
@@ -19,4 +21,17 @@ export const login = (credentials: loginCredentials) => async (dispatch:any) => 
 	console.log('Response public? data: ',response);
 	//dispatch(setEditor({object: response.data.form}));
 
+}
+export const logout = () => async (dispatch:any) => {
+	const request
+		= await fetch(`${process.env.NEXT_PUBLIC_PANAMA_HOST}/auth`,
+		{
+			method: "DELETE",
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json',
+				'accept':  'application/json'
+			}
+		});
+	const response = await request.json();
 }

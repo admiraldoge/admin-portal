@@ -20,7 +20,7 @@ const Content:FC = ({children}) => {
 	const theme = useTheme();
 	const [open, setOpen] = React.useState(false);
 	const router = useRouter();
-	const showContent = router.pathname !== "/login" ? false : true;
+	const showContent = router.pathname !== "/login";
 
 	const dispatch = useAppDispatch();
 
@@ -36,7 +36,7 @@ const Content:FC = ({children}) => {
 		setOpen(false);
 	};
 
-	if(showContent) return <>{children}</>;
+	if(!showContent) return <>{children}</>;
 
 	return (
 		<Box sx={{ display: 'flex' }}>
