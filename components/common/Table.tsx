@@ -323,7 +323,7 @@ const Table:FC<TableProps> = ({columns = [], defaultPageSize = 10, pageQuery, en
 								<Button key="previous" onClick={() => gotoPage(pageIndex)}>{pageIndex}</Button>
 							}
 							<Button key="current" variant={"contained"}>{pageIndex+1}</Button>
-							<Button key="next" onClick={() => gotoPage(pageIndex+2)}>{pageIndex+2}</Button>
+							{canNextPage && <Button key="next" onClick={() => gotoPage(pageIndex + 2)}>{pageIndex + 2}</Button>}
 							<Button variant="contained" endIcon={<NavigateNextIcon />}
 							        disabled={!canNextPage}
 							        onClick={nextPage}
