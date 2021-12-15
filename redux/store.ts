@@ -45,7 +45,7 @@ const meReducer = createReducer(
 
 const tableReducer = createReducer(
 	{
-		[ROLE]: {pageCount: 0, items: [{loc: "A"},{loc: "B"},{loc: "C"},{loc: "D"},], total: 0}
+		[ROLE]: {pageCount: 0, items: [], total: 0}
 	},
 	(builder) => {
 		builder

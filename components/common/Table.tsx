@@ -7,34 +7,106 @@ import Grid from "@mui/material/Grid";
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import ButtonGroup from '@mui/material/ButtonGroup';
-import { useTable, usePagination } from 'react-table';
+import {useTable, usePagination, ColumnInterface, Column} from 'react-table';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import SearchIcon from '@mui/icons-material/Search';
 import { styled, alpha } from '@mui/material/styles';
 import {InputBase, TextField} from "@mui/material";
 import {RootState} from "../../redux/store";
+import Typography from "@mui/material/Typography";
+import SortIcon from '@mui/icons-material/Sort';
+import { makeStyles } from '@material-ui/styles';
+import {TableColumnInterface} from "../../types/table";
 
 type TableProps = {
-	columns: any[],
+	columns: Column[],
 	defaultPageSize: number,
 	pageQuery: any,
 	entityName: string
 }
 
+const columnSearch = (theme:any) => ({
+	textField: {
+		height: '50px',
+		width: '90%',
+		marginLeft: 'auto',
+		marginRight: 'auto',
+		paddingBottom: 0,
+		marginTop: 0,
+		fontWeight: 200
+	},
+	input: {
+		color: 'white'
+	}
+});
+
+const useColumnSearchStyles = makeStyles((theme:any) => ({
+	root: {
+		"& label.Mui-focused, label:not(.Mui-focused)": {
+
+		},
+		"& .MuiOutlinedInput-root": {
+			"& fieldset": { height: '20px'},
+			"&:hover fieldset": { height: '20px'},
+			"&.Mui-focused fieldset": {
+				borderColor: 'red'
+			},
+		},
+	},
+	textField: {
+		height: '20px',
+		width: '90%',
+		marginLeft: 'auto',
+		marginRight: 'auto',
+		paddingBottom: 0,
+		marginTop: 0,
+		fontWeight: 500,
+		backgroundColor: "red"
+	},
+	input: {
+		height: '24px',
+		color: 'black',
+		paddingLeft: '4px'
+	}
+}));
+
+const columnsToFilter = (columns:any) => {
+	const res = [] as any;
+	columns.forEach((item:any) => {
+		res.push({
+			columnName: item.accessor,
+			searchValue: ""
+		})
+	})
+	return res;
+}
+
+const columnsToOrder = (columns:any) => {
+	const res = [] as any;
+	columns.forEach((item:any) => {
+		res.push({
+			columnName: item.accessor,
+			searchValue: ""
+		})
+	})
+	return res;
+}
+
 const Table:FC<TableProps> = ({columns = [], defaultPageSize = 10, pageQuery, entityName}) => {
+	const classes = useColumnSearchStyles();
 	const dispatch = useAppDispatch();
 	const router = useRouter();
 	const [data, setData] = useState([]);
 	const [searchText, setSearchText] = useState("");
 	const table = useAppSelector((state: RootState) => state.table[entityName]);
-
-	const data2 = React.useMemo(() => [{loc: "A"},{loc: "B"},{loc: "C"},{loc: "D"},], [])
+	const [filter, setFilter] = useState(columnsToFilter(columns));
+	const [order, setOrder] = useState(columnsToOrder(columns));
 
 	const {getTableProps,
 		getTableBodyProps, prepareRow, page, canPreviousPage, canNextPage, nextPage,
-		previousPage, setPageSize, gotoPage, pageCount, headerGroups,
-		state: { pageIndex, pageSize }} = useTable({columns, data: table.items, initialState: { pageIndex: 0, pageSize: 10 }, pageCount: 10}, usePagination)
+		previousPage, setPageSize, gotoPage, pageCount, headerGroups, useFilters, useGlobalFilter,
+		state: { pageIndex, pageSize, filters }} = useTable({columns, data: table.items, initialState: { pageIndex: 0, pageSize: 10 }, pageCount: 10, manualSortBy: true, manualFilters: true}, usePagination)
 
 	const updateData = () => {
 		dispatch(pageQuery(pageIndex+1, pageSize, searchText, [], []))
@@ -44,11 +116,14 @@ const Table:FC<TableProps> = ({columns = [], defaultPageSize = 10, pageQuery, en
 		updateData();
 	},[pageIndex])
 
+	const sortIcon = () => {
+
+	}
 
 	return (
 		<div className={styles.ctn}>
 			<Grid container justifyContent={"center"} alignContent={"center"} direction={"column"}>
-				<Grid>
+				<Grid item xs={12} sm={6} lg={4}>
 					<TextField
 						id="filled-search"
 						label="Search field"
@@ -78,47 +153,99 @@ const Table:FC<TableProps> = ({columns = [], defaultPageSize = 10, pageQuery, en
 	          2
           )}
         </code>
+						<code>{JSON.stringify(filters, null, 2)}</code>
       </pre>
 				</Grid>
-				<Grid>
-					<table>
-						<thead>
-						{headerGroups.map(headerGroup => (
-							<tr {...headerGroup.getHeaderGroupProps()}>
-								{headerGroup.headers.map(column => (
-									<th {...column.getHeaderProps()}>{column.render('Header')}</th>
-								))}
-							</tr>
-						))}
-						</thead>
-						<tbody>
-						{page.map((row, i) => {
-							prepareRow(row)
-							console.log('Row',row);
-							return (
-								<tr {...row.getRowProps()}>
-									{row.cells.map(cell => {
-										return (
-											<td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-										)
-									})}
-								</tr>
-							)
-						})}
-						</tbody>
-					</table>
+				<Grid container direction={"row"}>
+					<Grid item xs={12}>
+						<table className={styles.table}>
+							<thead className={styles.head}>
+							{headerGroups.map(headerGroup => {
+								return (
+									<tr {...headerGroup.getHeaderGroupProps()}>
+										{headerGroup.headers.map((column: any) => {
+											console.log('Column: ',column);
+											return (
+												<th {...column.getHeaderProps()} style={{width: column.width}}>
+													<Grid container direction={"row"} alignItems={"center"} justifyContent={"center"}>
+														<Grid item xs={11}>
+															<Grid container direction={"column"} alignItems={"center"} justifyContent={"center"}>
+																<Grid container direction={"row"} alignItems={"center"} justifyContent={"center"} style={{height: '100%'}}>
+																	<Grid item xs={10}>
+																		<Typography variant="h6">{column.render('Header')}</Typography>
+																	</Grid>
+																	<Grid item xs={2}>
+																		<Grid container direction="row" alignItems={"center"} justifyContent={"center"}>
+																			<SortIcon style={{cursor: "pointer"}}/>
+																		</Grid>
+																	</Grid>
+																</Grid>
+																<Grid container direction={"row"} justifyContent={"center"}>
+																	<Grid item xs={10}>
+																		{!column.disableFilters && <TextField
+																			id="email"
+																			margin="normal"
+																			fullWidth={true}
+																			inputProps={{
+																				style: {
+																					padding: 0
+																				}
+																			}}
+																		/>}
+																		<div>{column.canFilter ? column.render('Filter') : null}</div>
+																	</Grid>
+																</Grid>
+															</Grid>
+														</Grid>
+													</Grid>
+												</th>
+											)
+										})}
+									</tr>
+								)
+							})}
+							</thead>
+							<tbody>
+							{page.map((row, i) => {
+								prepareRow(row)
+								return (
+									<tr {...row.getRowProps()} className={styles.row}>
+										{row.cells.map(cell => {
+											//console.log('Cell:',cell);
+											if(typeof cell.value !== 'function') {
+												return (
+													<td {...cell.getCellProps()} className={styles.cell}>
+														<Grid container direction={"row"} alignContent={"center"}>
+															<Grid item xs={11}>
+																<Grid container direction={"row"}>
+																	<Typography variant={"subtitle2"}>{cell.render('Cell')}</Typography>
+																</Grid>
+															</Grid>
+														</Grid>
+													</td>
+												)
+											} else {
+												<td>{cell.render('Cell')}</td>
+											}
+										})}
+									</tr>
+								)
+							})}
+							</tbody>
+						</table>
+					</Grid>
 				</Grid>
-				<Grid container justifyContent={"center"} alignContent={"center"} direction={"row"}>
-					<Grid>
+				<Grid container justifyContent={"center"} alignContent={"flex-end"} direction={"row"} className={styles.paginationRow}>
+					<Grid item>
 						<ButtonGroup size="small" aria-label="small button group">
 							<Button variant="contained" endIcon={<NavigateBeforeIcon />} disabled={!canPreviousPage}
 							        onClick={previousPage}
 							/>
 							{pageIndex !== 0 &&
-								<Button key="previous" onClick={() => gotoPage(pageIndex-1)}>{pageIndex - 1}</Button>
+								<Button key="previous" onClick={() => gotoPage(pageIndex)}>{pageIndex}</Button>
 							}
-							<Button key="current" variant={"contained"}>{pageIndex}</Button>
-							<Button key="next" onClick={() => gotoPage(pageIndex+1)}>{pageIndex+1}</Button>
+							<Button key="current" variant={"contained"}>{pageIndex+1}</Button>
+							<Button key="next" onClick={() => gotoPage(pageIndex+2)}>{pageIndex+2}</Button>
 							<Button variant="contained" endIcon={<NavigateNextIcon />}
 							        disabled={!canNextPage}
 							        onClick={nextPage}

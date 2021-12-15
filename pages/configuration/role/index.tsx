@@ -7,6 +7,8 @@ import { useTable, usePagination } from 'react-table';
 import Table from "../../../components/common/Table";
 import {getRolePage} from "../../../services/roles";
 import {ROLE} from "../../../constants/subjects";
+import Grid from "@mui/material/Grid";
+import Checkbox from '@mui/material/Checkbox';
 
 const Role: NextPage = () => {
 	const dispatch = useAppDispatch();
@@ -14,26 +16,43 @@ const Role: NextPage = () => {
 
 	const columns = [
 		{
-			Header: ' ',
-			columns: [
-				{
-					Header: 'ID',
-					accessor: 'id'
-				},
-				{
-					Header: 'Nombre',
-					accessor: 'loc',
-				}
-			],
+			Header: 'ID',
+			accessor: 'id',
+			width: '5%'
+		},
+		{
+			Header: 'Nombre',
+			accessor: 'loc',
+			width: '20%'
+		},
+		{
+			Header: 'Activo',
+			accessor: (row:any, index:any) => {
+				console.log('Row?',row,'index',row.isActive);
+				return (
+					<Grid container justifyContent={"center"}>
+						<Grid item xs={2}>
+							<Checkbox checked={row.isActive} />
+						</Grid>
+					</Grid>
+				);
+			},
+			disableFilters: true,
+			width: '5%'
+		},
+		{
+			Header: 'Acciones',
+			disableFilters: true,
+			width: '10%'
 		}
 	]
 
-	const data = [{name: "A"},{name: "B"},{name: "C"},{name: "D"},]
-
 	return (
-		<div className={styles.ctn}>
-			<Table columns={columns} defaultPageSize={10} pageQuery={getRolePage} entityName={ROLE}/>
-		</div>
+		<Grid className={styles.ctn}>
+			<Grid item xs={12}>
+				<Table columns={columns} defaultPageSize={10} pageQuery={getRolePage} entityName={ROLE}/>
+			</Grid>
+		</Grid>
 	)
 }
 

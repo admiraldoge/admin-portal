@@ -1,0 +1,30 @@
+.ctn {
+  width: 100%;
+}
+.table {
+  width: 100%;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+.head {
+  border-bottom-color: black;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+}
+.row {
+  background-color: #f3f3f3;
+  border-bottom: 1px solid #dddddd;
+  text-align: left;
+}
+.cell {
+  height: 30px;
+  padding: 4px;
+  word-wrap: break-word
+}
+.paginationRow {
+  margin-top: 20px;
+}
+.columnSearch {
+  height: 10px;
+}
