@@ -14,7 +14,7 @@ import {
 	Column,
 	useGlobalFilter,
 	useFilters,
-	useAsyncDebounce
+	useAsyncDebounce, useSortBy
 } from 'react-table';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
@@ -26,6 +26,8 @@ import Typography from "@mui/material/Typography";
 import SortIcon from '@mui/icons-material/Sort';
 import { makeStyles } from '@material-ui/styles';
 import {TableColumnInterface} from "../../types/table";
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 
 type TableProps = {
 	columns: Column[],
@@ -174,7 +176,7 @@ const Table:FC<TableProps> = ({columns = [], defaultPageSize = 10, pageQuery, en
 		getTableBodyProps, prepareRow, page, canPreviousPage, canNextPage, nextPage,
 		previousPage, setPageSize, gotoPage, pageCount, headerGroups, preGlobalFilteredRows,
 		setGlobalFilter,
-		state: { pageIndex, pageSize, filters, globalFilter }}
+		state: { pageIndex, pageSize, filters, globalFilter, sortBy }}
 		= useTable(
 			{
 				columns,
@@ -188,16 +190,17 @@ const Table:FC<TableProps> = ({columns = [], defaultPageSize = 10, pageQuery, en
 			},
 		useFilters,
 		useGlobalFilter,
+		useSortBy,
 		usePagination
 	)
 
 	const updateData = () => {
-		dispatch(pageQuery(pageIndex+1, pageSize, globalFilter, filters, []))
+		dispatch(pageQuery(pageIndex+1, pageSize, globalFilter, filters, sortBy))
 	}
 
 	useEffect(() => {
 		updateData();
-	},[pageIndex, filters, globalFilter])
+	},[pageIndex, filters, globalFilter, sortBy])
 
 	const sortIcon = () => {
 
@@ -253,7 +256,15 @@ const Table:FC<TableProps> = ({columns = [], defaultPageSize = 10, pageQuery, en
 																	</Grid>
 																	<Grid item xs={2}>
 																		<Grid container direction="row" alignItems={"center"} justifyContent={"center"}>
-																			<SortIcon style={{cursor: "pointer"}}/>
+																			{
+																				column.canSort ?
+																					column.isSorted ?
+																						column.isSortedDesc ?
+																							<ArrowDropDownIcon style={{cursor: "pointer"}} onClick={()=>column.toggleSortBy()}/>
+																							: <ArrowDropUpIcon style={{cursor: "pointer"}} onClick={()=>column.toggleSortBy()}/>
+																						: <SortIcon style={{cursor: "pointer"}} onClick={()=>column.toggleSortBy()}/>
+																					: null
+																			}
 																		</Grid>
 																	</Grid>
 																</Grid>

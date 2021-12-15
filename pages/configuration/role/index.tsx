@@ -37,11 +37,13 @@ const Role: NextPage = () => {
 					</Grid>
 				);
 			},
+			disableSortBy: true,
 			disableFilters: true,
 			width: '5%'
 		},
 		{
 			Header: 'Acciones',
+			disableSortBy: true,
 			disableFilters: true,
 			width: '10%'
 		}
