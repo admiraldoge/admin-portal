@@ -7,7 +7,15 @@ import Grid from "@mui/material/Grid";
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import ButtonGroup from '@mui/material/ButtonGroup';
-import {useTable, usePagination, ColumnInterface, Column, useGlobalFilter, useFilters} from 'react-table';
+import {
+	useTable,
+	usePagination,
+	ColumnInterface,
+	Column,
+	useGlobalFilter,
+	useFilters,
+	useAsyncDebounce
+} from 'react-table';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import SearchIcon from '@mui/icons-material/Search';
@@ -103,6 +111,35 @@ const Table:FC<TableProps> = ({columns = [], defaultPageSize = 10, pageQuery, en
 	const [filter, setFilter] = useState(columnsToFilter(columns));
 	const [order, setOrder] = useState(columnsToOrder(columns));
 
+	function GlobalFilter({ preGlobalFilteredRows, globalFilter, setGlobalFilter,}) {
+		const count = preGlobalFilteredRows.length
+		const [value, setValue] = React.useState(globalFilter)
+		const onChange = useAsyncDebounce(value => {
+			setGlobalFilter(value || undefined)
+		}, 500)
+
+		return (
+			<Grid container direction={"row"}>
+				<TextField
+					id="filled-search"
+					label="Search field"
+					type="search"
+					variant="filled"
+					value={value || ""}
+					onChange={e => {
+						setValue(e.target.value);
+						onChange(e.target.value);
+					}}
+					onKeyPress={(e) => {
+						if(e.key === 'Enter'){
+							updateData();
+						}
+					}}
+					placeholder={`${count} records...`}
+				/>
+    </Grid>
+		)
+	}
 
 	function DefaultColumnFilter({column: { filterValue, preFilteredRows, setFilter},}) {
 		const count = preFilteredRows.length
@@ -135,8 +172,9 @@ const Table:FC<TableProps> = ({columns = [], defaultPageSize = 10, pageQuery, en
 
 	const {getTableProps,
 		getTableBodyProps, prepareRow, page, canPreviousPage, canNextPage, nextPage,
-		previousPage, setPageSize, gotoPage, pageCount, headerGroups,
-		state: { pageIndex, pageSize, filters }}
+		previousPage, setPageSize, gotoPage, pageCount, headerGroups, preGlobalFilteredRows,
+		setGlobalFilter,
+		state: { pageIndex, pageSize, filters, globalFilter }}
 		= useTable(
 			{
 				columns,
@@ -145,6 +183,7 @@ const Table:FC<TableProps> = ({columns = [], defaultPageSize = 10, pageQuery, en
 				pageCount: 10,
 				manualSortBy: true,
 				manualFilters: true,
+				manualGlobalFilter: true,
 				defaultColumn
 			},
 		useFilters,
@@ -153,12 +192,12 @@ const Table:FC<TableProps> = ({columns = [], defaultPageSize = 10, pageQuery, en
 	)
 
 	const updateData = () => {
-		dispatch(pageQuery(pageIndex+1, pageSize, searchText, filters, []))
+		dispatch(pageQuery(pageIndex+1, pageSize, globalFilter, filters, []))
 	}
 
 	useEffect(() => {
 		updateData();
-	},[pageIndex, filters])
+	},[pageIndex, filters, globalFilter])
 
 	const sortIcon = () => {
 
@@ -168,18 +207,10 @@ const Table:FC<TableProps> = ({columns = [], defaultPageSize = 10, pageQuery, en
 		<div className={styles.ctn}>
 			<Grid container justifyContent={"center"} alignContent={"center"} direction={"column"}>
 				<Grid item xs={12} sm={6} lg={4}>
-					<TextField
-						id="filled-search"
-						label="Search field"
-						type="search"
-						variant="filled"
-						value={searchText}
-						onChange={(e) => setSearchText(e.currentTarget.value)}
-						onKeyPress={(e) => {
-							if(e.key === 'Enter'){
-								updateData();
-							}
-						}}
+					<GlobalFilter
+						preGlobalFilteredRows={preGlobalFilteredRows}
+						globalFilter={globalFilter}
+						setGlobalFilter={setGlobalFilter}
 					/>
 				</Grid>
 				<Grid>

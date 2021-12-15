@@ -1,4 +1,5 @@
 import '../styles/globals.scss'
+import 'regenerator-runtime/runtime'
 import type { AppProps } from 'next/app'
 import Header from "../components/layouts/Header";
 import {Provider} from "react-redux";
