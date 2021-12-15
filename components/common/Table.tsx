@@ -7,7 +7,7 @@ import Grid from "@mui/material/Grid";
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import ButtonGroup from '@mui/material/ButtonGroup';
-import {useTable, usePagination, ColumnInterface, Column} from 'react-table';
+import {useTable, usePagination, ColumnInterface, Column, useGlobalFilter, useFilters} from 'react-table';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import SearchIcon from '@mui/icons-material/Search';
@@ -103,18 +103,62 @@ const Table:FC<TableProps> = ({columns = [], defaultPageSize = 10, pageQuery, en
 	const [filter, setFilter] = useState(columnsToFilter(columns));
 	const [order, setOrder] = useState(columnsToOrder(columns));
 
+
+	function DefaultColumnFilter({column: { filterValue, preFilteredRows, setFilter},}) {
+		const count = preFilteredRows.length
+		return (
+			<TextField
+				id="email"
+				margin="normal"
+				fullWidth={true}
+				inputProps={{
+					style: {
+						padding: 0
+					}
+				}}
+				onChange={e => {
+					setFilter(e.target.value || undefined) // Set undefined to remove the filter entirely
+				}}
+				value={filterValue || ''}
+			/>
+		)
+	}
+
+
+	const defaultColumn = React.useMemo(
+		() => ({
+			// Let's set up our default Filter UI
+			Filter: DefaultColumnFilter,
+		}),
+		[]
+	)
+
 	const {getTableProps,
 		getTableBodyProps, prepareRow, page, canPreviousPage, canNextPage, nextPage,
-		previousPage, setPageSize, gotoPage, pageCount, headerGroups, useFilters, useGlobalFilter,
-		state: { pageIndex, pageSize, filters }} = useTable({columns, data: table.items, initialState: { pageIndex: 0, pageSize: 10 }, pageCount: 10, manualSortBy: true, manualFilters: true}, usePagination)
+		previousPage, setPageSize, gotoPage, pageCount, headerGroups,
+		state: { pageIndex, pageSize, filters }}
+		= useTable(
+			{
+				columns,
+				data: table.items,
+				initialState: { pageIndex: 0, pageSize: 10 },
+				pageCount: 10,
+				manualSortBy: true,
+				manualFilters: true,
+				defaultColumn
+			},
+		useFilters,
+		useGlobalFilter,
+		usePagination
+	)
 
 	const updateData = () => {
-		dispatch(pageQuery(pageIndex+1, pageSize, searchText, [], []))
+		dispatch(pageQuery(pageIndex+1, pageSize, searchText, filters, []))
 	}
 
 	useEffect(() => {
 		updateData();
-	},[pageIndex])
+	},[pageIndex, filters])
 
 	const sortIcon = () => {
 
@@ -153,8 +197,10 @@ const Table:FC<TableProps> = ({columns = [], defaultPageSize = 10, pageQuery, en
 	          2
           )}
         </code>
-						<code>{JSON.stringify(filters, null, 2)}</code>
       </pre>
+					<pre>
+						<code>{JSON.stringify(filters, null, 2)}</code>
+					</pre>
 				</Grid>
 				<Grid container direction={"row"}>
 					<Grid item xs={12}>
@@ -182,16 +228,6 @@ const Table:FC<TableProps> = ({columns = [], defaultPageSize = 10, pageQuery, en
 																</Grid>
 																<Grid container direction={"row"} justifyContent={"center"}>
 																	<Grid item xs={10}>
-																		{!column.disableFilters && <TextField
-																			id="email"
-																			margin="normal"
-																			fullWidth={true}
-																			inputProps={{
-																				style: {
-																					padding: 0
-																				}
-																			}}
-																		/>}
 																		<div>{column.canFilter ? column.render('Filter') : null}</div>
 																	</Grid>
 																</Grid>

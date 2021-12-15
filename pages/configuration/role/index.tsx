@@ -18,12 +18,12 @@ const Role: NextPage = () => {
 		{
 			Header: 'ID',
 			accessor: 'id',
-			width: '5%'
+			width: '5%',
 		},
 		{
 			Header: 'Nombre',
 			accessor: 'loc',
-			width: '20%'
+			width: '20%',
 		},
 		{
 			Header: 'Activo',
