@@ -152,7 +152,7 @@ const Header: React.FunctionComponent<headerProps> = ({}) => {
 		>
 			<MenuItem onClick={handleMenuClose}>Mi perfil</MenuItem>
 			<MenuItem onClick={handleMenuClose}>Mi cuenta</MenuItem>
-			<MenuItem onClick={handleLogout}>Salir</MenuItem>
+			<MenuItem onClick={() => {handleMenuClose();handleLogout();}}>Salir</MenuItem>
 		</Menu>
 	);
 
