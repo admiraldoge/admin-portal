@@ -32,8 +32,11 @@ import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 type TableProps = {
 	columns: Column[],
 	defaultPageSize: number,
-	pageQuery: any,
-	entityName: string
+	pageQuery?: any,
+	entityName?: string,
+	serverData?: boolean,
+	data?: [],
+	globalFilterEnabled?: boolean
 }
 
 const columnSearch = (theme:any) => ({
@@ -103,15 +106,20 @@ const columnsToOrder = (columns:any) => {
 	return res;
 }
 
-const Table:FC<TableProps> = ({columns = [], defaultPageSize = 10, pageQuery, entityName}) => {
+const Table:FC<TableProps> = (
+	{
+		columns = [],
+		defaultPageSize = 10,
+		pageQuery,
+		entityName= "",
+		serverData = false,
+		data = [],
+		globalFilterEnabled = false
+	}
+) => {
 	const classes = useColumnSearchStyles();
 	const dispatch = useAppDispatch();
-	const router = useRouter();
-	const [data, setData] = useState([]);
-	const [searchText, setSearchText] = useState("");
 	const table = useAppSelector((state: RootState) => state.table[entityName]);
-	const [filter, setFilter] = useState(columnsToFilter(columns));
-	const [order, setOrder] = useState(columnsToOrder(columns));
 
 	function GlobalFilter({ preGlobalFilteredRows, globalFilter, setGlobalFilter}:any) {
 		const count = preGlobalFilteredRows.length
@@ -119,7 +127,7 @@ const Table:FC<TableProps> = ({columns = [], defaultPageSize = 10, pageQuery, en
 		const onChange = useAsyncDebounce(value => {
 			setGlobalFilter(value || undefined)
 		}, 500)
-
+		if(!globalFilterEnabled) return null;
 		return (
 			<Grid container direction={"row"}>
 				<TextField
@@ -180,12 +188,12 @@ const Table:FC<TableProps> = ({columns = [], defaultPageSize = 10, pageQuery, en
 		= useTable(
 			{
 				columns,
-				data: table.items,
+				data: serverData ? table.items : data,
 				initialState: { pageIndex: 0, pageSize: 10 },
 				pageCount: 10,
-				manualSortBy: true,
-				manualFilters: true,
-				manualGlobalFilter: true,
+				manualSortBy: serverData,
+				manualFilters: serverData,
+				manualGlobalFilter: serverData,
 				defaultColumn
 			},
 		useFilters,
@@ -199,7 +207,7 @@ const Table:FC<TableProps> = ({columns = [], defaultPageSize = 10, pageQuery, en
 	}
 
 	useEffect(() => {
-		updateData();
+		if(serverData) updateData();
 	},[pageIndex, filters, globalFilter, sortBy])
 
 	const sortIcon = () => {
@@ -231,7 +239,7 @@ const Table:FC<TableProps> = ({columns = [], defaultPageSize = 10, pageQuery, en
 												<th {...column.getHeaderProps()} style={{width: column.width}} key={idx}>
 													<Grid container direction={"column"} justifyContent={"center"} alignItems={"stretch"}>
 														<Grid container direction={"row"} alignItems={"center"} justifyContent={"center"} style={{height: '100%'}}>
-															<Grid item xs={9}>
+															<Grid item xs={column.canSort ? 9 : 12}>
 																<Typography variant="h6">{column.render('Header')}</Typography>
 															</Grid>
 															<Grid item xs={2}>
@@ -268,7 +276,8 @@ const Table:FC<TableProps> = ({columns = [], defaultPageSize = 10, pageQuery, en
 									<tr {...row.getRowProps()} className={styles.row} key={i}>
 										{row.cells.map((cell:any) => {
 											//console.log('Cell:',cell,cell.column.centered);
-											if(typeof cell.value !== 'function') {
+											if(typeof cell.value !== 'object') {
+												console.log('Simple accesor',typeof cell.value)
 												return (
 													<td {...cell.getCellProps()} className={styles.cell}>
 														<Grid container direction={"row"} justifyContent={"center"}>
@@ -281,7 +290,10 @@ const Table:FC<TableProps> = ({columns = [], defaultPageSize = 10, pageQuery, en
 													</td>
 												)
 											} else {
-												<td>{cell.render('Cell')}</td>
+												console.log('Custom accesor',typeof cell.value)
+												return (
+													<td>{cell.render('Cell')}</td>
+												)
 											}
 										})}
 									</tr>

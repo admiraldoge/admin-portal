@@ -22,3 +22,18 @@ export const getRolePage = (page:number, limit:number, fullSearch: string, filte
 	dispatch(setTable({[ROLE]: data}))
 	return data;
 }
+
+export const getRoleSubjects = (roleId: number) => async (dispatch:any) => {
+	const request
+		= await fetch(`${process.env.NEXT_PUBLIC_PANAMA_HOST}/roles/${roleId}`,
+		{
+			method: "GET",
+			credentials: 'include',
+			headers: {
+				'accept':  'application/json'
+			}
+		});
+	const response = await request.json();
+	const data = response.data;
+	return data;
+}
