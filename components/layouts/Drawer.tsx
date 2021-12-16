@@ -103,9 +103,9 @@ const Drawer: React.FunctionComponent<drawerProps> = ({}) => {
 	useEffect(() => {
 		const path = getPath(router.pathname);
 		const [menu, subMenu] = path;
-		//console.log('Router', router, getPath(router.pathname))
-		setMenuCollapsed({...menuCollapsed, [pathToDrawerConfiguration[menu]]: true});
-		setSubjectSelected({...subjectSelected, [subjectToDrawerConfiguration[subMenu]]: true})
+		console.log('Router pathname modified ::: DRAWER', router, getPath(router.pathname))
+		setMenuCollapsed({...drawerMenu, [pathToDrawerConfiguration[menu]]: true});
+		setSubjectSelected({...getDrawerSubjectsConfiguration(), [subjectToDrawerConfiguration[subMenu]]: true})
 	},[router.pathname])
 
 	const handleDrawerClose = () => {
