@@ -1,5 +1,5 @@
 import { configureStore, createReducer } from '@reduxjs/toolkit'
-import {setLayout, setMe, setTable} from "./actions";
+import {cleanMe, setLayout, setMe, setTable} from "./actions";
 import {ROLE} from "../constants/subjects";
 
 const layoutReducer = createReducer(
@@ -37,6 +37,17 @@ const meReducer = createReducer(
 		builder
 			.addCase(setMe, (state, action) => {
 				return {...state, ...action.payload};
+			})
+			.addCase(cleanMe, (state, action) => {
+				const baseState = {
+					showDrawerCategory: {},
+					error: {},
+					read: {},
+					write: {},
+					delete: {},
+					update: {}
+				};
+				return {...baseState};
 			})
 			.addDefaultCase((state, action) => {
 			})

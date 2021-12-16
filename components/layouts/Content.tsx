@@ -25,10 +25,6 @@ const Content:FC = ({children}) => {
 
 	const dispatch = useAppDispatch();
 
-	useEffect(() => {
-		dispatch(getMe());
-	},[])
-
 	const handleDrawerOpen = () => {
 		setOpen(true);
 	};

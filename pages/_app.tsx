@@ -15,6 +15,7 @@ import {useRouter} from "next/router";
 import {useAppDispatch} from "../redux/hooks";
 import {useEffect} from "react";
 import {getMe} from "../services/me";
+import App from "../components/layouts/App";
 
 function MyApp({ Component, pageProps }: AppProps) {
 	const router = useRouter();
@@ -25,11 +26,13 @@ function MyApp({ Component, pageProps }: AppProps) {
 					<ThemeProvider theme={mainTheme}>
 						<Box sx={{ display: 'flex' }}>
 							<CssBaseline />
-							<Header/>
-							<Drawer/>
-							<Content>
-								<Component {...pageProps} />
-							</Content>
+							<App>
+								<Header/>
+								<Drawer/>
+								<Content>
+									<Component {...pageProps} />
+								</Content>
+							</App>
 						</Box>
 					</ThemeProvider>
 				</StyledEngineProvider>

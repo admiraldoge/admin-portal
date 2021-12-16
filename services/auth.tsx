@@ -1,4 +1,5 @@
 import {setMe} from "../redux/actions";
+import {getMe} from "./me";
 
 type loginCredentials = {
 	username: string,
@@ -19,6 +20,7 @@ export const auth = (credentials: loginCredentials) => async (dispatch:any) => {
 		});
 	const response = await request.json();
 	console.log('Response public? data: ',response);
+	dispatch(getMe());
 	//dispatch(setEditor({object: response.data.form}));
 
 }
