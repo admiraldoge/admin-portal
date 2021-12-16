@@ -6,14 +6,19 @@ import {useEffect} from "react";
 import {useRouter} from "next/router";
 import {useAppSelector} from "../redux/hooks";
 import {RootState} from "../redux/store";
+import _ from "lodash";
 
 const Home: NextPage = () => {
 	const router = useRouter();
+	const me = useAppSelector((state: RootState) => state.me);
 	const layout = useAppSelector((state: RootState) => state.layout);
 	//Use this page to load heavy data, before proceding to acutal panel
 	useEffect(()=>{
-		router.push(layout.initialPath);
-	})
+		if(!_.isEmpty(me.read)) {
+			//console.log('Routing user to initial path',layout.initialPath );
+			router.push(layout.initialPath);
+		}
+	},[me])
 
   return (
     <Grid container direction={"row"} justifyContent={"center"} alignContent={"center"} className={styles.ctn}>

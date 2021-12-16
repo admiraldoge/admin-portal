@@ -20,11 +20,11 @@ const App = ({children}:appProps) => {
 	},[])
 
 	useEffect(() => {
-		console.log('Changes in me detected');
+		//console.log('Changes in me detected', me);
 		if(me.error && me.error.statusCode) {
-			console.log('Error detected, return to login');
+			//console.log('Error detected, return to login');
 			router.push("/login");
-			dispatch(setLayout({initialPath: router.pathname}));
+			dispatch(setLayout({initialPath: router.pathname === "/" ? layout.initialPath : router.pathname}));
 			dispatch(cleanMe());
 		} else {
 
