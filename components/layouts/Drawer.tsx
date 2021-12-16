@@ -27,8 +27,19 @@ import {useRouter} from "next/router";
 import {StarBorder} from "@mui/icons-material";
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import {CONFIGURATION, drawerSubMenu} from "./DrawerConfiguration";
-import {ROLE, subjectPaths} from "../../constants/subjects";
+import {
+	CONFIGURATION,
+	drawerMenu,
+	pathToDrawerConfiguration
+} from "./DrawerConfiguration";
+import {
+	getDrawerSubjectsConfiguration,
+	ROLE,
+	subjectPaths,
+	subjectToDrawerConfiguration
+} from "../../constants/subjects";
+import {getPath} from "../../utils/router";
+import {updateObjectInArray} from "../../utils/table";
 
 type drawerProps = {
 
@@ -80,13 +91,22 @@ const Drawer: React.FunctionComponent<drawerProps> = ({}) => {
 	const me = useAppSelector((state: RootState) => state.me);
 	const theme = useTheme();
 	const [open, setOpen] = React.useState(true);
-	const [subMenuCollapsed, setSubMenuCollapsed] = useState(drawerSubMenu);
+	const [subjectSelected, setSubjectSelected] = React.useState(getDrawerSubjectsConfiguration());
+	const [menuCollapsed, setMenuCollapsed] = useState(drawerMenu);
 
 	const handleClick = (subMenu:string) => {
-		setSubMenuCollapsed({...subMenuCollapsed, [subMenu]: !subMenuCollapsed[subMenu]});
+		setMenuCollapsed({...menuCollapsed, [subMenu]: !menuCollapsed[subMenu]});
 	};
 	const router = useRouter();
 	const showDrawer = router.pathname !== "/login" && router.pathname !== "/" ? false : true;
+
+	useEffect(() => {
+		const path = getPath(router.pathname);
+		const [menu, subMenu] = path;
+		//console.log('Router', router, getPath(router.pathname))
+		setMenuCollapsed({...menuCollapsed, [pathToDrawerConfiguration[menu]]: true});
+		setSubjectSelected({...subjectSelected, [subjectToDrawerConfiguration[subMenu]]: true})
+	},[router.pathname])
 
 	const handleDrawerClose = () => {
 		setOpen(false);
@@ -126,16 +146,23 @@ const Drawer: React.FunctionComponent<drawerProps> = ({}) => {
 							<InboxIcon/>
 						</ListItemIcon>
 						<ListItemText primary="Configuración"/>
-						{subMenuCollapsed[CONFIGURATION] ? <ExpandLess/> : <ExpandMore/>}
+						{menuCollapsed[CONFIGURATION] ? <ExpandLess/> : <ExpandMore/>}
 					</ListItemButton>}
-					<Collapse in={subMenuCollapsed[CONFIGURATION]} timeout="auto" unmountOnExit>
+					<Collapse in={menuCollapsed[CONFIGURATION]} timeout="auto" unmountOnExit>
 						<List component="div" disablePadding>
-							{me.read[ROLE] && <ListItemButton sx={{pl: 4}} onClick={() => goToPage(subjectPaths[ROLE])}>
-								<ListItemIcon>
-									<StarBorder/>
-								</ListItemIcon>
-								<ListItemText primary="Roles"/>
-							</ListItemButton>}
+							{
+								me.read[ROLE] &&
+								<ListItemButton
+									sx={{pl: 4}}
+									onClick={() => goToPage(subjectPaths[ROLE])}
+									selected={subjectSelected[ROLE]}
+								>
+									<ListItemIcon>
+										<StarBorder/>
+									</ListItemIcon>
+									<ListItemText primary="Roles"/>
+								</ListItemButton>
+							}
 						</List>
 					</Collapse>
 					<ListItemButton>
