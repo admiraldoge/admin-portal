@@ -113,7 +113,7 @@ const Table:FC<TableProps> = ({columns = [], defaultPageSize = 10, pageQuery, en
 	const [filter, setFilter] = useState(columnsToFilter(columns));
 	const [order, setOrder] = useState(columnsToOrder(columns));
 
-	function GlobalFilter({ preGlobalFilteredRows, globalFilter, setGlobalFilter,}) {
+	function GlobalFilter({ preGlobalFilteredRows, globalFilter, setGlobalFilter}:any) {
 		const count = preGlobalFilteredRows.length
 		const [value, setValue] = React.useState(globalFilter)
 		const onChange = useAsyncDebounce(value => {
@@ -143,7 +143,7 @@ const Table:FC<TableProps> = ({columns = [], defaultPageSize = 10, pageQuery, en
 		)
 	}
 
-	function DefaultColumnFilter({column: { filterValue, preFilteredRows, setFilter},}) {
+	function DefaultColumnFilter({column: { filterValue, preFilteredRows, setFilter}}:any) {
 		const count = preFilteredRows.length
 		return (
 			<TextField
@@ -222,13 +222,13 @@ const Table:FC<TableProps> = ({columns = [], defaultPageSize = 10, pageQuery, en
 					<Grid item xs={12}>
 						<table className={styles.table}>
 							<thead className={styles.head}>
-							{headerGroups.map(headerGroup => {
+							{headerGroups.map((headerGroup, idx:number) => {
 								return (
-									<tr {...headerGroup.getHeaderGroupProps()}>
-										{headerGroup.headers.map((column: any) => {
+									<tr {...headerGroup.getHeaderGroupProps()} key={idx}>
+										{headerGroup.headers.map((column: any, idx:number) => {
 											//console.log('Column: ',column);
 											return (
-												<th {...column.getHeaderProps()} style={{width: column.width}}>
+												<th {...column.getHeaderProps()} style={{width: column.width}} key={idx}>
 													<Grid container direction={"column"} justifyContent={"center"} alignItems={"stretch"}>
 														<Grid container direction={"row"} alignItems={"center"} justifyContent={"center"} style={{height: '100%'}}>
 															<Grid item xs={9}>
@@ -265,8 +265,8 @@ const Table:FC<TableProps> = ({columns = [], defaultPageSize = 10, pageQuery, en
 							{page.map((row, i) => {
 								prepareRow(row)
 								return (
-									<tr {...row.getRowProps()} className={styles.row}>
-										{row.cells.map(cell => {
+									<tr {...row.getRowProps()} className={styles.row} key={i}>
+										{row.cells.map((cell:any) => {
 											//console.log('Cell:',cell,cell.column.centered);
 											if(typeof cell.value !== 'function') {
 												return (
