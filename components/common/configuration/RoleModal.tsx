@@ -8,6 +8,7 @@ import Table from "../Table";
 import Grid from "@mui/material/Grid";
 import Checkbox from "@mui/material/Checkbox";
 import {CREATE, DELETE, READ, UPDATE} from "../../../constants/abilities";
+import {updateObjectInArray} from "../../../utils/table";
 
 
 const style = {
@@ -72,7 +73,12 @@ const RoleModal: FC<actionsModalProps> = ({state, setState}) => {
 			accessor: (row:any, index:any) => {
 				return (
 					<Grid container justifyContent={"center"}>
-						<Checkbox checked={row.read} />
+						<Checkbox
+							checked={row.read}
+		          onChange={(e) => {
+								setRoleData(updateObjectInArray(roleData, index, {read: e.target.checked}))
+							}}
+						/>
 					</Grid>
 				);
 			},
@@ -85,7 +91,12 @@ const RoleModal: FC<actionsModalProps> = ({state, setState}) => {
 			accessor: (row:any, index:any) => {
 				return (
 					<Grid container justifyContent={"center"}>
-						<Checkbox checked={row.create} />
+						<Checkbox
+							checked={row.create}
+		          onChange={(e) => {
+			          setRoleData(updateObjectInArray(roleData, index, {create: e.target.checked}))
+		          }}
+						/>
 					</Grid>
 				);
 			},
@@ -98,7 +109,12 @@ const RoleModal: FC<actionsModalProps> = ({state, setState}) => {
 			accessor: (row:any, index:any) => {
 				return (
 					<Grid container justifyContent={"center"}>
-						<Checkbox checked={row.update} />
+						<Checkbox
+							checked={row.update}
+		          onChange={(e) => {
+			          setRoleData(updateObjectInArray(roleData, index, {update: e.target.checked}))
+		          }}
+						/>
 					</Grid>
 				);
 			},
@@ -111,7 +127,12 @@ const RoleModal: FC<actionsModalProps> = ({state, setState}) => {
 			accessor: (row:any, index:any) => {
 				return (
 					<Grid container justifyContent={"center"}>
-						<Checkbox checked={row.delete} />
+						<Checkbox
+							checked={row.delete}
+		          onChange={(e) => {
+			          setRoleData(updateObjectInArray(roleData, index, {delete: e.target.checked}))
+		          }}
+						/>
 					</Grid>
 				);
 			},
@@ -129,7 +150,7 @@ const RoleModal: FC<actionsModalProps> = ({state, setState}) => {
 			aria-describedby="modal-modal-description"
 		>
 			<Box sx={style}>
-				<Typography variant="h6">Edit Roles</Typography>
+				<Typography variant="h6">Cambiar Habilidades</Typography>
 				<Table columns={columns} defaultPageSize={10} data={roleData}/>
 			</Box>
 		</Modal>

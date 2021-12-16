@@ -277,7 +277,7 @@ const Table:FC<TableProps> = (
 										{row.cells.map((cell:any) => {
 											//console.log('Cell:',cell,cell.column.centered);
 											if(typeof cell.value !== 'object') {
-												console.log('Simple accesor',typeof cell.value)
+												//console.log('Simple accesor',typeof cell.value)
 												return (
 													<td {...cell.getCellProps()} className={styles.cell}>
 														<Grid container direction={"row"} justifyContent={"center"}>
@@ -290,7 +290,7 @@ const Table:FC<TableProps> = (
 													</td>
 												)
 											} else {
-												console.log('Custom accesor',typeof cell.value)
+												//console.log('Custom accesor',typeof cell.value)
 												return (
 													<td>{cell.render('Cell')}</td>
 												)
