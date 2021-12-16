@@ -217,24 +217,6 @@ const Table:FC<TableProps> = ({columns = [], defaultPageSize = 10, pageQuery, en
 					/>
 				</Grid>
 				<Grid>
-					<pre>
-        <code>
-          {JSON.stringify(
-	          {
-		          pageIndex,
-		          pageSize,
-		          pageCount,
-		          canNextPage,
-		          canPreviousPage,
-	          },
-	          null,
-	          2
-          )}
-        </code>
-      </pre>
-					<pre>
-						<code>{JSON.stringify(filters, null, 2)}</code>
-					</pre>
 				</Grid>
 				<Grid container direction={"row"}>
 					<Grid item xs={12}>
@@ -244,35 +226,31 @@ const Table:FC<TableProps> = ({columns = [], defaultPageSize = 10, pageQuery, en
 								return (
 									<tr {...headerGroup.getHeaderGroupProps()}>
 										{headerGroup.headers.map((column: any) => {
-											console.log('Column: ',column);
+											//console.log('Column: ',column);
 											return (
 												<th {...column.getHeaderProps()} style={{width: column.width}}>
-													<Grid container direction={"row"} alignItems={"center"} justifyContent={"center"}>
-														<Grid item xs={11}>
-															<Grid container direction={"column"} alignItems={"center"} justifyContent={"center"}>
-																<Grid container direction={"row"} alignItems={"center"} justifyContent={"center"} style={{height: '100%'}}>
-																	<Grid item xs={10}>
-																		<Typography variant="h6">{column.render('Header')}</Typography>
-																	</Grid>
-																	<Grid item xs={2}>
-																		<Grid container direction="row" alignItems={"center"} justifyContent={"center"}>
-																			{
-																				column.canSort ?
-																					column.isSorted ?
-																						column.isSortedDesc ?
-																							<ArrowDropDownIcon style={{cursor: "pointer"}} onClick={()=>column.toggleSortBy()}/>
-																							: <ArrowDropUpIcon style={{cursor: "pointer"}} onClick={()=>column.toggleSortBy()}/>
-																						: <SortIcon style={{cursor: "pointer"}} onClick={()=>column.toggleSortBy()}/>
-																					: null
-																			}
-																		</Grid>
-																	</Grid>
+													<Grid container direction={"column"} justifyContent={"center"} alignItems={"stretch"}>
+														<Grid container direction={"row"} alignItems={"center"} justifyContent={"center"} style={{height: '100%'}}>
+															<Grid item xs={9}>
+																<Typography variant="h6">{column.render('Header')}</Typography>
+															</Grid>
+															<Grid item xs={2}>
+																<Grid container direction="row" alignItems={"center"} justifyContent={"center"}>
+																	{
+																		column.canSort ?
+																			column.isSorted ?
+																				column.isSortedDesc ?
+																					<ArrowDropDownIcon style={{cursor: "pointer"}} onClick={()=>column.toggleSortBy()}/>
+																					: <ArrowDropUpIcon style={{cursor: "pointer"}} onClick={()=>column.toggleSortBy()}/>
+																				: <SortIcon style={{cursor: "pointer"}} onClick={()=>column.toggleSortBy()}/>
+																			: null
+																	}
 																</Grid>
-																<Grid container direction={"row"} justifyContent={"center"}>
-																	<Grid item xs={10}>
-																		<div>{column.canFilter ? column.render('Filter') : null}</div>
-																	</Grid>
-																</Grid>
+															</Grid>
+														</Grid>
+														<Grid container direction={"row"} justifyContent={"center"}>
+															<Grid item xs={11}>
+																<div>{column.canFilter ? column.render('Filter') : null}</div>
 															</Grid>
 														</Grid>
 													</Grid>
@@ -289,13 +267,13 @@ const Table:FC<TableProps> = ({columns = [], defaultPageSize = 10, pageQuery, en
 								return (
 									<tr {...row.getRowProps()} className={styles.row}>
 										{row.cells.map(cell => {
-											//console.log('Cell:',cell);
+											//console.log('Cell:',cell,cell.column.centered);
 											if(typeof cell.value !== 'function') {
 												return (
 													<td {...cell.getCellProps()} className={styles.cell}>
-														<Grid container direction={"row"} alignContent={"center"}>
+														<Grid container direction={"row"} justifyContent={"center"}>
 															<Grid item xs={11}>
-																<Grid container direction={"row"}>
+																<Grid container direction={"row"} justifyContent={cell.column.centered ? "center" : "flex-start"}>
 																	<Typography variant={"subtitle2"}>{cell.render('Cell')}</Typography>
 																</Grid>
 															</Grid>

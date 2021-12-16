@@ -18,12 +18,13 @@ const Role: NextPage = () => {
 		{
 			Header: 'ID',
 			accessor: 'id',
-			width: '5%',
+			width: 10,
+			centered: true
 		},
 		{
 			Header: 'Nombre',
 			accessor: 'loc',
-			width: '20%',
+			width: 50,
 		},
 		{
 			Header: 'Activo',
@@ -39,13 +40,13 @@ const Role: NextPage = () => {
 			},
 			disableSortBy: true,
 			disableFilters: true,
-			width: '5%'
+			width: 10
 		},
 		{
 			Header: 'Acciones',
 			disableSortBy: true,
 			disableFilters: true,
-			width: '10%'
+			width: 30
 		}
 	]
 
