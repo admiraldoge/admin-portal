@@ -24,6 +24,7 @@ const App = ({children}:appProps) => {
 		if(me.error && me.error.statusCode) {
 			console.log('Error detected, return to login');
 			router.push("/login");
+			dispatch(setLayout({initialPath: router.pathname}));
 			dispatch(cleanMe());
 		} else {
 

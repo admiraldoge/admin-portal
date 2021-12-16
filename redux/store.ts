@@ -12,7 +12,8 @@ const layoutReducer = createReducer(
 		},
 		loading: {
 			loadValue: 0
-		}
+		},
+		initialPath: "/panel"
 	},
 	(builder) => {
 		builder
