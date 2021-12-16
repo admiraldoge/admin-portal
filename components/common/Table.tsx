@@ -236,7 +236,7 @@ const Table:FC<TableProps> = (
 										{headerGroup.headers.map((column: any, idx:number) => {
 											//console.log('Column: ',column);
 											return (
-												<th {...column.getHeaderProps()} style={{width: column.width}} key={idx}>
+												<th {...column.getHeaderProps()} style={{width: column.width}} key={`th-${idx}`}>
 													<Grid container direction={"column"} justifyContent={"center"} alignItems={"stretch"}>
 														<Grid container direction={"row"} alignItems={"center"} justifyContent={"center"} style={{height: '100%'}}>
 															<Grid item xs={column.canSort ? 9 : 12}>
@@ -270,16 +270,16 @@ const Table:FC<TableProps> = (
 							})}
 							</thead>
 							<tbody>
-							{page.map((row, i) => {
-								prepareRow(row)
+							{page.map((row, rowIdx) => {
+								prepareRow(row);
 								return (
-									<tr {...row.getRowProps()} className={styles.row} key={i}>
-										{row.cells.map((cell:any) => {
+									<tr {...row.getRowProps()} className={styles.row} key={`tr-${rowIdx}`} >
+										{row.cells.map((cell:any, cellIdx: number) => {
 											//console.log('Cell:',cell,cell.column.centered);
 											if(typeof cell.value !== 'object') {
 												//console.log('Simple accesor',typeof cell.value)
 												return (
-													<td {...cell.getCellProps()} className={styles.cell}>
+													<td key={`td-${cellIdx}}`} {...cell.getCellProps()} className={styles.cell}>
 														<Grid container direction={"row"} justifyContent={"center"}>
 															<Grid item xs={11}>
 																<Grid container direction={"row"} justifyContent={cell.column.centered ? "center" : "flex-start"}>
@@ -292,7 +292,7 @@ const Table:FC<TableProps> = (
 											} else {
 												//console.log('Custom accesor',typeof cell.value)
 												return (
-													<td>{cell.render('Cell')}</td>
+													<td key={`td-${cellIdx}}`}>{cell.render('Cell')}</td>
 												)
 											}
 										})}

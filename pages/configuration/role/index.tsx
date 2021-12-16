@@ -35,7 +35,6 @@ const Role: NextPage = () => {
 		{
 			Header: 'Activo',
 			accessor: (row:any, index:any) => {
-				console.log('Row?',row,'index',row.isActive);
 				return (
 					<Grid container justifyContent={"center"}>
 						<Checkbox checked={row.isActive} />
