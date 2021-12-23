@@ -28,18 +28,10 @@ import {StarBorder} from "@mui/icons-material";
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import {
-	CONFIGURATION,
-	drawerMenu,
-	pathToDrawerConfiguration
+	conf
 } from "./DrawerConfiguration";
-import {
-	getDrawerSubjectsConfiguration,
-	ROLE,
-	subjectPaths,
-	subjectToDrawerConfiguration
-} from "../../constants/subjects";
 import {getPath} from "../../utils/router";
-import {updateObjectInArray} from "../../utils/table";
+import {updateObjectInArray} from "../../utils/state";
 
 type drawerProps = {
 
@@ -91,21 +83,16 @@ const Drawer: React.FunctionComponent<drawerProps> = ({}) => {
 	const me = useAppSelector((state: RootState) => state.me);
 	const theme = useTheme();
 	const [open, setOpen] = React.useState(true);
-	const [subjectSelected, setSubjectSelected] = React.useState(getDrawerSubjectsConfiguration());
-	const [menuCollapsed, setMenuCollapsed] = useState(drawerMenu);
+	const [state, setState] = useState(JSON.parse(JSON.stringify(conf)) as any);
 
-	const handleClick = (subMenu:string) => {
-		setMenuCollapsed({...menuCollapsed, [subMenu]: !menuCollapsed[subMenu]});
-	};
 	const router = useRouter();
 	const showDrawer = router.pathname !== "/login" && router.pathname !== "/" ? false : true;
 
 	useEffect(() => {
 		const path = getPath(router.pathname);
-		const [menu, subMenu] = path;
-		console.log('Router pathname modified ::: DRAWER', router, getPath(router.pathname))
-		setMenuCollapsed({...drawerMenu, [pathToDrawerConfiguration[menu]]: true});
-		setSubjectSelected({...getDrawerSubjectsConfiguration(), [subjectToDrawerConfiguration[subMenu]]: true})
+		const [module, subject] = path;
+		//console.log('Router pathname modified ::: DRAWER', router, getPath(router.pathname))
+		selectSubject(module, subject);
 	},[router.pathname])
 
 	const handleDrawerClose = () => {
@@ -113,8 +100,26 @@ const Drawer: React.FunctionComponent<drawerProps> = ({}) => {
 		dispatch(setLayout({drawerExpanded: false}));
 	};
 
-	interface AppBarProps extends MuiAppBarProps {
-		drawerExpanded?: boolean;
+	const selectSubject = (module:string, subject:string) => {
+		const newState = JSON.parse(JSON.stringify(state));
+		for(let i = 0; i < state.length; i++) {
+			if(newState[i].path === module) {
+				newState[i].expanded = true;
+			}
+			if(state[i]._template === 'module') {
+				for(let j = 0; j < state[i].children.length; j++) {
+					if(state[i].children[j].path === `/${module}/${subject}`) {
+						setState(
+							updateObjectInArray(
+								newState,
+								i, {children: updateObjectInArray(newState[i].children, j, {selected: true})}
+							)
+						)
+						break;
+					}
+				}
+			}
+		}
 	}
 
 	const DrawerHeader = styled('div')(({ theme }) => ({
@@ -126,9 +131,80 @@ const Drawer: React.FunctionComponent<drawerProps> = ({}) => {
 		...theme.mixins.toolbar,
 	}));
 
-	const goToPage = (path:string) => {
-		router.push(path);
+	const ListItem = (item:any, idx:number, i:number) => {
+		switch (item._template) {
+			case 'title':
+				return (
+					<ListItemButton key={item.loc}>
+						<ListItemIcon>
+
+						</ListItemIcon>
+						<ListItemText primary={item.loc} />
+					</ListItemButton>
+				);
+				break;
+			case 'subject':
+				if(me.read[item.subject]) {
+					return (
+						<ListItemButton
+							key={`subject-${idx}-${i}`}
+							sx={{pl: 4}}
+							onClick={(e) => {
+								setState(
+									updateObjectInArray(
+										state,
+										idx, {children: updateObjectInArray(state[idx].children, i, {selected: true})}
+									)
+								)
+								router.push(item.path);
+							}}
+							selected={state[idx].children[i].selected}
+						>
+							<ListItemIcon>
+								{item.icon}
+							</ListItemIcon>
+							<ListItemText primary={me.subjectsLocMap ? item.loc : me.subjectsLocMap[item.subject]}/>
+						</ListItemButton>
+					)
+				}
+				return null;
+		}
 	}
+
+	const navItems = conf.map((item:any, idx:number) => {
+		switch (item._template) {
+			case 'title':
+				return (
+					<ListItemButton key={`title-${idx}`}>
+						<ListItemIcon>
+							{item.icon}
+						</ListItemIcon>
+						<ListItemText primary={item.loc} />
+					</ListItemButton>
+				);
+				break;
+			case 'module':
+				return [
+					<ListItemButton key={`module-${idx}`} onClick={() => {
+						setState(updateObjectInArray(state, idx, {expanded: !state[idx].expanded}))
+					}}>
+						<ListItemIcon>
+							{item.icon}
+						</ListItemIcon>
+						<ListItemText primary="Configuración"/>
+						{state[idx].expanded ? <ExpandLess/> : <ExpandMore/>}
+					</ListItemButton>,
+					<Collapse key={`module-${idx}-list`} in={state[idx].expanded} timeout="auto" unmountOnExit>
+						<List component="div" disablePadding>
+							{item.children.map((item:any,i:number) => {
+								return ListItem(item, idx, i);
+							})}
+						</List>
+					</Collapse>
+				];
+				break;
+		}
+	})
 
 	if(showDrawer) return null;
 	return (
@@ -141,36 +217,7 @@ const Drawer: React.FunctionComponent<drawerProps> = ({}) => {
 				</DrawerHeader>
 				<Divider />
 				<List>
-					{me.showDrawerCategory[CONFIGURATION] && <ListItemButton onClick={() => handleClick(CONFIGURATION)}>
-						<ListItemIcon>
-							<InboxIcon/>
-						</ListItemIcon>
-						<ListItemText primary="Configuración"/>
-						{menuCollapsed[CONFIGURATION] ? <ExpandLess/> : <ExpandMore/>}
-					</ListItemButton>}
-					<Collapse in={menuCollapsed[CONFIGURATION]} timeout="auto" unmountOnExit>
-						<List component="div" disablePadding>
-							{
-								me.read[ROLE] &&
-								<ListItemButton
-									sx={{pl: 4}}
-									onClick={() => goToPage(subjectPaths[ROLE])}
-									selected={subjectSelected[ROLE]}
-								>
-									<ListItemIcon>
-										<StarBorder/>
-									</ListItemIcon>
-									<ListItemText primary="Roles"/>
-								</ListItemButton>
-							}
-						</List>
-					</Collapse>
-					<ListItemButton>
-						<ListItemIcon>
-							<InboxIcon />
-						</ListItemIcon>
-						<ListItemText primary="Inbox" />
-					</ListItemButton>
+					{navItems}
 				</List>
 			</MaterialUIDrawer>
 		</div>

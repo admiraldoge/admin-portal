@@ -19,7 +19,10 @@ export const getMe = () => async (dispatch:any) => {
 
 		}
 		if(data.subjects) {
-			data.subjectsMap = data.subjects.map((item: { name: string; }) => item.name);
+			const subjectsLocMap = {} as any;
+			data.subjects.forEach((item: { name: string; loc: string;}, idx:number) => {
+				subjectsLocMap[item.name] = item.loc;
+			});
 		}
 		const READ = 0;
 		const CREATE = 1;

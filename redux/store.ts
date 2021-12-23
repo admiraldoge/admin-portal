@@ -32,7 +32,8 @@ const meReducer = createReducer(
 		read: {},
 		write: {},
 		delete: {},
-		update: {}
+		update: {},
+		subjectsLocMap: {}
 	},
 	(builder) => {
 		builder
@@ -46,7 +47,8 @@ const meReducer = createReducer(
 					read: {},
 					write: {},
 					delete: {},
-					update: {}
+					update: {},
+					subjectsLocMap: {}
 				};
 				return {...baseState};
 			})
