@@ -17,6 +17,9 @@ const Home: NextPage = () => {
 		if(!_.isEmpty(me.read)) {
 			//console.log('Routing user to initial path',layout.initialPath );
 			router.push(layout.initialPath);
+		} else {
+			alert('No hay ningun permiso de lectura para este usuario.');
+			router.push('/login');
 		}
 	},[me])
 
