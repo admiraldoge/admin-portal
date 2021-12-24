@@ -150,10 +150,18 @@ const Drawer: React.FunctionComponent<drawerProps> = ({}) => {
 							key={`subject-${idx}-${i}`}
 							sx={{pl: 4}}
 							onClick={(e) => {
+								const newState = JSON.parse(JSON.stringify(state));
+								for(let i = 0; i < newState.length; i++) {
+									if(newState[i]._template === 'module') {
+										for(let j = 0; j < newState[i].children.length; j++) {
+											newState[i].children[j].selected = false;
+										}
+									}
+								}
 								setState(
 									updateObjectInArray(
 										state,
-										idx, {children: updateObjectInArray(state[idx].children, i, {selected: true})}
+										idx, {children: updateObjectInArray(newState[idx].children, i, {selected: true})}
 									)
 								)
 								router.push(item.path);
