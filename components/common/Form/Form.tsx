@@ -4,20 +4,23 @@ import * as yup from "yup";
 import {useFormik} from "formik";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import styles from '../../../styles/components/Form.module.scss';
+import _ from 'lodash';
 
 type props = {
 	config: any[],
 	validationSchema: {},
-	resourcePath: string
+	resourcePath: string,
+	initialData?: any
 }
 
-const Form: FC<props> = ({config, validationSchema, resourcePath}) => {
+const Form: FC<props> = ({config, validationSchema, resourcePath, initialData={}}) => {
 	const yupValidationSchema = yup.object(validationSchema);
 
 	const getInitialValues = () => {
 		const res = {} as any;
-		config.forEach((item:any, idx:number) => {
-			res[item.key] = "";
+		config.forEach((item:{key: string}, idx:number) => {
+			res[item.key] = _.isEmpty(initialData) ? '' : initialData[item.key];
 		})
 		return res;
 	}
@@ -55,6 +58,27 @@ const Form: FC<props> = ({config, validationSchema, resourcePath}) => {
 				placeholder={item.placeholder}
 				error={formik.touched[item.key] && Boolean(formik.errors[item.key])}
 				helperText={formik.touched[item.key] && formik.errors[item.key]}
+				className={styles.formItem}
+			/>
+		)
+	}
+
+	const LongStringField = (item:any, idx:number) => {
+		return (
+			<TextField
+				fullWidth
+				multiline
+				rows={4}
+				key={`${idx}-${item.key}`}
+				id={item.key}
+				name={item.key}
+				label={item.label}
+				value={formik.values[item.key]}
+				onChange={formik.handleChange}
+				placeholder={item.placeholder}
+				error={formik.touched[item.key] && Boolean(formik.errors[item.key])}
+				helperText={formik.touched[item.key] && formik.errors[item.key]}
+				className={styles.formItem}
 			/>
 		)
 	}
@@ -63,14 +87,18 @@ const Form: FC<props> = ({config, validationSchema, resourcePath}) => {
 		switch (item._template) {
 			case 'string':
 				return StringField(item, idx);
+			case 'longString':
+				return LongStringField(item, idx);
 		}
 	})
 
 	return (
-		<Grid container direction={"row"} justifyContent={"center"} alignContent={"center"}>
-			<form onSubmit={formik.handleSubmit}>
+		<Grid container direction={"row"} justifyContent={"stretch"} alignContent={"center"}
+		      style={{backgroundColor: "transparent"}}
+		>
+			<form onSubmit={formik.handleSubmit} className={styles.form}>
 				{formItems}
-				<Button color="primary" variant="contained" fullWidth type="submit">
+				<Button color="primary" variant="contained" fullWidth type="submit" className={styles.submitBtn}>
 					Guardar
 				</Button>
 			</form>

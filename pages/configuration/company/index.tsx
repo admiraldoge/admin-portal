@@ -19,8 +19,8 @@ const ConfigurationCompany: NextPage = () => {
 	const me = useAppSelector((state: RootState) => state.me);
 
 	return (
-		<Grid className={styles.ctn}>
-			<ResourceContainer path={me.companyId ? `/companies/${me.companyId}` : null} resourceName={'company'}>
+		<Grid className={styles.ctn} container direction={"row"}>
+			<ResourceContainer path={me.companyId ? `/companies/${me.companyId}` : null} resourceName={'initialData'}>
 				<Form config={formTemplate} validationSchema={validationSchema} resourcePath={`/companies/${me.companyId}`}/>
 			</ResourceContainer>
 		</Grid>

@@ -14,6 +14,13 @@ export const formTemplate = [
 		label: 'Web',
 		type: 'text',
 		placeholder: 'www.google.com'
+	},
+	{
+		_template: 'longString',
+		key: 'description',
+		label: 'Descripción',
+		type: 'text',
+		placeholder: 'Esta compañía es ...'
 	}
 ]
 
