@@ -132,9 +132,10 @@ const Table:FC<TableProps> = (
 			<Grid container direction={"row"}>
 				<TextField
 					id="filled-search"
-					label="Search field"
+					label="Buscar ..."
 					type="search"
 					variant="filled"
+					fullWidth={true}
 					value={value || ""}
 					onChange={e => {
 						setValue(e.target.value);
