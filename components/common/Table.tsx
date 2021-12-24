@@ -60,8 +60,8 @@ const useColumnSearchStyles = makeStyles((theme:any) => ({
 
 		},
 		"& .MuiOutlinedInput-root": {
-			"& fieldset": { height: '20px'},
-			"&:hover fieldset": { height: '20px'},
+			"& fieldset": { height: '24px'},
+			"&:hover fieldset": { height: '24px'},
 			"&.Mui-focused fieldset": {
 				borderColor: 'red'
 			},
@@ -160,13 +160,17 @@ const Table:FC<TableProps> = (
 				fullWidth={true}
 				inputProps={{
 					style: {
-						padding: 0
+						padding: 0,
+						paddingLeft: '4px',
+						height: '20px'
 					}
 				}}
+				classes={classes}
 				onChange={e => {
 					setFilter(e.target.value || undefined) // Set undefined to remove the filter entirely
 				}}
 				value={filterValue || ''}
+				style={{marginTop: 0, marginBottom: 0}}
 			/>
 		)
 	}
@@ -240,7 +244,7 @@ const Table:FC<TableProps> = (
 													<Grid container direction={"column"} justifyContent={"center"} alignItems={"stretch"}>
 														<Grid container direction={"row"} alignItems={"center"} justifyContent={"center"} style={{height: '100%'}}>
 															<Grid item xs={column.canSort ? 9 : 12}>
-																<Typography variant="h6">{column.render('Header')}</Typography>
+																<Typography variant="subtitle1">{column.render('Header')}</Typography>
 															</Grid>
 															<Grid item xs={2}>
 																<Grid container direction="row" alignItems={"center"} justifyContent={"center"}>
