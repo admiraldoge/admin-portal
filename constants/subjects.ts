@@ -19,19 +19,3 @@ export const subjectPaths = {
 }
 
 export const SUBJECTS = [USER, ROLE, CURRENCY, LAYOUT, COMPANY];
-
-export const getDrawerSubjectsConfiguration = () => {
-	const res = {} as any;
-	SUBJECTS.forEach((item) => {
-		res[item] = false;
-	})
-	return res;
-}
-
-export const subjectToDrawerConfiguration = {
-	"user": USER,
-	"role": ROLE,
-	"currency": CURRENCY,
-	"layout": LAYOUT,
-	"company": COMPANY
-} as any

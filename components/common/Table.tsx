@@ -280,7 +280,7 @@ const Table:FC<TableProps> = (
 								return (
 									<tr {...row.getRowProps()} className={styles.row} key={`tr-${rowIdx}`} >
 										{row.cells.map((cell:any, cellIdx: number) => {
-											//console.log('Cell:',cell,cell.column.centered);
+											console.log('Cell:',cell);
 											if(typeof cell.value !== 'object') {
 												//console.log('Simple accesor',typeof cell.value)
 												return (

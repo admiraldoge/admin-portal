@@ -180,6 +180,7 @@ const Drawer: React.FunctionComponent<drawerProps> = ({}) => {
 	}
 
 	const navItems = conf.map((item:any, idx:number) => {
+		//console.log('Conf item: ',item);
 		switch (item._template) {
 			case 'title':
 				return (
@@ -199,7 +200,7 @@ const Drawer: React.FunctionComponent<drawerProps> = ({}) => {
 						<ListItemIcon>
 							{item.icon}
 						</ListItemIcon>
-						<ListItemText primary="Configuración"/>
+						<ListItemText primary={item.loc}/>
 						{state[idx].expanded ? <ExpandLess/> : <ExpandMore/>}
 					</ListItemButton>,
 					<Collapse key={`module-${idx}-list`} in={state[idx].expanded} timeout="auto" unmountOnExit>
