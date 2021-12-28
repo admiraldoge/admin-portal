@@ -38,7 +38,6 @@ const Login: NextPage = () => {
 		validationSchema: validationSchema,
 		onSubmit: async (values) => {
 			await dispatch(auth(values));
-			router.push('/');
 		},
 	});
 

@@ -12,16 +12,6 @@ const Home: NextPage = () => {
 	const router = useRouter();
 	const me = useAppSelector((state: RootState) => state.me);
 	const layout = useAppSelector((state: RootState) => state.layout);
-	//Use this page to load heavy data, before proceding to acutal panel
-	useEffect(()=>{
-		if(!_.isEmpty(me.read)) {
-			//console.log('Routing user to initial path',layout.initialPath );
-			router.push(layout.initialPath);
-		} else {
-			alert('No hay ningun permiso de lectura para este usuario.');
-			router.push('/login');
-		}
-	},[me])
 
   return (
     <Grid container direction={"row"} justifyContent={"center"} alignContent={"center"} className={styles.ctn}>
