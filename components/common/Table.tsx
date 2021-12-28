@@ -33,6 +33,7 @@ type TableProps = {
 	columns: Column[],
 	defaultPageSize: number,
 	pageQuery?: any,
+	queryParams?: any,
 	entityName?: string,
 	serverData?: boolean,
 	data?: [],
@@ -111,6 +112,7 @@ const Table:FC<TableProps> = (
 		columns = [],
 		defaultPageSize = 10,
 		pageQuery,
+		queryParams = {},
 		entityName= "",
 		serverData = false,
 		data = [],
@@ -208,7 +210,7 @@ const Table:FC<TableProps> = (
 	)
 
 	const updateData = () => {
-		dispatch(pageQuery(pageIndex+1, pageSize, globalFilter, filters, sortBy))
+		dispatch(pageQuery(pageIndex+1, pageSize, globalFilter, filters, sortBy, queryParams))
 	}
 
 	useEffect(() => {

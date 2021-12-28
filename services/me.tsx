@@ -49,6 +49,8 @@ export const getMe = () => async (dispatch:any) => {
 			}
 		}
 		dispatch(setMe(data));
+		//TODO: When we support multiple employers per person, then update the following accordingly
+		dispatch(setMe({employerId: data.employers[0].employerId}));
 		//dispatch(setEditor({object: response.data.form}));
 	} else {
 		dispatch(setMe({error: response}));

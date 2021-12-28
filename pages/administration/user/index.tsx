@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import React, {useEffect, useState} from 'react'
 import styles from '../../../styles/pages/Role.module.scss';
-import {useAppDispatch} from "../../../redux/hooks";
+import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
 import {useRouter} from "next/router";
 import { useTable, usePagination } from 'react-table';
 import Table from "../../../components/common/Table";
@@ -12,10 +12,13 @@ import Checkbox from '@mui/material/Checkbox';
 import RoleModal from "../../../components/common/configuration/RoleModal";
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import {getUserPage} from "../../../services/users";
+import {RootState} from "../../../redux/store";
 
 const User: NextPage = () => {
 	const dispatch = useAppDispatch();
 	const router = useRouter();
+	const me = useAppSelector((state: RootState) => state.me);
+
 	const [subjectsModal, setSubjectsModal] = useState({
 		open: false,
 		data: {}
@@ -81,10 +84,11 @@ const User: NextPage = () => {
 	return (
 		<Grid className={styles.ctn}>
 			<Grid item xs={12}>
-				<Table
+				{me.employerId && <Table
 					columns={columns} defaultPageSize={10} pageQuery={getUserPage} entityName={USER} serverData={true}
+					queryParams={[{id: 'employerId', value: me.employerId}]}
 					globalFilterEnabled={true}
-				/>
+				/>}
 			</Grid>
 
 		</Grid>
