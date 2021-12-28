@@ -20,7 +20,7 @@ const ConfigurationCompany: NextPage = () => {
 
 	return (
 		<Grid className={styles.ctn} container direction={"row"}>
-			<ResourceContainer path={me.companyId ? `/companies/${me.companyId}` : null} resourceName={'initialData'}>
+			<ResourceContainer path={me.employerId ? `/person/${me.employerId}` : null} resourceName={'initialData'}>
 				<Form config={formTemplate} validationSchema={validationSchema} resourcePath={`/companies/${me.companyId}`}/>
 			</ResourceContainer>
 		</Grid>

@@ -54,7 +54,7 @@ export const conf = [
 				_template: 'subject',
 				path: '/configuration/company',
 				icon: <ApartmentIcon/>,
-				subject: "CONFIGURATION_COMPANY",
+				subject: "CONFIGURATION_LEGAL_PERSON",
 				loc: 'Empresa',
 				selected: false
 			},

@@ -18,9 +18,11 @@ const App = ({children}:appProps) => {
 
 	useEffect(() => {
 		dispatch(getMe());
+		dispatch(setLayout({initialPath: router.pathname === '/' || router.pathname === '/login' ? layout.initialPath : router.pathname}));
 	},[])
 
 	useEffect(() => {
+		//console.log('Loading pathname', router.pathname);
 		//console.log('Changes in me detected', me);
 		if(me.error && me.error.statusCode) {
 			//console.log('Error detected, return to login');
