@@ -7,7 +7,7 @@ import {getMe} from "../../services/me";
 import _ from "lodash";
 
 type appProps = {
-	children: React.ReactNode
+	children: any
 }
 
 const App = ({children}:appProps) => {
