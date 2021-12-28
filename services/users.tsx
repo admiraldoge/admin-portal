@@ -5,6 +5,7 @@ import {ROLE, USER} from "../constants/subjects";
 export const getUserPage = (page:number, limit:number, fullSearch: string, filters: any, sortBy: any) => async (dispatch:any) => {
 	let params = new URLSearchParams({ page: page.toString(), limit: limit.toString(), fullSearch });
 	params = appendArray(params, filters, 'filters');
+	params.append('filters',JSON.stringify({id: 'employerId', value: 2}));
 	params = appendArray(params, sortBy, 'sortBy');
 	console.log('Parsed filters : ',params);
 	console.log('Sort by : ',sortBy);

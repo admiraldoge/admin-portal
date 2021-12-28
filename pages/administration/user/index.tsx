@@ -34,14 +34,13 @@ const User: NextPage = () => {
 			width: 50,
 		},
 		{
-			Header: 'Nombre',
-			accessor: (row:any, index:any) => {
-				return (
-					<Grid container justifyContent={"center"}>
-						{`${row.person.firstName} ${row.person.lastName}`}
-					</Grid>
-				);
-			},
+			Header: 'Nombres',
+			accessor: 'firstName',
+			width: 50,
+		},
+		{
+			Header: 'Apellidos',
+			accessor: 'lastName',
 			width: 50,
 		},
 		{
@@ -49,7 +48,7 @@ const User: NextPage = () => {
 			accessor: (row:any, index:any) => {
 				return (
 					<Grid container justifyContent={"center"}>
-						<Checkbox checked={row.isActive} />
+						<Checkbox checked={row.appUserIsActive} />
 					</Grid>
 				);
 			},
