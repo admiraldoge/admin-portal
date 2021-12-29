@@ -154,11 +154,13 @@ const Table:FC<TableProps> = (
 		)
 	}
 
-	function DefaultColumnFilter({column: { filterValue, preFilteredRows, setFilter}}:any) {
-		const count = preFilteredRows.length
+	function DefaultColumnFilter(columns:any) {
+		const {column} = columns;
+		const {filterValue, preFilteredRows, setFilter} = column;
+		//console.log(':::Column filter: ',column);
 		return (
 			<TextField
-				id="email"
+				id="filter"
 				margin="normal"
 				fullWidth={true}
 				inputProps={{
@@ -174,6 +176,7 @@ const Table:FC<TableProps> = (
 				}}
 				value={filterValue || ''}
 				style={{marginTop: 0, marginBottom: 0}}
+				type={column.type ? column.type : 'text'}
 			/>
 		)
 	}
@@ -197,10 +200,11 @@ const Table:FC<TableProps> = (
 				columns,
 				data: serverData ? table.items : data,
 				initialState: { pageIndex: 0, pageSize: 10 },
-				pageCount: 10,
+				pageCount: table.pageCount ? table.pageCount : 10,
 				manualSortBy: serverData,
 				manualFilters: serverData,
 				manualGlobalFilter: serverData,
+				manualPagination: serverData,
 				defaultColumn
 			},
 		useFilters,
@@ -219,6 +223,21 @@ const Table:FC<TableProps> = (
 
 	return (
 		<div className={styles.ctn}>
+			 <pre>
+        <code>
+          {JSON.stringify(
+	          {
+		          pageIndex,
+		          pageSize,
+		          pageCount,
+		          canNextPage,
+		          canPreviousPage,
+	          },
+	          null,
+	          2
+          )}
+        </code>
+      </pre>
 			<Grid container justifyContent={"center"} alignContent={"center"} direction={"column"}>
 				<Grid item xs={12} sm={6} lg={4}>
 					<GlobalFilter
@@ -278,7 +297,7 @@ const Table:FC<TableProps> = (
 								return (
 									<tr {...row.getRowProps()} className={styles.row} key={`tr-${rowIdx}`} >
 										{row.cells.map((cell:any, cellIdx: number) => {
-											console.log('Cell:',cell);
+											//console.log('Cell:',cell);
 											if(typeof cell.value !== 'object') {
 												//console.log('Simple accesor',typeof cell.value)
 												return (

@@ -30,7 +30,8 @@ const Currency: NextPage = () => {
 			Header: 'ID',
 			accessor: 'id',
 			width: 10,
-			centered: true
+			centered: true,
+			type: 'number'
 		},
 		{
 			Header: 'Nombre',
@@ -44,7 +45,7 @@ const Currency: NextPage = () => {
 		},
 		{
 			Header: 'Símbolo',
-			accessor: 'simbol',
+			accessor: 'symbol',
 			width: 50,
 		},
 		{
