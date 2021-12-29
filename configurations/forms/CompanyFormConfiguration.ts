@@ -3,33 +3,40 @@ import * as yup from "yup";
 export const formTemplate = [
 	{
 		_template: 'string',
-		key: 'name',
-		label: 'Nombre',
+		key: 'businessName',
+		label: 'Nombre del negocio',
 		type: 'text',
 		placeholder: 'abc...'
 	},
 	{
 		_template: 'string',
-		key: 'web',
-		label: 'Web',
+		key: 'commercialName',
+		label: 'Nombre comercial',
 		type: 'text',
-		placeholder: 'www.google.com'
+		placeholder: 'abc...'
 	},
 	{
-		_template: 'longString',
-		key: 'description',
-		label: 'Descripción',
+		_template: 'string',
+		key: 'website',
+		label: 'Website',
 		type: 'text',
-		placeholder: 'Esta compañía es ...'
+		placeholder: 'abc...'
+	},
+	{
+		_template: 'string',
+		key: 'shortName',
+		label: 'Nombre abreviado',
+		type: 'text',
+		placeholder: 'abc...'
 	}
 ]
 
 export const validationSchema = {
-	name: yup
+	businessName: yup
 		.string()
 		.min(5,'Inserta un nombre válido!')
 		.required('El nombre es obligatorio.'),
-	web: yup
+	website: yup
 		.string()
 		.min(8, 'Inserta una web válida!')
 		.required('La web es obligatoria.'),
