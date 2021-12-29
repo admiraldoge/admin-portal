@@ -6,11 +6,12 @@ import {useRouter} from "next/router";
 import { useTable, usePagination } from 'react-table';
 import Table from "../../../components/common/Table";
 import {getRolePage} from "../../../services/roles";
-import {ROLE} from "../../../constants/subjects";
+import {CURRENCY, ROLE} from "../../../constants/subjects";
 import Grid from "@mui/material/Grid";
 import Checkbox from '@mui/material/Checkbox';
 import RoleModal from "../../../components/common/configuration/RoleModal";
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
+import {getPage} from "../../../services/tableService";
 
 const Role: NextPage = () => {
 	const dispatch = useAppDispatch();
@@ -71,7 +72,8 @@ const Role: NextPage = () => {
 		<Grid className={styles.ctn}>
 			<Grid item xs={12}>
 				<Table
-					columns={columns} defaultPageSize={10} pageQuery={getRolePage} entityName={ROLE} serverData={true}
+					subject={{path: '/roles', name: ROLE}}
+					columns={columns} defaultPageSize={10} pageQuery={getPage} serverData={true}
 					globalFilterEnabled={true}
 				/>
 			</Grid>

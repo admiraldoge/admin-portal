@@ -1,6 +1,6 @@
 import { configureStore, createReducer } from '@reduxjs/toolkit'
 import {cleanMe, setLayout, setMe, setTable} from "./actions";
-import {ROLE, USER} from "../constants/subjects";
+import {CURRENCY, ROLE, USER} from "../constants/subjects";
 
 const layoutReducer = createReducer(
 	{
@@ -60,7 +60,8 @@ const meReducer = createReducer(
 const tableReducer = createReducer(
 	{
 		[ROLE]: {pageCount: 0, items: [], total: 0},
-		[USER]: {pageCount: 0, items: [], total: 0}
+		[USER]: {pageCount: 0, items: [], total: 0},
+		[CURRENCY]: {pageCount: 0, items: [], total: 0},
 	},
 	(builder) => {
 		builder

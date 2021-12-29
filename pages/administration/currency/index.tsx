@@ -15,7 +15,7 @@ import {getUserPage} from "../../../services/users";
 import {RootState} from "../../../redux/store";
 import {getPage} from "../../../services/tableService";
 
-const User: NextPage = () => {
+const Currency: NextPage = () => {
 	const dispatch = useAppDispatch();
 	const router = useRouter();
 	const me = useAppSelector((state: RootState) => state.me);
@@ -33,18 +33,18 @@ const User: NextPage = () => {
 			centered: true
 		},
 		{
-			Header: 'Usuario',
-			accessor: 'username',
+			Header: 'Nombre',
+			accessor: 'name',
 			width: 50,
 		},
 		{
-			Header: 'Nombres',
-			accessor: 'firstName',
+			Header: 'ISO',
+			accessor: 'iso',
 			width: 50,
 		},
 		{
-			Header: 'Apellidos',
-			accessor: 'lastName',
+			Header: 'Símbolo',
+			accessor: 'simbol',
 			width: 50,
 		},
 		{
@@ -85,16 +85,15 @@ const User: NextPage = () => {
 	return (
 		<Grid className={styles.ctn}>
 			<Grid item xs={12}>
-				{me.employerId && <Table
-          subject={{path: '/app-users', name: USER}}
+				<Table
+					subject={{path: '/currencies', name: CURRENCY}}
 					columns={columns} defaultPageSize={10} pageQuery={getPage} serverData={true}
-					queryParams={[{id: 'employerId', value: me.employerId}]}
 					globalFilterEnabled={true}
-				/>}
+				/>
 			</Grid>
 
 		</Grid>
 	)
 }
 
-export default User
+export default Currency

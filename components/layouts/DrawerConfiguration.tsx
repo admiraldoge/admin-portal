@@ -3,6 +3,7 @@ import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
 import ApartmentIcon from '@mui/icons-material/Apartment';
 import ExtensionIcon from '@mui/icons-material/Extension';
 import PeopleIcon from '@mui/icons-material/People';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import React from "react";
 
@@ -30,6 +31,14 @@ export const conf = [
 				icon: <PeopleIcon/>,
 				subject: "ADMINISTRATION_USER",
 				loc: 'Usuarios',
+				selected: false
+			},
+			{
+				_template: 'subject',
+				path: '/administration/currency',
+				icon: <AttachMoneyIcon/>,
+				subject: "ADMINISTRATION_CURRENCY",
+				loc: 'Monedas',
 				selected: false
 			}
 		]

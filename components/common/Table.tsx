@@ -30,11 +30,11 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 
 type TableProps = {
+	subject: any,
 	columns: Column[],
 	defaultPageSize: number,
 	pageQuery?: any,
 	queryParams?: any,
-	entityName?: string,
 	serverData?: boolean,
 	data?: [],
 	globalFilterEnabled?: boolean
@@ -109,11 +109,11 @@ const columnsToOrder = (columns:any) => {
 
 const Table:FC<TableProps> = (
 	{
+		subject,
 		columns = [],
 		defaultPageSize = 10,
 		pageQuery,
-		queryParams = {},
-		entityName= "",
+		queryParams = [],
 		serverData = false,
 		data = [],
 		globalFilterEnabled = false
@@ -121,7 +121,7 @@ const Table:FC<TableProps> = (
 ) => {
 	const classes = useColumnSearchStyles();
 	const dispatch = useAppDispatch();
-	const table = useAppSelector((state: RootState) => state.table[entityName]);
+	const table = useAppSelector((state: RootState) => state.table[subject.name]);
 
 	function GlobalFilter({ preGlobalFilteredRows, globalFilter, setGlobalFilter}:any) {
 		const count = preGlobalFilteredRows.length
@@ -210,16 +210,12 @@ const Table:FC<TableProps> = (
 	)
 
 	const updateData = () => {
-		dispatch(pageQuery(pageIndex+1, pageSize, globalFilter, filters, sortBy, queryParams))
+		dispatch(pageQuery(subject, pageIndex+1, pageSize, globalFilter, filters, sortBy, queryParams))
 	}
 
 	useEffect(() => {
 		if(serverData) updateData();
 	},[pageIndex, filters, globalFilter, sortBy])
-
-	const sortIcon = () => {
-
-	}
 
 	return (
 		<div className={styles.ctn}>
