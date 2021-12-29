@@ -10,3 +10,4 @@ export const cleanMe = createAction('cleanMe');
 
 //TABLE
 export const setTable = createAction<object>('setTable');
+export const deleteRowFromTable = createAction<object>('deleteRowFromTable');

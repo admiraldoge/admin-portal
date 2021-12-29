@@ -1,5 +1,5 @@
 import { configureStore, createReducer } from '@reduxjs/toolkit'
-import {cleanMe, setLayout, setMe, setTable} from "./actions";
+import {cleanMe, deleteRowFromTable, setLayout, setMe, setTable} from "./actions";
 import {CURRENCY, ROLE, USER} from "../constants/subjects";
 
 const layoutReducer = createReducer(
@@ -67,6 +67,11 @@ const tableReducer = createReducer(
 		builder
 			.addCase(setTable, (state, action) => {
 				return {...state, ...action.payload};
+			})
+			.addCase(deleteRowFromTable, (state:any, action:any) => {
+				const table = JSON.parse(JSON.stringify(state[action.payload.subject]));
+				table.items = table.items.filter((item:any) => item.id !== action.payload.id);
+				return {...state, [action.payload.subject]: table};
 			})
 			.addDefaultCase((state, action) => {
 			})

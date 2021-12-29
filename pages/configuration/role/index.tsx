@@ -45,26 +45,6 @@ const Role: NextPage = () => {
 			disableSortBy: true,
 			disableFilters: true,
 			width: 10
-		},
-		{
-			Header: 'Acciones',
-			accessor: (row:any, index:any) => {
-				return (
-					<Grid container direction={"row"} justifyContent={"center"} alignItems={"center"}>
-						<Grid item>
-							<ModeEditIcon
-								onClick={() => {
-									setSubjectsModal({data: row, open: true});
-								}}
-								style={{cursor: "pointer"}}
-							/>
-						</Grid>
-					</Grid>
-				);
-			},
-			disableSortBy: true,
-			disableFilters: true,
-			width: 30
 		}
 	]
 

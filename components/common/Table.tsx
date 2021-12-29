@@ -28,6 +28,10 @@ import { makeStyles } from '@material-ui/styles';
 import {TableColumnInterface} from "../../types/table";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import {deleteRow} from "../../services/tableService";
+import Checkbox from "@mui/material/Checkbox";
 
 type TableProps = {
 	subject: any,
@@ -37,7 +41,11 @@ type TableProps = {
 	queryParams?: any,
 	serverData?: boolean,
 	data?: [],
-	globalFilterEnabled?: boolean
+	globalFilterEnabled?: boolean,
+	onRowCreate?: any,
+	onRowDelete?: any,
+	onRowUpdate?: any,
+	onRowEnable?: any
 }
 
 const columnSearch = (theme:any) => ({
@@ -116,7 +124,11 @@ const Table:FC<TableProps> = (
 		queryParams = [],
 		serverData = false,
 		data = [],
-		globalFilterEnabled = false
+		globalFilterEnabled = false,
+		onRowCreate,
+		onRowDelete,
+		onRowUpdate,
+		onRowEnable
 	}
 ) => {
 	const classes = useColumnSearchStyles();
@@ -190,6 +202,36 @@ const Table:FC<TableProps> = (
 		[]
 	)
 
+	const actionColumn = {
+		Header: 'Acciones',
+		accessor: (row:any, index:any) => {
+			return (
+				<Grid container direction={"row"} justifyContent={"center"} alignItems={"center"}>
+					<Checkbox checked={row.appUserIsActive} />
+					<ModeEditIcon
+						onClick={() => {
+							console.log('OnClick edit');
+							onRowUpdate(row);
+						}}
+						style={{cursor: "pointer"}}
+					/>
+					<DeleteIcon
+						onClick={() => {
+							console.log('OnClick delete');
+							onRowDelete(row);
+						}}
+						style={{cursor: "pointer"}}
+					/>
+				</Grid>
+			);
+		},
+		disableSortBy: true,
+		disableFilters: true,
+		width: 30
+	} as any;
+
+	const totalColumns = [...columns, actionColumn];
+
 	const {getTableProps,
 		getTableBodyProps, prepareRow, page, canPreviousPage, canNextPage, nextPage,
 		previousPage, setPageSize, gotoPage, pageCount, headerGroups, preGlobalFilteredRows,
@@ -197,7 +239,7 @@ const Table:FC<TableProps> = (
 		state: { pageIndex, pageSize, filters, globalFilter, sortBy }}
 		= useTable(
 			{
-				columns,
+				columns: totalColumns,
 				data: serverData ? table.items : data,
 				initialState: { pageIndex: 0, pageSize: 10 },
 				pageCount: table.pageCount ? table.pageCount : 10,
@@ -205,6 +247,7 @@ const Table:FC<TableProps> = (
 				manualFilters: serverData,
 				manualGlobalFilter: serverData,
 				manualPagination: serverData,
+				autoResetHiddenColumns: false,
 				defaultColumn
 			},
 		useFilters,
