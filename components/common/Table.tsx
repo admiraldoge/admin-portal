@@ -20,11 +20,21 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import SearchIcon from '@mui/icons-material/Search';
 import { styled, alpha } from '@mui/material/styles';
-import {InputBase, TextField} from "@mui/material";
+import {
+	InputBase,
+	Paper,
+	TableBody,
+	TableCell,
+	TableContainer,
+	TableHead,
+	TableRow,
+	TextField,
+	Table as MuiTable
+} from "@mui/material";
 import {RootState} from "../../redux/store";
 import Typography from "@mui/material/Typography";
 import SortIcon from '@mui/icons-material/Sort';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles, withStyles } from '@material-ui/styles';
 import {TableColumnInterface} from "../../types/table";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
@@ -32,6 +42,7 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {deleteRow} from "../../services/tableService";
 import Checkbox from "@mui/material/Checkbox";
+import {width} from "@mui/system";
 
 type TableProps = {
 	subject: any,
@@ -227,7 +238,7 @@ const Table:FC<TableProps> = (
 		},
 		disableSortBy: true,
 		disableFilters: true,
-		width: 30
+		width: 10
 	} as any;
 
 	const totalColumns = [...columns, actionColumn];
@@ -278,7 +289,94 @@ const Table:FC<TableProps> = (
 				</Grid>
 				<Grid container direction={"row"}>
 					<Grid item xs={12}>
-						<table className={styles.table}>
+						<TableContainer component={Paper}>
+							<MuiTable sx={{ minWidth: 650 }}  aria-label="simple table" size={'small'}>
+								{headerGroups.map((headerGroup, idx:number) => {
+									return (
+										<colgroup {...headerGroup.getHeaderGroupProps()} key={idx}>
+											{headerGroup.headers.map((column: any, idx:number) => {
+												//console.log('Column: ',column);
+												return (
+													<col key={`col-${idx}`} width={`${column.width ? column.width+'%' : 'auto'}`} />
+												)
+											})}
+										</colgroup>
+									)
+								})}
+								<TableHead>
+									{headerGroups.map((headerGroup, idx:number) => {
+										return (
+											<TableRow {...headerGroup.getHeaderGroupProps()} key={idx}>
+												{headerGroup.headers.map((column: any, idx:number) => {
+													//console.log('Column: ',column);
+													return (
+														<TableCell {...column.getHeaderProps()} key={`th-${idx}`} align={"center"} variant={'head'}>
+															<Grid container direction={"column"} justifyContent={"center"} alignItems={"stretch"}>
+																<Grid container direction={"row"} alignItems={"center"} justifyContent={"center"} style={{height: '100%'}}>
+																	<Grid item xs={column.canSort ? 9 : 12}>
+																		<Typography variant="subtitle2">{column.render('Header')}</Typography>
+																	</Grid>
+																	<Grid item xs={2}>
+																		<Grid container direction="row" alignItems={"center"} justifyContent={"center"}>
+																			{
+																				column.canSort ?
+																					column.isSorted ?
+																						column.isSortedDesc ?
+																							<ArrowDropDownIcon style={{cursor: "pointer"}} onClick={()=>column.toggleSortBy()}/>
+																							: <ArrowDropUpIcon style={{cursor: "pointer"}} onClick={()=>column.toggleSortBy()}/>
+																						: <SortIcon style={{cursor: "pointer"}} onClick={()=>column.toggleSortBy()}/>
+																					: null
+																			}
+																		</Grid>
+																	</Grid>
+																</Grid>
+																<Grid container direction={"row"} justifyContent={"center"}>
+																	<Grid item xs={11}>
+																		<div>{column.canFilter ? column.render('Filter') : null}</div>
+																	</Grid>
+																</Grid>
+															</Grid>
+														</TableCell>
+													)
+												})}
+											</TableRow>
+										)
+									})}
+								</TableHead>
+								<TableBody>
+									{page.map((row, rowIdx) => {
+										prepareRow(row);
+										return (
+											<TableRow {...row.getRowProps()} className={styles.row} key={`tr-${rowIdx}`}>
+												{row.cells.map((cell:any, cellIdx: number) => {
+													//console.log('Cell:',cell);
+													if(typeof cell.value !== 'object') {
+														//console.log('Simple accesor',typeof cell.value)
+														return (
+															<TableCell key={`td-${cellIdx}}`} {...cell.getCellProps()} className={styles.cell} variant={'body'}>
+																<Grid container direction={"row"} justifyContent={"center"}>
+																	<Grid item xs={11}>
+																		<Grid container direction={"row"} justifyContent={cell.column.centered ? "center" : "flex-start"}>
+																			<Typography variant={"subtitle2"}>{cell.render('Cell')}</Typography>
+																		</Grid>
+																	</Grid>
+																</Grid>
+															</TableCell>
+														)
+													} else {
+														//console.log('Custom accesor',typeof cell.value)
+														return (
+															<td key={`td-${cellIdx}}`}>{cell.render('Cell')}</td>
+														)
+													}
+												})}
+											</TableRow>
+										)
+									})}
+								</TableBody>
+							</MuiTable>
+						</TableContainer>
+						<table className={styles.table} style={{display: "none"}}>
 							<thead className={styles.head}>
 							{headerGroups.map((headerGroup, idx:number) => {
 								return (

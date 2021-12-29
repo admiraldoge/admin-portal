@@ -9,21 +9,17 @@ import { StyledEngineProvider } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import {CssBaseline} from "@mui/material";
 import { ThemeProvider } from '@mui/material/styles';
-import mainTheme from "../theme/mainTheme";
+import {theme} from "../theme/mainTheme";
 import Content from "../components/layouts/Content";
 import {useRouter} from "next/router";
-import {useAppDispatch} from "../redux/hooks";
-import {useEffect} from "react";
-import {getMe} from "../services/me";
 import App from "../components/layouts/App";
 
 function MyApp({ Component, pageProps }: AppProps) {
-	const router = useRouter();
   return (
 		<>
 			<Provider store={store}>
 				<StyledEngineProvider injectFirst>
-					<ThemeProvider theme={mainTheme}>
+					<ThemeProvider theme={theme}>
 						<Box sx={{ display: 'flex' }}>
 							<CssBaseline />
 							<App>

@@ -12,6 +12,12 @@ const theme = createTheme({
 	},
 });
 
+const darkTheme = createTheme({
+	palette: {
+		mode: 'dark',
+	},
+});
+
 theme.typography.h3 = {
 	fontSize: '1.2rem',
 	'@media (min-width:600px)': {
@@ -22,4 +28,4 @@ theme.typography.h3 = {
 	},
 };
 
-export default theme;
+export {theme, darkTheme};

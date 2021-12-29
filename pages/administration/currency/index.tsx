@@ -24,24 +24,24 @@ const Currency: NextPage = () => {
 		{
 			Header: 'ID',
 			accessor: 'id',
-			width: 10,
+			width: 8,
 			centered: true,
 			type: 'number'
 		},
 		{
 			Header: 'Nombre',
 			accessor: 'name',
-			width: 50,
+			width: 62,
 		},
 		{
 			Header: 'ISO',
 			accessor: 'iso',
-			width: 50,
+			width: 10,
 		},
 		{
 			Header: 'Símbolo',
 			accessor: 'symbol',
-			width: 50,
+			width:10,
 		}
 	]
 
