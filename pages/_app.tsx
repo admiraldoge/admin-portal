@@ -8,10 +8,8 @@ import Drawer from "../components/layouts/Drawer";
 import { StyledEngineProvider } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import {CssBaseline} from "@mui/material";
-import { ThemeProvider } from '@mui/material/styles';
-import {theme} from "../theme/mainTheme";
+import {lightTheme} from "../theme/themes";
 import Content from "../components/layouts/Content";
-import {useRouter} from "next/router";
 import App from "../components/layouts/App";
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -19,9 +17,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 		<>
 			<Provider store={store}>
 				<StyledEngineProvider injectFirst>
-					<ThemeProvider theme={theme}>
 						<Box sx={{ display: 'flex' }}>
-							<CssBaseline />
 							<App>
 								<Header/>
 								<Drawer/>
@@ -30,7 +26,6 @@ function MyApp({ Component, pageProps }: AppProps) {
 								</Content>
 							</App>
 						</Box>
-					</ThemeProvider>
 				</StyledEngineProvider>
 			</Provider>
 		</>

@@ -5,6 +5,9 @@ import {RootState} from "../../redux/store";
 import {cleanMe, setLayout} from "../../redux/actions";
 import {getMe} from "../../services/me";
 import _ from "lodash";
+import {darkTheme, lightTheme} from "../../theme/themes";
+import { ThemeProvider } from '@mui/material/styles';
+import {CssBaseline} from "@mui/material";
 
 type appProps = {
 	children: any
@@ -40,6 +43,11 @@ const App = ({children}:appProps) => {
 		}
 	},[me])
 
-	return children;
+	return (
+		<ThemeProvider theme={layout.theme === 'light' ? lightTheme : darkTheme}>
+			<CssBaseline />
+			{children}
+		</ThemeProvider>
+	);
 }
 export default App;

@@ -29,7 +29,7 @@ import {
 	TableHead,
 	TableRow,
 	TextField,
-	Table as MuiTable
+	Table as MuiTable, Pagination
 } from "@mui/material";
 import {RootState} from "../../redux/store";
 import Typography from "@mui/material/Typography";
@@ -453,20 +453,7 @@ const Table:FC<TableProps> = (
 				</Grid>
 				<Grid container justifyContent={"center"} alignContent={"flex-end"} direction={"row"} className={styles.paginationRow}>
 					<Grid item>
-						<ButtonGroup size="small" aria-label="small button group">
-							<Button variant="contained" endIcon={<NavigateBeforeIcon />} disabled={!canPreviousPage}
-							        onClick={previousPage}
-							/>
-							{pageIndex !== 0 &&
-								<Button key="previous" onClick={() => gotoPage(pageIndex-1)}>{pageIndex}</Button>
-							}
-							<Button key="current" variant={"contained"}>{pageIndex+1}</Button>
-							{canNextPage && <Button key="next" onClick={() => gotoPage(pageIndex + 1)}>{pageIndex + 2}</Button>}
-							<Button variant="contained" endIcon={<NavigateNextIcon />}
-							        disabled={!canNextPage}
-							        onClick={nextPage}
-							/>
-						</ButtonGroup>
+						<Pagination count={pageCount} page={pageIndex+1} onChange={(event, value) => {gotoPage(value-1)}} />
 					</Grid>
 				</Grid>
 			</Grid>

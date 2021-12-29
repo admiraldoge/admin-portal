@@ -13,6 +13,7 @@ const layoutReducer = createReducer(
 		loading: {
 			loadValue: 0
 		},
+		theme: 'light',
 		initialPath: "/panel"
 	},
 	(builder) => {

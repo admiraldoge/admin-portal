@@ -150,6 +150,7 @@ const Header: React.FunctionComponent<headerProps> = ({}) => {
 			open={isMenuOpen}
 			onClose={handleMenuClose}
 		>
+			<MenuItem onClick={() => {dispatch(setLayout({theme: 'dark'}))}}>Cambiar tema</MenuItem>
 			<MenuItem onClick={handleMenuClose}>Mi perfil</MenuItem>
 			<MenuItem onClick={handleMenuClose}>Mi cuenta</MenuItem>
 			<MenuItem onClick={() => {handleMenuClose();handleLogout();}}>Salir</MenuItem>
