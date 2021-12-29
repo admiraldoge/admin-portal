@@ -106,17 +106,17 @@ const Form: FC<props> = ({config, validationSchema, resourcePath, initialData={}
 	}
 
 	const OneSelectionOfMultipleField = (item:any, idx:number) => {
-		const FormControlLabels = item.options.map((option:any) => {
+		const FormControlLabels = item.options.map((option:any, i:number) => {
 			return (
 				<FormControlLabel
-					key={`${idx}-${item.key}`}
+					key={`${i}-${item.key}`}
 					value={option.value}
 					control={<Radio />}
 					label={option.label} />
 			);
 		})
 		return (
-			<FormControl component="fieldset" className={styles.formItem}>
+			<FormControl component="fieldset" className={styles.formItem} key={`${idx}-${item.key}`}>
 				<FormLabel component="legend">{item.label}</FormLabel>
 				<RadioGroup row aria-label="options" name={item.key} onChange={formik.handleChange}>
 					{FormControlLabels}
