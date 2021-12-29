@@ -290,7 +290,7 @@ const Table:FC<TableProps> = (
 													<Grid container direction={"column"} justifyContent={"center"} alignItems={"stretch"}>
 														<Grid container direction={"row"} alignItems={"center"} justifyContent={"center"} style={{height: '100%'}}>
 															<Grid item xs={column.canSort ? 9 : 12}>
-																<Typography variant="subtitle1">{column.render('Header')}</Typography>
+																<Typography variant="subtitle2">{column.render('Header')}</Typography>
 															</Grid>
 															<Grid item xs={2}>
 																<Grid container direction="row" alignItems={"center"} justifyContent={"center"}>
