@@ -32,19 +32,6 @@ const Role: NextPage = () => {
 			Header: 'Nombre',
 			accessor: 'loc',
 			width: 50,
-		},
-		{
-			Header: 'Activo',
-			accessor: (row:any, index:any) => {
-				return (
-					<Grid container justifyContent={"center"}>
-						<Checkbox checked={row.isActive} />
-					</Grid>
-				);
-			},
-			disableSortBy: true,
-			disableFilters: true,
-			width: 10
 		}
 	]
 

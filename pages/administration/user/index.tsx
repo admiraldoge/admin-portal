@@ -35,30 +35,17 @@ const User: NextPage = () => {
 		{
 			Header: 'Usuario',
 			accessor: 'username',
-			width: 50,
+			width: 20,
 		},
 		{
 			Header: 'Nombres',
 			accessor: 'firstName',
-			width: 50,
+			width: 30,
 		},
 		{
 			Header: 'Apellidos',
 			accessor: 'lastName',
-			width: 50,
-		},
-		{
-			Header: 'Activo',
-			accessor: (row:any, index:any) => {
-				return (
-					<Grid container justifyContent={"center"}>
-						<Checkbox checked={row.appUserIsActive} />
-					</Grid>
-				);
-			},
-			disableSortBy: true,
-			disableFilters: true,
-			width: 10
+			width: 30,
 		}
 	]
 
