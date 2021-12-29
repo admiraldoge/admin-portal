@@ -1,11 +1,14 @@
 import Grid from "@mui/material/Grid";
-import {FC, useEffect} from "react";
+import React, {FC, useEffect} from "react";
 import * as yup from "yup";
 import {useFormik} from "formik";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import styles from '../../../styles/components/Form.module.scss';
 import _ from 'lodash';
+import {updateObjectInArray} from "../../../utils/table";
+import Checkbox from "@mui/material/Checkbox";
+import {FormControl, FormControlLabel, FormLabel, RadioGroup, Radio} from "@mui/material";
 
 type props = {
 	config: any[],
@@ -59,6 +62,7 @@ const Form: FC<props> = ({config, validationSchema, resourcePath, initialData={}
 				error={formik.touched[item.key] && Boolean(formik.errors[item.key])}
 				helperText={formik.touched[item.key] && formik.errors[item.key]}
 				className={styles.formItem}
+				style={{display: item.hidden ? 'none' : undefined}}
 			/>
 		)
 	}
@@ -79,7 +83,45 @@ const Form: FC<props> = ({config, validationSchema, resourcePath, initialData={}
 				error={formik.touched[item.key] && Boolean(formik.errors[item.key])}
 				helperText={formik.touched[item.key] && formik.errors[item.key]}
 				className={styles.formItem}
+				style={{display: item.hidden ? 'none' : undefined}}
 			/>
+		)
+	}
+
+	const BooleanField = (item:any, idx:number) => {
+		return (
+			<FormControlLabel
+				key={`${idx}-${item.key}`}
+				control={
+					<Checkbox
+						checked={formik.values[item.key]}
+						onChange={formik.handleChange}
+					/>
+				}
+				label="Disabled"
+				className={styles.formItem}
+				style={{display: item.hidden ? 'none' : undefined}}
+			/>
+		)
+	}
+
+	const OneSelectionOfMultipleField = (item:any, idx:number) => {
+		const FormControlLabels = item.options.map((option:any) => {
+			return (
+				<FormControlLabel
+					key={`${idx}-${item.key}`}
+					value={option.value}
+					control={<Radio />}
+					label={option.label} />
+			);
+		})
+		return (
+			<FormControl component="fieldset" className={styles.formItem}>
+				<FormLabel component="legend">{item.label}</FormLabel>
+				<RadioGroup row aria-label="options" name={item.key} onChange={formik.handleChange}>
+					{FormControlLabels}
+				</RadioGroup>
+			</FormControl>
 		)
 	}
 
@@ -89,6 +131,10 @@ const Form: FC<props> = ({config, validationSchema, resourcePath, initialData={}
 				return StringField(item, idx);
 			case 'longString':
 				return LongStringField(item, idx);
+			case 'boolean':
+				return BooleanField(item, idx);
+			case 'multipleRadio':
+				return OneSelectionOfMultipleField(item, idx);
 		}
 	})
 

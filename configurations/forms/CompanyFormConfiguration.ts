@@ -20,12 +20,20 @@ export const formTemplate = [
 		key: 'website',
 		label: 'Website',
 		type: 'text',
-		placeholder: 'abc...'
+		placeholder: 'abc...',
 	},
 	{
 		_template: 'string',
 		key: 'shortName',
 		label: 'Nombre abreviado',
+		type: 'text',
+		placeholder: 'abc...',
+	},
+	{
+		_template: 'multipleRadio',
+		key: 'isNatural',
+		label: 'Es natural',
+		options: [{label: 'Es persona natural', value: true}, {label: 'Es persona jurídica', value: false}],
 		type: 'text',
 		placeholder: 'abc...'
 	}
