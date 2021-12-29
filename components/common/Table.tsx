@@ -223,21 +223,6 @@ const Table:FC<TableProps> = (
 
 	return (
 		<div className={styles.ctn}>
-			 <pre>
-        <code>
-          {JSON.stringify(
-	          {
-		          pageIndex,
-		          pageSize,
-		          pageCount,
-		          canNextPage,
-		          canPreviousPage,
-	          },
-	          null,
-	          2
-          )}
-        </code>
-      </pre>
 			<Grid container justifyContent={"center"} alignContent={"center"} direction={"column"}>
 				<Grid item xs={12} sm={6} lg={4}>
 					<GlobalFilter
@@ -332,10 +317,10 @@ const Table:FC<TableProps> = (
 							        onClick={previousPage}
 							/>
 							{pageIndex !== 0 &&
-								<Button key="previous" onClick={() => gotoPage(pageIndex)}>{pageIndex}</Button>
+								<Button key="previous" onClick={() => gotoPage(pageIndex-1)}>{pageIndex}</Button>
 							}
 							<Button key="current" variant={"contained"}>{pageIndex+1}</Button>
-							{canNextPage && <Button key="next" onClick={() => gotoPage(pageIndex + 2)}>{pageIndex + 2}</Button>}
+							{canNextPage && <Button key="next" onClick={() => gotoPage(pageIndex + 1)}>{pageIndex + 2}</Button>}
 							<Button variant="contained" endIcon={<NavigateNextIcon />}
 							        disabled={!canNextPage}
 							        onClick={nextPage}
