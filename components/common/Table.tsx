@@ -314,7 +314,7 @@ const Table:FC<TableProps> = (
 				<Grid container direction={"row"}>
 					<Grid item xs={12}>
 						<TableContainer component={Paper}>
-							<MuiTable {...getTableProps()} sx={{ minWidth: 650 }} size="small" aria-label="a dense table" padding={'none'} stickyHeader={true}>
+							<MuiTable {...getTableProps()} sx={{ minWidth: 1024 }} size="small" aria-label="a dense table" padding={'none'} stickyHeader={true}>
 								{headerGroups.map((headerGroup, idx:number) => {
 									return (
 										<colgroup {...headerGroup.getHeaderGroupProps()} key={idx}>
