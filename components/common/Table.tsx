@@ -29,7 +29,7 @@ import {
 	TableHead,
 	TableRow,
 	TextField,
-	Table as MuiTable, Pagination
+	Table as MuiTable, Pagination, TablePagination
 } from "@mui/material";
 import {RootState} from "../../redux/store";
 import Typography from "@mui/material/Typography";
@@ -298,7 +298,7 @@ const Table:FC<TableProps> = (
 
 	useEffect(() => {
 		if(serverData) updateData();
-	},[pageIndex, filters, globalFilter, sortBy])
+	},[pageIndex, filters, globalFilter, sortBy, pageSize])
 
 	const aux = { height: "10px", padding: "0px"};
 	return (
@@ -310,8 +310,6 @@ const Table:FC<TableProps> = (
 						globalFilter={globalFilter}
 						setGlobalFilter={setGlobalFilter}
 					/>
-				</Grid>
-				<Grid>
 				</Grid>
 				<Grid container direction={"row"}>
 					<Grid item xs={12}>
@@ -479,9 +477,23 @@ const Table:FC<TableProps> = (
 						</table>
 					</Grid>
 				</Grid>
-				<Grid container justifyContent={"center"} alignContent={"flex-end"} direction={"row"} className={styles.paginationRow}>
+				<Grid container justifyContent={"flex-end"} alignContent={"flex-end"} direction={"row"} className={styles.paginationRow}>
 					<Grid item>
-						<Pagination count={pageCount} page={pageIndex+1} onChange={(event, value) => {gotoPage(value-1)}} />
+						<TablePagination
+							labelDisplayedRows={({from, to, count}) => `${from}-${to} de ${count}`}
+							colSpan={3}
+							labelRowsPerPage={'Filas por página:'}
+							rowsPerPageOptions={[10, 25, 50, 100]}
+							component={"div"}
+							count={table.total}
+							rowsPerPage={pageSize}
+							page={pageIndex}
+							onPageChange={(event, value) => {gotoPage(value)}}
+							onRowsPerPageChange={(e) => {
+								setPageSize(+e.target.value);
+								gotoPage(0);
+							}}
+						/>
 					</Grid>
 				</Grid>
 			</Grid>
