@@ -14,3 +14,13 @@ a {
 * {
   box-sizing: border-box;
 }
+
+tr {
+  max-height: 15px !important;
+  overflow: hidden;
+  height: 10px !important;
+}
+
+tr td {
+  height: auto !important;
+}

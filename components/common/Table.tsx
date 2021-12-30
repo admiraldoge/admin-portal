@@ -104,6 +104,30 @@ const useColumnSearchStyles = makeStyles((theme:any) => ({
 	}
 }));
 
+const useStyles = makeStyles((theme?:any) => ({
+	root: {
+		width: '100%',
+		overflowX: 'auto',
+	},
+	table: {
+		minWidth: 650,
+	},
+	tableRow: {
+		//backgroundColor: 'red',
+		//height: '50px',
+	},
+	tableCell: {
+		//padding: 0
+	},
+	checkbox: {
+		root: {
+			padding: 0,
+			height: '5px',
+			backgroundColor: 'red'
+		}
+	}
+}));
+
 const columnsToFilter = (columns:any) => {
 	const res = [] as any;
 	columns.forEach((item:any) => {
@@ -142,7 +166,8 @@ const Table:FC<TableProps> = (
 		onRowEnable
 	}
 ) => {
-	const classes = useColumnSearchStyles();
+	const searchStyles = useColumnSearchStyles();
+	const classes = useStyles();
 	const dispatch = useAppDispatch();
 	const table = useAppSelector((state: RootState) => state.table[subject.name]);
 
@@ -193,7 +218,7 @@ const Table:FC<TableProps> = (
 						height: '20px'
 					}
 				}}
-				classes={classes}
+				classes={searchStyles}
 				onChange={e => {
 					setFilter(e.target.value || undefined) // Set undefined to remove the filter entirely
 				}}
@@ -218,7 +243,7 @@ const Table:FC<TableProps> = (
 		accessor: (row:any, index:any) => {
 			return (
 				<Grid container direction={"row"} justifyContent={"center"} alignItems={"center"}>
-					<Checkbox checked={row.appUserIsActive} />
+					<Checkbox checked={row.appUserIsActive} style={{padding: 0}} />
 					<ModeEditIcon
 						onClick={() => {
 							console.log('OnClick edit');
@@ -275,6 +300,7 @@ const Table:FC<TableProps> = (
 		if(serverData) updateData();
 	},[pageIndex, filters, globalFilter, sortBy])
 
+	const aux = { height: "10px", padding: "0px"};
 	return (
 		<div className={styles.ctn}>
 			<Grid container justifyContent={"center"} alignContent={"center"} direction={"column"}>
@@ -290,7 +316,7 @@ const Table:FC<TableProps> = (
 				<Grid container direction={"row"}>
 					<Grid item xs={12}>
 						<TableContainer component={Paper}>
-							<MuiTable sx={{ minWidth: 650 }}  aria-label="simple table" size={'small'}>
+							<MuiTable {...getTableProps()} sx={{ minWidth: 650 }} size="small" aria-label="a dense table" padding={'none'} stickyHeader={true}>
 								{headerGroups.map((headerGroup, idx:number) => {
 									return (
 										<colgroup {...headerGroup.getHeaderGroupProps()} key={idx}>
@@ -312,7 +338,7 @@ const Table:FC<TableProps> = (
 													return (
 														<TableCell {...column.getHeaderProps()} key={`th-${idx}`} align={"center"} variant={'head'}>
 															<Grid container direction={"column"} justifyContent={"center"} alignItems={"stretch"}>
-																<Grid container direction={"row"} alignItems={"center"} justifyContent={"center"} style={{height: '100%'}}>
+																<Grid container direction={"row"} alignItems={"center"} justifyContent={"center"}>
 																	<Grid item xs={column.canSort ? 9 : 12}>
 																		<Typography variant="subtitle2">{column.render('Header')}</Typography>
 																	</Grid>
@@ -346,12 +372,14 @@ const Table:FC<TableProps> = (
 								<TableBody>
 									{page.map((row, rowIdx) => {
 										prepareRow(row);
+										//{...row.getRowProps()} This was a prop of tableRow
 										return (
-											<TableRow {...row.getRowProps()} className={styles.row} key={`tr-${rowIdx}`}>
+											<TableRow {...row.getRowProps()} key={`tr-${rowIdx}`}>
 												{row.cells.map((cell:any, cellIdx: number) => {
 													//console.log('Cell:',cell);
 													if(typeof cell.value !== 'object') {
 														//console.log('Simple accesor',typeof cell.value)
+														//{...cell.getCellProps()} This was a prop of tableCell
 														return (
 															<TableCell key={`td-${cellIdx}}`} {...cell.getCellProps()} className={styles.cell} variant={'body'}>
 																<Grid container direction={"row"} justifyContent={"center"}>
@@ -366,7 +394,7 @@ const Table:FC<TableProps> = (
 													} else {
 														//console.log('Custom accesor',typeof cell.value)
 														return (
-															<td key={`td-${cellIdx}}`}>{cell.render('Cell')}</td>
+															<TableCell key={`td-${cellIdx}}`} {...cell.getCellProps()} variant={'body'} padding={'none'}>{cell.render('Cell')}</TableCell>
 														)
 													}
 												})}
