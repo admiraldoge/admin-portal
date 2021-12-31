@@ -51,20 +51,29 @@ const Form: FC<props> = (
 		validationSchema: yupValidationSchema,
 		onSubmit: async (values) => {
 			console.log('Submit: ',values);
-			const request
-				= await fetch(`${process.env.NEXT_PUBLIC_PANAMA_HOST}${resourcePath}`,
-				{
-					method: "PATCH",
-					credentials: 'include',
-					body: JSON.stringify(values),
-					headers: {
-						'Content-Type': 'application/json',
-						'accept':  'application/json'
-					}
-				});
-			const response = await request.json();
-			onSubmit();
-			dispatch(setLayout({snackbar: {open: true, type: 'success', message: onSubmitMessage}}));
+			try {
+				const request
+					= await fetch(`${process.env.NEXT_PUBLIC_PANAMA_HOST}${resourcePath}`,
+					{
+						method: "PATCH",
+						credentials: 'include',
+						body: JSON.stringify(values),
+						headers: {
+							'Content-Type': 'application/json',
+							'accept': 'application/json'
+						}
+					});
+				const response = await request.json();
+				console.log('Request', request, response);
+				if(response.ok) {
+					onSubmit();
+					dispatch(setLayout({snackbar: {open: true, type: 'success', message: onSubmitMessage}}));
+				} else {
+					dispatch(setLayout({snackbar: {open: true, type: 'error', message: onSubmitErrorMessage}}));
+				}
+			} catch (error) {
+				dispatch(setLayout({snackbar: {open: true, type: 'error', message: onSubmitErrorMessage}}));
+			}
 		},
 	});
 

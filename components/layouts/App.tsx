@@ -52,6 +52,7 @@ const App = ({children}:appProps) => {
 				open={layout.snackbar.open}
 				setOpen={(value:boolean) => dispatch(setLayout({snackbar: {...layout.snackbar, open: value}}))}
 				message={layout.snackbar.message}
+				type={layout.snackbar.type}
 			/>
 		</ThemeProvider>
 	);
