@@ -1,6 +1,8 @@
 import React, {FC} from 'react';
 import {Modal as MuiModal} from '@mui/material';
 import Box from '@mui/material/Box';
+import Grid from "@mui/material/Grid";
+import CloseIcon from '@mui/icons-material/Close';
 
 type actionsModalProps = {
 	children?: React.ReactElement
@@ -32,6 +34,9 @@ const Modal: FC<actionsModalProps> = ({children, open, setOpen, width= 400}) => 
 			aria-describedby="modal-modal-description"
 		>
 			<Box sx={style}>
+				<Grid container direction={'row'} justifyContent={'flex-end'}>
+					<CloseIcon style={{cursor: 'pointer'}} onClick={() => setOpen(false)}/>
+				</Grid>
 				{children}
 			</Box>
 		</MuiModal>
