@@ -9,16 +9,19 @@ import Grid from "@mui/material/Grid";
 import Checkbox from '@mui/material/Checkbox';
 import {RootState} from "../../../redux/store";
 import {deleteRow, getPage} from "../../../services/tableService";
+import Modal from "../../../components/common/Modal";
+import Form from "../../../components/common/Form/Form";
+import {editModalConfiguration, validationSchema} from "../../../configurations/forms/CurrencyFormConfiguration";
+import {formTemplate} from "../../../configurations/forms/CompanyFormConfiguration";
+import ResourceContainer from "../../../components/containers/ResourceContainer";
+import {ADMINISTRATION_CURRENCY_PATH} from "../../../resources/paths";
 const Currency: NextPage = () => {
 	const dispatch = useAppDispatch();
 	const router = useRouter();
 	const me = useAppSelector((state: RootState) => state.me);
-	const subject = {path: '/currencies', name: CURRENCY};
-
-	const [subjectsModal, setSubjectsModal] = useState({
-		open: false,
-		data: {}
-	});
+	const subject = {path: ADMINISTRATION_CURRENCY_PATH, name: CURRENCY};
+	const [editModalOpen, setEditModalOpen] = useState(false);
+	const [entityId, setEntityId] = useState(null);
 
 	const columns = [
 		{
@@ -46,8 +49,12 @@ const Currency: NextPage = () => {
 	]
 
 	function onRowDelete(row:any){
-		console.log('Executing inner verison of on rowDelete', row);
 		dispatch(deleteRow(subject, row.id));
+	}
+
+	function onRowEdit(row:any){
+		setEditModalOpen(true);
+		setEntityId(row.id);
 	}
 
 	return (
@@ -58,7 +65,13 @@ const Currency: NextPage = () => {
 					columns={columns} defaultPageSize={10} pageQuery={getPage} serverData={true}
 					globalFilterEnabled={true}
 					onRowDelete={onRowDelete}
+					onRowUpdate={onRowEdit}
 				/>
+				<Modal open={editModalOpen} setOpen={setEditModalOpen}>
+					<ResourceContainer path={entityId ? `${subject.path}/${entityId}` : null} resourceName={'initialData'}>
+						<Form config={editModalConfiguration} validationSchema={validationSchema} resourcePath={`${subject.path}/${entityId}`}/>
+					</ResourceContainer>
+				</Modal>
 			</Grid>
 
 		</Grid>
