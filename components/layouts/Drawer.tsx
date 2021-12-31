@@ -160,7 +160,7 @@ const Drawer: React.FunctionComponent<drawerProps> = ({}) => {
 								}
 								setState(
 									updateObjectInArray(
-										state,
+										newState,
 										idx, {children: updateObjectInArray(newState[idx].children, i, {selected: true})}
 									)
 								)
