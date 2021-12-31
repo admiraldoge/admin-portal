@@ -13,6 +13,11 @@ const layoutReducer = createReducer(
 		loading: {
 			loadValue: 0
 		},
+		snackbar: {
+			open: false,
+			type: 'info',
+			message: ''
+		},
 		theme: 'light',
 		initialPath: "/panel"
 	},

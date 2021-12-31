@@ -52,7 +52,7 @@ const Currency: NextPage = () => {
 		dispatch(deleteRow(subject, row.id));
 	}
 
-	function onRowEdit(row:any){
+	function onRowEdit(row:any, callback:any){
 		setEditModalOpen(true);
 		setEntityId(row.id);
 	}
@@ -69,7 +69,12 @@ const Currency: NextPage = () => {
 				/>
 				<Modal open={editModalOpen} setOpen={setEditModalOpen}>
 					<ResourceContainer path={entityId ? `${subject.path}/${entityId}` : null} resourceName={'initialData'}>
-						<Form config={editModalConfiguration} validationSchema={validationSchema} resourcePath={`${subject.path}/${entityId}`}/>
+						<Form
+							config={editModalConfiguration}
+							validationSchema={validationSchema}
+							resourcePath={`${subject.path}/${entityId}`}
+							onSubmit={() => {setEditModalOpen(false)}}
+						/>
 					</ResourceContainer>
 				</Modal>
 			</Grid>

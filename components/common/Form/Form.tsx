@@ -1,5 +1,5 @@
 import Grid from "@mui/material/Grid";
-import React, {FC, useEffect} from "react";
+import React, {FC, useEffect, useState} from "react";
 import * as yup from "yup";
 import {useFormik} from "formik";
 import TextField from "@mui/material/TextField";
@@ -9,16 +9,34 @@ import _ from 'lodash';
 import {updateObjectInArray} from "../../../utils/table";
 import Checkbox from "@mui/material/Checkbox";
 import {FormControl, FormControlLabel, FormLabel, RadioGroup, Radio} from "@mui/material";
+import Snackbar from "../Snackbar";
+import {useAppDispatch} from "../../../redux/hooks";
+import {setLayout} from "../../../redux/actions";
 
 type props = {
 	config: any[],
 	validationSchema: {},
 	resourcePath: string,
-	initialData?: any
+	initialData?: any,
+	onSubmit?: any,
+	onSubmitMessage?: string,
+	onSubmitErrorMessage?: string
 }
 
-const Form: FC<props> = ({config, validationSchema, resourcePath, initialData={}}) => {
+const Form: FC<props> = (
+	{
+		config,
+		validationSchema,
+		resourcePath,
+		initialData = {},
+		onSubmit = () => {},
+		onSubmitMessage= 'Se ha ejecutado exitosamente.',
+		onSubmitErrorMessage = 'Ha ocurrido un error.',
+	}
+) => {
 	const yupValidationSchema = yup.object(validationSchema);
+	const dispatch = useAppDispatch();
+	const [snackbarState, setSnackbarState] = useState({open: false, message: ''});
 
 	const getInitialValues = () => {
 		const res = {} as any;
@@ -45,6 +63,8 @@ const Form: FC<props> = ({config, validationSchema, resourcePath, initialData={}
 					}
 				});
 			const response = await request.json();
+			onSubmit();
+			dispatch(setLayout({snackbar: {open: true, type: 'success', message: onSubmitMessage}}));
 		},
 	});
 

@@ -8,6 +8,7 @@ import _ from "lodash";
 import {darkTheme, lightTheme} from "../../theme/themes";
 import { ThemeProvider } from '@mui/material/styles';
 import {CssBaseline} from "@mui/material";
+import Snackbar from "../common/Snackbar";
 
 type appProps = {
 	children: any
@@ -47,6 +48,11 @@ const App = ({children}:appProps) => {
 		<ThemeProvider theme={layout.theme === 'light' ? lightTheme : darkTheme}>
 			<CssBaseline />
 			{children}
+			<Snackbar
+				open={layout.snackbar.open}
+				setOpen={(value:boolean) => dispatch(setLayout({snackbar: {...layout.snackbar, open: value}}))}
+				message={layout.snackbar.message}
+			/>
 		</ThemeProvider>
 	);
 }
