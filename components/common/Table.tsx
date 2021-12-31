@@ -45,7 +45,7 @@ import Checkbox from "@mui/material/Checkbox";
 import {width} from "@mui/system";
 
 type TableProps = {
-	subject: any,
+	subject?: any,
 	columns: Column[],
 	defaultPageSize: number,
 	pageQuery?: any,

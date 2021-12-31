@@ -12,12 +12,15 @@ import {FormControl, FormControlLabel, FormLabel, RadioGroup, Radio} from "@mui/
 import Snackbar from "../Snackbar";
 import {useAppDispatch} from "../../../redux/hooks";
 import {setLayout} from "../../../redux/actions";
+import Typography from "@mui/material/Typography";
 
 type props = {
 	config: any[],
 	validationSchema: {},
 	resourcePath: string,
 	initialData?: any,
+	title?: string,
+	submitButtonLabel?: string,
 	onSubmit?: any,
 	onSubmitMessage?: string,
 	onSubmitErrorMessage?: string
@@ -32,6 +35,8 @@ const Form: FC<props> = (
 		onSubmit = () => {},
 		onSubmitMessage= 'Se ha ejecutado exitosamente.',
 		onSubmitErrorMessage = 'Ha ocurrido un error.',
+		title = 'Formulario',
+		submitButtonLabel = 'Enviar'
 	}
 ) => {
 	const yupValidationSchema = yup.object(validationSchema);
@@ -171,10 +176,11 @@ const Form: FC<props> = (
 		<Grid container direction={"row"} justifyContent={"stretch"} alignContent={"center"}
 		      style={{backgroundColor: "transparent"}}
 		>
+			<Typography variant="h6">{title}</Typography>
 			<form onSubmit={formik.handleSubmit} className={styles.form}>
 				{formItems}
 				<Button color="primary" variant="contained" fullWidth type="submit" className={styles.submitBtn}>
-					Guardar
+					{submitButtonLabel}
 				</Button>
 			</form>
 		</Grid>
