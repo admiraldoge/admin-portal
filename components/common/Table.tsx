@@ -29,7 +29,7 @@ import {
 	TableHead,
 	TableRow,
 	TextField,
-	Table as MuiTable, Pagination, TablePagination
+	Table as MuiTable, Pagination, TablePagination, Stack
 } from "@mui/material";
 import {RootState} from "../../redux/store";
 import Typography from "@mui/material/Typography";
@@ -43,6 +43,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import {deleteRow} from "../../services/tableService";
 import Checkbox from "@mui/material/Checkbox";
 import {width} from "@mui/system";
+import Divider from "@mui/material/Divider";
 
 type TableProps = {
 	subject?: any,
@@ -179,26 +180,24 @@ const Table:FC<TableProps> = (
 		}, 500)
 		if(!globalFilterEnabled) return null;
 		return (
-			<Grid container direction={"row"}>
-				<TextField
-					id="filled-search"
-					label="Buscar ..."
-					type="search"
-					variant="filled"
-					fullWidth={true}
-					value={value || ""}
-					onChange={e => {
-						setValue(e.target.value);
-						onChange(e.target.value);
-					}}
-					onKeyPress={(e) => {
-						if(e.key === 'Enter'){
-							updateData();
-						}
-					}}
-					placeholder={`${count} records...`}
-				/>
-    </Grid>
+			<TextField
+				id="filled-search"
+				label="Buscar ..."
+				type="search"
+				fullWidth={true}
+				value={value || ""}
+				onChange={e => {
+					setValue(e.target.value);
+					onChange(e.target.value);
+				}}
+				onKeyPress={(e) => {
+					if(e.key === 'Enter'){
+						updateData();
+					}
+				}}
+				placeholder={`${count} resultados...`}
+				size={'small'}
+			/>
 		)
 	}
 
@@ -303,13 +302,19 @@ const Table:FC<TableProps> = (
 	const aux = { height: "10px", padding: "0px"};
 	return (
 		<div className={styles.ctn}>
-			<Grid container justifyContent={"center"} alignContent={"center"} direction={"column"}>
-				<Grid item xs={12} sm={6} lg={4}>
-					<GlobalFilter
-						preGlobalFilteredRows={preGlobalFilteredRows}
-						globalFilter={globalFilter}
-						setGlobalFilter={setGlobalFilter}
-					/>
+			<Stack
+				divider={<Divider orientation="vertical" flexItem />}
+				spacing={1}
+			>
+				<Grid container direction={'row'} justifyContent={'space-between'}>
+					<Grid item xs={12} sm={6} lg={4}>
+						<GlobalFilter
+							preGlobalFilteredRows={preGlobalFilteredRows}
+							globalFilter={globalFilter}
+							setGlobalFilter={setGlobalFilter}
+						/>
+					</Grid>
+					<Button variant="contained" size={'small'}>Agregar</Button>
 				</Grid>
 				<Grid container direction={"row"}>
 					<Grid item xs={12}>
@@ -477,7 +482,7 @@ const Table:FC<TableProps> = (
 						</table>
 					</Grid>
 				</Grid>
-				<Grid container justifyContent={"flex-end"} alignContent={"flex-end"} direction={"row"} className={styles.paginationRow}>
+				<Grid container direction={"row"} justifyContent={"flex-end"} alignContent={"flex-end"} className={styles.paginationRow}>
 					<Grid item>
 						<TablePagination
 							labelDisplayedRows={({from, to, count}) => `${from}-${to} de ${count}`}
@@ -496,7 +501,7 @@ const Table:FC<TableProps> = (
 						/>
 					</Grid>
 				</Grid>
-			</Grid>
+			</Stack>
 		</div>
 	)
 }
