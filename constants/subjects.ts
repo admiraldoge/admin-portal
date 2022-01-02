@@ -6,6 +6,7 @@ export const ROLE = 'ROLE';
 export const CURRENCY = 'CURRENCY';
 export const LAYOUT = 'LAYOUT';
 export const COMPANY = 'COMPANY';
+export const ADMINISTRATION_CHART_ACCOUNT = 'ADMINISTRATION_CHART_ACCOUNT';
 
 export const subjectsCategory = {
 	[USER]: CONFIGURATION,

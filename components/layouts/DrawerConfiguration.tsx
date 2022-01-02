@@ -5,6 +5,7 @@ import ExtensionIcon from '@mui/icons-material/Extension';
 import PeopleIcon from '@mui/icons-material/People';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import React from "react";
 
 export const CONFIGURATION = 'CONFIGURATION';
@@ -31,6 +32,14 @@ export const conf = [
 				icon: <PeopleIcon/>,
 				subject: "ADMINISTRATION_USER",
 				loc: 'Usuarios',
+				selected: false
+			},
+			{
+				_template: 'subject',
+				path: '/administration/chart-account',
+				icon: <AccountTreeIcon/>,
+				subject: "ADMINISTRATION_CHART_ACCOUNT",
+				loc: 'Plan de cuentas',
 				selected: false
 			},
 			{
