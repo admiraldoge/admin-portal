@@ -201,8 +201,8 @@ const Form: FC<props> = (
 	}
 
 	const SelectField = (item:any, idx:number) => {
-		const options = item.options.map((item:any) => {
-			return <MenuItem key={`option-${item.id}`} value={item.value}>{item.label}</MenuItem>;
+		const options = item.options.map((option:any) => {
+			return <MenuItem key={`option-${idx}-${option.value}`} value={option.value}>{option.label}</MenuItem>;
 		})
 		return (
 			<FormControl fullWidth>
