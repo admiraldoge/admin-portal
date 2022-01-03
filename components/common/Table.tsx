@@ -314,7 +314,7 @@ const Table:FC<TableProps> = (
 							setGlobalFilter={setGlobalFilter}
 						/>
 					</Grid>
-					<Button variant="contained" size={'small'} onClick={ () => {onRowCreate()}}>Agregar</Button>
+					<Button variant="contained" size={'small'} onClick={ () => {onRowCreate(updateData)}}>Agregar</Button>
 				</Grid>
 				<Grid container direction={"row"}>
 					<Grid item xs={12}>

@@ -94,7 +94,8 @@ const Form: FC<props> = (
 					});
 				const response = await request.json();
 				console.log('Request', request, response);
-				if(response.ok) {
+				console.log('Response', response);
+				if(response.statusCode === 201 || response.statusCode === 200) {
 					onSubmit();
 					dispatch(setLayout({snackbar: {open: true, type: 'success', message: onSubmitMessage}}));
 				} else {
@@ -117,6 +118,7 @@ const Form: FC<props> = (
 				value={formik.values[item.key]}
 				onChange={formik.handleChange}
 				placeholder={item.placeholder}
+				required={item.required}
 				error={formik.touched[item.key] && Boolean(formik.errors[item.key])}
 				helperText={formik.touched[item.key] && formik.errors[item.key]}
 				className={styles.formItem}
@@ -189,7 +191,7 @@ const Form: FC<props> = (
 		return (
 			<Grid>
 				<FormControl component="fieldset" className={styles.formItem} key={`${idx}-${item.key}`}>
-					<FormLabel component="legend">{item.label}</FormLabel>
+					<FormLabel component="legend" required={item.required}>{item.label}</FormLabel>
 					<RadioGroup row aria-label="options" name={item.key} onChange={formik.handleChange}>
 						{FormControlLabels}
 					</RadioGroup>
@@ -199,19 +201,19 @@ const Form: FC<props> = (
 	}
 
 	const SelectField = (item:any, idx:number) => {
+		const options = item.options.map((item:any) => {
+			return <MenuItem key={`option-${item.id}`} value={item.value}>{item.label}</MenuItem>;
+		})
 		return (
 			<FormControl fullWidth>
 				<InputLabel id="demo-simple-select-label">{item.label}</InputLabel>
 				<Select
-					labelId="demo-simple-select-label"
-					id="demo-simple-select"
+					name={item.key}
 					value={formik.values[item.key]}
 					label={item.label}
 					onChange={formik.handleChange}
 				>
-					<MenuItem value={10}>Ten</MenuItem>
-					<MenuItem value={20}>Twenty</MenuItem>
-					<MenuItem value={30}>Thirty</MenuItem>
+					{options}
 				</Select>
 			</FormControl>
 		)

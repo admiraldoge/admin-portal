@@ -17,14 +17,18 @@ import {
 	editConfiguration,
 	validationSchema
 } from "../../../configurations/forms/ChartAccountFormConfiguration";
+import {getListOfChartAccounts} from "../../../services/chartAccounts";
+import {CHART_ACCOUNT_LIST} from "../../../constants/lists";
 const ChartAccount: NextPage = () => {
 	const dispatch = useAppDispatch();
 	const router = useRouter();
 	const me = useAppSelector((state: RootState) => state.me);
+	const list = useAppSelector((state: RootState) => state.list);
 	const subject = {path: ADMINISTRATION_CHART_ACCOUNT_PATH, name: ADMINISTRATION_CHART_ACCOUNT};
 	const [editModalOpen, setEditModalOpen] = useState(false);
 	const [createModalOpen, setCreateModalOpen] = useState(false);
 	const [entityId, setEntityId] = useState(null);
+	const [reloadCallback, setReloadCallback] = useState(() => function (){});
 
 	const columns = [
 		{
@@ -51,8 +55,10 @@ const ChartAccount: NextPage = () => {
 		}
 	]
 
-	function onRowCreate(row:any, callback:any){
+	function onRowCreate(callback:any){
+		dispatch(getListOfChartAccounts());
 		setCreateModalOpen(true);
+		setReloadCallback(() => () => callback());
 	}
 
 	function onRowEdit(row:any, callback:any){
@@ -64,12 +70,23 @@ const ChartAccount: NextPage = () => {
 		dispatch(deleteRow(subject, row.id));
 	}
 
+	const getCreateConfiguration = () => {
+		const conf = JSON.parse(JSON.stringify(createConfiguration));
+		conf[0].options = list[CHART_ACCOUNT_LIST].map((item:any,idx:number) => {
+			return {
+				label: item.name,
+				value: item.id
+			}
+		})
+		return conf;
+	}
+
 	return (
 		<Grid className={styles.ctn}>
 			<Grid item xs={12}>
 				<Table
 					subject={subject}
-					columns={columns} defaultPageSize={10} pageQuery={getPage} serverData={true}
+					columns={columns} defaultPageSize={25} pageQuery={getPage} serverData={true}
 					globalFilterEnabled={true}
 					onRowCreate={onRowCreate}
 					onRowDelete={onRowDelete}
@@ -88,10 +105,10 @@ const ChartAccount: NextPage = () => {
 				<Modal open={createModalOpen} setOpen={setCreateModalOpen}>
 					<Form
 						method={'POST'}
-						config={createConfiguration}
+						config={getCreateConfiguration()}
 						validationSchema={validationSchema}
 						resourcePath={`${subject.path}`}
-						onSubmit={() => {setCreateModalOpen(false)}}
+						onSubmit={() => {setCreateModalOpen(false); reloadCallback();}}
 					/>
 				</Modal>
 			</Grid>

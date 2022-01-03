@@ -1,0 +1,1 @@
+export const CHART_ACCOUNT_LIST = 'CHART_ACCOUNT_LIST';

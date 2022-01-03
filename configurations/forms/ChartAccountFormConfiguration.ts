@@ -13,7 +13,8 @@ export const createConfiguration = [
 		key: 'name',
 		label: 'Nombre',
 		type: 'text',
-		placeholder: 'abc...'
+		placeholder: 'abc...',
+		required: true
 	},
 	{
 		_template: 'string',
@@ -43,6 +44,7 @@ export const createConfiguration = [
 		label: 'Tipo',
 		type: 'boolean',
 		placeholder: '',
+		required: true,
 		options: [{label: 'Acreedor', value: true}, {label: 'Deudor', value: false}]
 	},
 ]

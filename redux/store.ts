@@ -1,6 +1,7 @@
 import { configureStore, createReducer } from '@reduxjs/toolkit'
 import {cleanMe, deleteRowFromTable, setLayout, setList, setMe, setTable} from "./actions";
 import {ADMINISTRATION_CHART_ACCOUNT, CURRENCY, ROLE, USER} from "../constants/subjects";
+import {CHART_ACCOUNT_LIST} from "../constants/lists";
 
 const layoutReducer = createReducer(
 	{
@@ -87,7 +88,7 @@ const tableReducer = createReducer(
 
 const listsReducer = createReducer(
 	{
-
+		[CHART_ACCOUNT_LIST]: []
 	},
 	(builder) => {
 		builder
