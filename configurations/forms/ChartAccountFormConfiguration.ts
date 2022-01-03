@@ -1,5 +1,13 @@
 import * as yup from "yup";
+import {IMPUTABLE, NOT_IMPUTABLE} from "../../constants/forms";
 export const createConfiguration = [
+	{
+		_template: 'select',
+		key: 'parentId',
+		label: 'Padre',
+		type: 'text',
+		placeholder: 'abc...'
+	},
 	{
 		_template: 'string',
 		key: 'name',
@@ -15,25 +23,27 @@ export const createConfiguration = [
 		placeholder: 'ABC...'
 	},
 	{
-		_template: 'string',
-		key: 'name',
-		label: 'Nombre',
+		_template: 'string_long',
+		key: 'description',
+		label: 'Descripción',
 		type: 'text',
 		placeholder: 'ABC...'
 	},
 	{
-		_template: 'string',
-		key: 'name',
+		_template: 'one_selection_radio',
+		key: 'isImputable',
 		label: 'Imputable',
 		type: 'text',
-		placeholder: 'ABC...'
+		placeholder: '',
+		options: [{label: 'Si', value: IMPUTABLE}, {label: 'No', value: NOT_IMPUTABLE}]
 	},
 	{
-		_template: 'string',
-		key: '',
+		_template: 'one_selection_radio',
+		key: 'isDebtor',
 		label: 'Tipo',
-		type: 'text',
-		placeholder: 'ABC...'
+		type: 'boolean',
+		placeholder: '',
+		options: [{label: 'Acreedor', value: true}, {label: 'Deudor', value: false}]
 	},
 ]
 
@@ -58,8 +68,4 @@ export const validationSchema = {
 		.string()
 		.min(5,'Inserta un nombre válido!')
 		.required('El nombre es obligatorio.'),
-	iso: yup
-		.string()
-		.min(2, 'Inserta una clave ISO válida')
-		.required('La web es obligatoria.'),
 }

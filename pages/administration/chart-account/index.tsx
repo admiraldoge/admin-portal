@@ -87,6 +87,7 @@ const ChartAccount: NextPage = () => {
 				</Modal>
 				<Modal open={createModalOpen} setOpen={setCreateModalOpen}>
 					<Form
+						method={'POST'}
 						config={createConfiguration}
 						validationSchema={validationSchema}
 						resourcePath={`${subject.path}`}
