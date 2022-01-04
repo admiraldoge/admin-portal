@@ -1,6 +1,6 @@
 import { configureStore, createReducer } from '@reduxjs/toolkit'
 import {cleanMe, deleteRowFromTable, setLayout, setList, setMe, setTable} from "./actions";
-import {ADMINISTRATION_CHART_ACCOUNT, CURRENCY, ROLE, USER} from "../constants/subjects";
+import {ADMINISTRATION_BRAND, ADMINISTRATION_CHART_ACCOUNT, CURRENCY, ROLE, USER} from "../constants/subjects";
 import {CHART_ACCOUNT_LIST} from "../constants/lists";
 
 const layoutReducer = createReducer(
@@ -70,6 +70,7 @@ const tableReducer = createReducer(
 		[USER]: {pageCount: 0, items: [], total: 0},
 		[CURRENCY]: {pageCount: 0, items: [], total: 0},
 		[ADMINISTRATION_CHART_ACCOUNT]: {pageCount: 0, items: [], total: 0},
+		[ADMINISTRATION_BRAND]: {pageCount: 0, items: [], total: 0},
 	},
 	(builder) => {
 		builder

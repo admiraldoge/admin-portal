@@ -247,6 +247,7 @@ const Table:FC<TableProps> = (
 						onClick={() => {
 							console.log('OnClick edit');
 							onRowUpdate(row);
+							updateData();
 						}}
 						style={{cursor: "pointer"}}
 					/>
@@ -254,6 +255,7 @@ const Table:FC<TableProps> = (
 						onClick={() => {
 							console.log('OnClick delete');
 							onRowDelete(row);
+							updateData();
 						}}
 						style={{cursor: "pointer"}}
 					/>
@@ -375,14 +377,14 @@ const Table:FC<TableProps> = (
 								<TableBody>
 									{page.map((row, rowIdx) => {
 										prepareRow(row);
-										console.log('Row', row);
+										//console.log('Row', row);
 										//{...row.getRowProps()} This was a prop of tableRow
 										return (
 											<TableRow {...row.getRowProps()} key={`tr-${rowIdx}`}>
 												{row.cells.map((cell:any, cellIdx: number) => {
 													const columnProps = cell.column;
 													const align = columnProps.align ? columnProps.align : 'flex-start';
-													console.log('Cell:',cell,columnProps);
+													//console.log('Cell:',cell,columnProps);
 													if(typeof cell.value !== 'object') {
 														//console.log('Simple accesor',typeof cell.value)
 														//{...cell.getCellProps()} This was a prop of tableCell

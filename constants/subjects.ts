@@ -7,13 +7,7 @@ export const CURRENCY = 'CURRENCY';
 export const LAYOUT = 'LAYOUT';
 export const COMPANY = 'COMPANY';
 export const ADMINISTRATION_CHART_ACCOUNT = 'ADMINISTRATION_CHART_ACCOUNT';
-
-export const subjectsCategory = {
-	[USER]: CONFIGURATION,
-	[ROLE]: CONFIGURATION,
-	[CURRENCY]: CONFIGURATION,
-	[LAYOUT]: CONFIGURATION,
-} as any
+export const ADMINISTRATION_BRAND = 'ADMINISTRATION_BRAND';
 
 export const subjectPaths = {
 	[ROLE]: '/configuration/role'

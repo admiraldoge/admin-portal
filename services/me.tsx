@@ -1,6 +1,5 @@
 import {setMe} from "../redux/actions";
 import {showDrawerCategory} from "../components/layouts/DrawerConfiguration";
-import {subjectsCategory} from "../constants/subjects";
 
 export const getMe = () => async (dispatch:any) => {
 	const request
@@ -39,12 +38,13 @@ export const getMe = () => async (dispatch:any) => {
 				data.update[data.subjects[i].name] = data.subjects[i].abilities[UPDATE].can;
 				data.delete[data.subjects[i].name] = data.subjects[i].abilities[DELETE].can;
 				data.create[data.subjects[i].name] = data.subjects[i].abilities[CREATE].can;
-
+				/*
 				if(data.read[data.subjects[i].name])
 				{
 					data.showDrawerCategory[subjectsCategory[data.subjects[i].name]]
 						= data.read[data.subjects[i].name] || data.showDrawerCategory[subjectsCategory[data.subjects[i].name]];
 				}
+				 */
 
 			}
 		}

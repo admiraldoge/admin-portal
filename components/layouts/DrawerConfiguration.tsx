@@ -1,3 +1,4 @@
+import React from "react";
 import SettingsIcon from '@mui/icons-material/Settings';
 import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
 import ApartmentIcon from '@mui/icons-material/Apartment';
@@ -6,7 +7,8 @@ import PeopleIcon from '@mui/icons-material/People';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
-import React from "react";
+import BrushIcon from '@mui/icons-material/Brush';
+import {ADMINISTRATION_BRAND} from "../../constants/subjects";
 
 export const CONFIGURATION = 'CONFIGURATION';
 export const CONTABLE = 'CONTABLE';
@@ -48,6 +50,14 @@ export const conf = [
 				icon: <AttachMoneyIcon/>,
 				subject: "ADMINISTRATION_CURRENCY",
 				loc: 'Monedas',
+				selected: false
+			},
+			{
+				_template: 'subject',
+				path: '/administration/brand',
+				icon: <BrushIcon/>,
+				subject: ADMINISTRATION_BRAND,
+				loc: 'Marcas',
 				selected: false
 			}
 		]
