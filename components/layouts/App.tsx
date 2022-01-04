@@ -7,7 +7,7 @@ import {getMe} from "../../services/me";
 import _, {initial} from "lodash";
 import {darkTheme, lightTheme} from "../../theme/themes";
 import { ThemeProvider } from '@mui/material/styles';
-import {CssBaseline} from "@mui/material";
+import {CssBaseline, useMediaQuery} from "@mui/material";
 import Snackbar from "../common/Snackbar";
 
 type appProps = {
@@ -19,15 +19,16 @@ const App = ({children}:appProps) => {
 	const router = useRouter();
 	const me = useAppSelector((state: RootState) => state.me);
 	const layout = useAppSelector((state: RootState) => state.layout);
+	const isMobile = useMediaQuery('(max-width:600px)');
 
 	useEffect(() => {
+		if(isMobile) dispatch(setLayout({drawerExpanded: false}));
 		dispatch(getMe());
 		dispatch(setLayout({initialPath: router.pathname === '/' || router.pathname === '/login' ? layout.initialPath : router.pathname}));
 	},[])
 
 	useEffect(() => {
-		//console.log('Loading pathname', router.pathname);
-		//console.log('Changes in me detected', me);
+		console.log('Changes in me detected', me);
 		if(me.error && me.error.statusCode) {
 			//console.log('Error detected, return to login');
 			if(me.error.statusCode === 401) {
@@ -39,11 +40,16 @@ const App = ({children}:appProps) => {
 			dispatch(setLayout({initialPath: router.pathname === '/' || router.pathname === '/login' ? layout.initialPath : router.pathname}));
 			dispatch(cleanMe());
 		} else {
-			if(_.isEmpty(me.read)) {
+			if(_.isEmpty(me.read) && !(router.pathname === '/' || router.pathname === '/login')) {
 				const newInitialPath = router.pathname === '/' || router.pathname === '/login' ? layout.initialPath : router.pathname;
 				console.log('Me, has not loaded yet, so pushing to index, while saving initial path as', newInitialPath);
 				dispatch(setLayout({initialPath: newInitialPath}));
 				router.push('/');
+			} else {
+				console.log('No error, nor permits');
+				if(router.pathname === '/login') {
+					router.push('/');
+				}
 			}
 			/*
 			if(_.isEmpty(me.read)) {
