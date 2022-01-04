@@ -2,10 +2,9 @@ import type { NextPage } from 'next'
 import React, {useEffect, useState} from 'react'
 import styles from '../../../styles/pages/Role.module.scss';
 import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
-import {useRouter} from "next/router";
 import Table from "../../../components/common/Table";
 import {
-	ADMINISTRATION_TAX_TYPE,
+	ADMINISTRATION_INCOME_TYPE,
 } from "../../../constants/subjects";
 import Grid from "@mui/material/Grid";
 import {RootState} from "../../../redux/store";
@@ -14,21 +13,18 @@ import Modal from "../../../components/common/Modal";
 import Form from "../../../components/common/Form/Form";
 import ResourceContainer from "../../../components/containers/ResourceContainer";
 import {
-	ADMINISTRATION_TAX_TYPE_PATH,
+	ADMINISTRATION_INCOME_TYPE_PATH,
 } from "../../../resources/paths";
 import {
 	createConfiguration,
 	editConfiguration,
 	validationSchema
-} from "../../../configurations/forms/TaxTypeFormConfiguration";
+} from "../../../configurations/forms/IncomeTypeFormConfiguration";
 import {getListOfChartAccounts} from "../../../services/chartAccounts";
-import {CHART_ACCOUNT_LIST} from "../../../constants/lists";
-const TaxType: NextPage = () => {
+const IncomeType: NextPage = () => {
 	const dispatch = useAppDispatch();
-	const router = useRouter();
-	const me = useAppSelector((state: RootState) => state.me);
 	const list = useAppSelector((state: RootState) => state.list);
-	const subject = {path: ADMINISTRATION_TAX_TYPE_PATH, name: ADMINISTRATION_TAX_TYPE};
+	const subject = {path: ADMINISTRATION_INCOME_TYPE_PATH, name: ADMINISTRATION_INCOME_TYPE};
 	const [editModalOpen, setEditModalOpen] = useState(false);
 	const [createModalOpen, setCreateModalOpen] = useState(false);
 	const [entityId, setEntityId] = useState(null);
@@ -73,17 +69,6 @@ const TaxType: NextPage = () => {
 		dispatch(deleteRow(subject, row.id, callback));
 	}
 
-	const getCreateConfiguration = () => {
-		const conf = JSON.parse(JSON.stringify(createConfiguration));
-		conf[0].options = list[CHART_ACCOUNT_LIST].map((item:any,idx:number) => {
-			return {
-				label: item.name,
-				value: item.id
-			}
-		})
-		return conf;
-	}
-
 	return (
 		<Grid className={styles.ctn}>
 			<Grid item xs={12}>
@@ -108,7 +93,7 @@ const TaxType: NextPage = () => {
 				<Modal open={createModalOpen} setOpen={setCreateModalOpen}>
 					<Form
 						method={'POST'}
-						config={getCreateConfiguration()}
+						config={createConfiguration}
 						validationSchema={validationSchema}
 						resourcePath={`${subject.path}`}
 						onSubmit={() => {setCreateModalOpen(false); reloadCallback();}}
@@ -120,4 +105,4 @@ const TaxType: NextPage = () => {
 	)
 }
 
-export default TaxType
+export default IncomeType
