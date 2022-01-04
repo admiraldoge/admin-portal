@@ -20,7 +20,6 @@ const Panel: NextPage = () => {
 
 	return (
 		<div className={styles.ctn}>
-			<Meta/>
 			xd
 		</div>
 	)

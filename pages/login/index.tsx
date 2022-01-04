@@ -44,7 +44,6 @@ const Login: NextPage = () => {
 
 	return (
 		<>
-			<Meta/>
 			<div className={styles.ctn}>
 				<Grid container direction={"row"} justifyContent={"center"} alignContent={"center"} className={styles.loginCtn}>
 					<Grid item xs={11} sm={6} lg={4}>
