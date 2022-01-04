@@ -10,7 +10,13 @@ import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import BrushIcon from '@mui/icons-material/Brush';
 import LocalAtmIcon from '@mui/icons-material/LocalAtm';
 import CategoryIcon from '@mui/icons-material/Category';
-import {ADMINISTRATION_BRAND, ADMINISTRATION_CATEGORY, ADMINISTRATION_TRANSACTION_TYPE} from "../../constants/subjects";
+import PaidIcon from '@mui/icons-material/Paid';
+import {
+	ADMINISTRATION_BRAND,
+	ADMINISTRATION_CATEGORY,
+	ADMINISTRATION_TAX_TYPE,
+	ADMINISTRATION_TRANSACTION_TYPE
+} from "../../constants/subjects";
 
 export const CONFIGURATION = 'CONFIGURATION';
 export const CONTABLE = 'CONTABLE';
@@ -76,6 +82,14 @@ export const conf = [
 				icon: <LocalAtmIcon/>,
 				subject: ADMINISTRATION_TRANSACTION_TYPE,
 				loc: 'Tipos de transacción',
+				selected: false
+			},
+			{
+				_template: 'subject',
+				path: '/administration/tax-type',
+				icon: <PaidIcon/>,
+				subject: ADMINISTRATION_TAX_TYPE,
+				loc: 'Tipos de impuesto',
 				selected: false
 			}
 		]
