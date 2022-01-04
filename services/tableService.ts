@@ -26,7 +26,7 @@ export const getPage = (subject: any, page:number, limit:number, fullSearch: str
 	return data;
 }
 
-export const deleteRow = (subject:any, id:number) => async (dispatch:any) => {
+export const deleteRow = (subject:any, id:number, callback?:any) => async (dispatch:any) => {
 	const request
 		= await fetch(`${process.env.NEXT_PUBLIC_PANAMA_HOST}${subject.path}/${id}`,
 		{
@@ -36,6 +36,7 @@ export const deleteRow = (subject:any, id:number) => async (dispatch:any) => {
 				'accept':  'application/json'
 			}
 		});
-	dispatch(deleteRowFromTable({subject: subject.name, id}));
+	//dispatch(deleteRowFromTable({subject: subject.name, id}));
+	callback();
 
 }

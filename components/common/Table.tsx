@@ -246,16 +246,14 @@ const Table:FC<TableProps> = (
 					<ModeEditIcon
 						onClick={() => {
 							console.log('OnClick edit');
-							onRowUpdate(row);
-							updateData();
+							onRowUpdate(row, updateData);
 						}}
 						style={{cursor: "pointer"}}
 					/>
 					<DeleteIcon
 						onClick={() => {
 							console.log('OnClick delete');
-							onRowDelete(row);
-							updateData();
+							onRowDelete(row, updateData);
 						}}
 						style={{cursor: "pointer"}}
 					/>

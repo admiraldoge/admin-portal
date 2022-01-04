@@ -8,7 +8,8 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import BrushIcon from '@mui/icons-material/Brush';
-import {ADMINISTRATION_BRAND} from "../../constants/subjects";
+import CategoryIcon from '@mui/icons-material/Category';
+import {ADMINISTRATION_BRAND, ADMINISTRATION_CATEGORY} from "../../constants/subjects";
 
 export const CONFIGURATION = 'CONFIGURATION';
 export const CONTABLE = 'CONTABLE';
@@ -58,6 +59,14 @@ export const conf = [
 				icon: <BrushIcon/>,
 				subject: ADMINISTRATION_BRAND,
 				loc: 'Marcas',
+				selected: false
+			},
+			{
+				_template: 'subject',
+				path: '/administration/category',
+				icon: <CategoryIcon/>,
+				subject: ADMINISTRATION_CATEGORY,
+				loc: 'Categorías',
 				selected: false
 			}
 		]
