@@ -183,7 +183,7 @@ const Drawer: React.FunctionComponent<drawerProps> = ({}) => {
 								sx={{ my: 0 }}
 								primary={me.subjectsLocMap ? item.loc : me.subjectsLocMap[item.subject]}
 								primaryTypographyProps={{
-									fontSize: 15,
+									fontSize: 14,
 									fontWeight: 'medium',
 									letterSpacing: 0,
 								}}
