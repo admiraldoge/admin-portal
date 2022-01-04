@@ -1,30 +1,19 @@
 import React, {useEffect, useState} from "react";
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
-import App from "next/app";
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
 import {RootState} from "../../redux/store";
-import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
-import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
-import CssBaseline from '@mui/material/CssBaseline';
-import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import Collapse from '@mui/material/Collapse';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import {setLayout} from "../../redux/actions";
 import {useRouter} from "next/router";
-import {StarBorder} from "@mui/icons-material";
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import {
@@ -56,7 +45,7 @@ const closedMixin = (theme: Theme): CSSObject => ({
 	overflowX: 'hidden',
 	width: `calc(${theme.spacing(7)} + 1px)`,
 	[theme.breakpoints.up('sm')]: {
-		width: `calc(${theme.spacing(9)} + 1px)`,
+		width: `calc(${theme.spacing(7)} + 4px)`,
 	},
 });
 
@@ -227,16 +216,16 @@ const Drawer: React.FunctionComponent<drawerProps> = ({}) => {
 						<ListItemIcon>
 							{item.icon}
 						</ListItemIcon>
-						<ListItemText
-							sx={{ my: 0 }}
+						{layout.drawerExpanded && <ListItemText
+							sx={{my: 0}}
 							primary={item.loc}
 							primaryTypographyProps={{
 								fontSize: 15,
 								fontWeight: 'medium',
 								letterSpacing: 0,
 							}}
-						/>
-						{state[idx].expanded ? <ExpandLess/> : <ExpandMore/>}
+						/>}
+						{layout.drawerExpanded ? state[idx].expanded ? <ExpandLess/> : <ExpandMore/> : null}
 					</ListItemButton>,
 					<Collapse key={`module-${idx}-list`} in={state[idx].expanded} timeout="auto" unmountOnExit>
 						<List component="div" disablePadding>
