@@ -8,8 +8,9 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import BrushIcon from '@mui/icons-material/Brush';
+import LocalAtmIcon from '@mui/icons-material/LocalAtm';
 import CategoryIcon from '@mui/icons-material/Category';
-import {ADMINISTRATION_BRAND, ADMINISTRATION_CATEGORY} from "../../constants/subjects";
+import {ADMINISTRATION_BRAND, ADMINISTRATION_CATEGORY, ADMINISTRATION_TRANSACTION_TYPE} from "../../constants/subjects";
 
 export const CONFIGURATION = 'CONFIGURATION';
 export const CONTABLE = 'CONTABLE';
@@ -67,6 +68,14 @@ export const conf = [
 				icon: <CategoryIcon/>,
 				subject: ADMINISTRATION_CATEGORY,
 				loc: 'Categorías',
+				selected: false
+			},
+			{
+				_template: 'subject',
+				path: '/administration/transaction-type',
+				icon: <LocalAtmIcon/>,
+				subject: ADMINISTRATION_TRANSACTION_TYPE,
+				loc: 'Tipos de transacción',
 				selected: false
 			}
 		]

@@ -3,7 +3,7 @@ import {cleanMe, deleteRowFromTable, setLayout, setList, setMe, setTable} from "
 import {
 	ADMINISTRATION_BRAND,
 	ADMINISTRATION_CATEGORY,
-	ADMINISTRATION_CHART_ACCOUNT,
+	ADMINISTRATION_CHART_ACCOUNT, ADMINISTRATION_TRANSACTION_TYPE,
 	CURRENCY,
 	ROLE,
 	USER
@@ -79,6 +79,7 @@ const tableReducer = createReducer(
 		[ADMINISTRATION_CHART_ACCOUNT]: {pageCount: 0, items: [], total: 0},
 		[ADMINISTRATION_BRAND]: {pageCount: 0, items: [], total: 0},
 		[ADMINISTRATION_CATEGORY]: {pageCount: 0, items: [], total: 0},
+		[ADMINISTRATION_TRANSACTION_TYPE]: {pageCount: 0, items: [], total: 0},
 	},
 	(builder) => {
 		builder
