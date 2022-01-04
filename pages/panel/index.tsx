@@ -2,10 +2,9 @@ import type { NextPage } from 'next'
 import styles from '../../styles/pages/Panel.module.scss';
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
 import {useRouter} from "next/router";
-import Content from "../../components/layouts/Content";
 import {useEffect} from "react";
 import {RootState} from "../../redux/store";
-import {getMe} from "../../services/me";
+import Meta from "../../components/layouts/Meta";
 
 const Panel: NextPage = () => {
 	const dispatch = useAppDispatch();
@@ -21,6 +20,7 @@ const Panel: NextPage = () => {
 
 	return (
 		<div className={styles.ctn}>
+			<Meta/>
 			xd
 		</div>
 	)
