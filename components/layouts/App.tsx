@@ -4,7 +4,7 @@ import {useRouter} from "next/router";
 import {RootState} from "../../redux/store";
 import {cleanMe, setLayout} from "../../redux/actions";
 import {getMe} from "../../services/me";
-import _ from "lodash";
+import _, {initial} from "lodash";
 import {darkTheme, lightTheme} from "../../theme/themes";
 import { ThemeProvider } from '@mui/material/styles';
 import {CssBaseline} from "@mui/material";
@@ -40,6 +40,13 @@ const App = ({children}:appProps) => {
 			dispatch(cleanMe());
 		} else {
 			if(_.isEmpty(me.read)) {
+				const newInitialPath = router.pathname === '/' || router.pathname === '/login' ? layout.initialPath : router.pathname;
+				console.log('Me, has not loaded yet, so pushing to index, while saving initial path as', newInitialPath);
+				dispatch(setLayout({initialPath: newInitialPath}));
+				router.push('/');
+			}
+			/*
+			if(_.isEmpty(me.read)) {
 				//console.log('No hay ningun permiso de lectura para este usuario.', me);
 				if(router.pathname !== '/login') {
 					dispatch(setLayout({snackbar: {open: true, type: 'error', message: 'Su sesión a terminado, vuelva a ingresar.'}}));
@@ -49,6 +56,7 @@ const App = ({children}:appProps) => {
 				//console.log('Routing user to initial path',layout.initialPath );
 				router.push(layout.initialPath);
 			}
+			 */
 		}
 	},[me])
 

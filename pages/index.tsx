@@ -13,6 +13,13 @@ const Home: NextPage = () => {
 	const me = useAppSelector((state: RootState) => state.me);
 	const layout = useAppSelector((state: RootState) => state.layout);
 
+	useEffect(() => {
+		if(!_.isEmpty(me.read)) {
+			console.log('Index: me has loaded, so pushing to initialPath:',layout.initialPath);
+			router.push(layout.initialPath);
+		}
+	},[me])
+
   return (
     <Grid container direction={"row"} justifyContent={"center"} alignContent={"center"} className={styles.ctn}>
 	    <Grid item xs={12}>
