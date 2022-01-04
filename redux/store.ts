@@ -3,7 +3,14 @@ import {cleanMe, deleteRowFromTable, setLayout, setList, setMe, setTable} from "
 import {
 	ADMINISTRATION_BRAND,
 	ADMINISTRATION_CATEGORY,
-	ADMINISTRATION_CHART_ACCOUNT, ADMINISTRATION_TAX_TYPE, ADMINISTRATION_TRANSACTION_TYPE,
+	ADMINISTRATION_CHART_ACCOUNT, ADMINISTRATION_CITY,
+	ADMINISTRATION_COUNTRY,
+	ADMINISTRATION_EXPENSE_TYPE,
+	ADMINISTRATION_INCOME_TYPE,
+	ADMINISTRATION_PAYMENT_METHOD,
+	ADMINISTRATION_TAX_TYPE,
+	ADMINISTRATION_TRANSACTION_TYPE,
+	ADMINISTRATION_UNIT_OF_MEASURE,
 	CURRENCY,
 	ROLE,
 	USER
@@ -81,6 +88,12 @@ const tableReducer = createReducer(
 		[ADMINISTRATION_CATEGORY]: {pageCount: 0, items: [], total: 0},
 		[ADMINISTRATION_TRANSACTION_TYPE]: {pageCount: 0, items: [], total: 0},
 		[ADMINISTRATION_TAX_TYPE]: {pageCount: 0, items: [], total: 0},
+		[ADMINISTRATION_UNIT_OF_MEASURE]: {pageCount: 0, items: [], total: 0},
+		[ADMINISTRATION_PAYMENT_METHOD]: {pageCount: 0, items: [], total: 0},
+		[ADMINISTRATION_INCOME_TYPE]: {pageCount: 0, items: [], total: 0},
+		[ADMINISTRATION_EXPENSE_TYPE]: {pageCount: 0, items: [], total: 0},
+		[ADMINISTRATION_COUNTRY]: {pageCount: 0, items: [], total: 0},
+		[ADMINISTRATION_CITY]: {pageCount: 0, items: [], total: 0},
 	},
 	(builder) => {
 		builder
