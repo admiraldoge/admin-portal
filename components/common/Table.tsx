@@ -375,11 +375,14 @@ const Table:FC<TableProps> = (
 								<TableBody>
 									{page.map((row, rowIdx) => {
 										prepareRow(row);
+										console.log('Row', row);
 										//{...row.getRowProps()} This was a prop of tableRow
 										return (
 											<TableRow {...row.getRowProps()} key={`tr-${rowIdx}`}>
 												{row.cells.map((cell:any, cellIdx: number) => {
-													//console.log('Cell:',cell);
+													const columnProps = cell.column;
+													const align = columnProps.align ? columnProps.align : 'flex-start';
+													console.log('Cell:',cell,columnProps);
 													if(typeof cell.value !== 'object') {
 														//console.log('Simple accesor',typeof cell.value)
 														//{...cell.getCellProps()} This was a prop of tableCell
@@ -387,7 +390,7 @@ const Table:FC<TableProps> = (
 															<TableCell key={`td-${cellIdx}}`} {...cell.getCellProps()} className={styles.cell} variant={'body'}>
 																<Grid container direction={"row"} justifyContent={"center"}>
 																	<Grid item xs={11}>
-																		<Grid container direction={"row"} justifyContent={cell.column.centered ? "center" : "flex-start"}>
+																		<Grid container justifyContent={align}>
 																			<Typography variant={"subtitle2"}>{cell.render('Cell')}</Typography>
 																		</Grid>
 																	</Grid>
@@ -397,7 +400,14 @@ const Table:FC<TableProps> = (
 													} else {
 														//console.log('Custom accesor',typeof cell.value)
 														return (
-															<TableCell key={`td-${cellIdx}}`} {...cell.getCellProps()} variant={'body'} padding={'none'}>{cell.render('Cell')}</TableCell>
+															<TableCell
+																key={`td-${cellIdx}}`}
+																{...cell.getCellProps()}
+																variant={'body'}
+																padding={'none'}
+															>
+																{cell.render('Cell')}
+															</TableCell>
 														)
 													}
 												})}
