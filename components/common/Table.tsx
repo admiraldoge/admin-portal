@@ -282,7 +282,7 @@ const Table:FC<TableProps> = (
 			{
 				columns: totalColumns,
 				data: serverData ? table.items : data,
-				initialState: { pageIndex: 0, pageSize: 10 },
+				initialState: { pageIndex: 0, pageSize: defaultPageSize },
 				pageCount: table.pageCount ? table.pageCount : 10,
 				manualSortBy: serverData,
 				manualFilters: serverData,
