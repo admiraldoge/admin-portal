@@ -11,10 +11,13 @@ import {CssBaseline} from "@mui/material";
 import {lightTheme} from "../theme/themes";
 import Content from "../components/layouts/Content";
 import App from "../components/layouts/App";
+import Meta from "../components/layouts/Meta";
+import React from "react";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
 		<>
+			<Meta/>
 			<Provider store={store}>
 				<StyledEngineProvider injectFirst>
 						<Box sx={{ display: 'flex' }}>

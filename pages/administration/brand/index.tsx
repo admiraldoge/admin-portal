@@ -19,6 +19,7 @@ import {
 } from "../../../configurations/forms/BrandFormConfiguration";
 import {getListOfChartAccounts} from "../../../services/chartAccounts";
 import {CHART_ACCOUNT_LIST} from "../../../constants/lists";
+import Meta from "../../../components/layouts/Meta";
 const Brand: NextPage = () => {
 	const dispatch = useAppDispatch();
 	const router = useRouter();
@@ -80,38 +81,41 @@ const Brand: NextPage = () => {
 	}
 
 	return (
-		<Grid className={styles.ctn}>
-			<Grid item xs={12}>
-				<Table
-					subject={subject}
-					columns={columns} defaultPageSize={25} pageQuery={getPage} serverData={true}
-					globalFilterEnabled={true}
-					onRowCreate={onRowCreate}
-					onRowDelete={onRowDelete}
-					onRowUpdate={onRowEdit}
-				/>
-				<Modal open={editModalOpen} setOpen={setEditModalOpen}>
-					<ResourceContainer path={entityId ? `${subject.path}/${entityId}` : null} resourceName={'initialData'}>
-						<Form
-							config={editConfiguration}
-							validationSchema={validationSchema}
-							resourcePath={`${subject.path}/${entityId}`}
-							onSubmit={() => {setEditModalOpen(false)}}
-						/>
-					</ResourceContainer>
-				</Modal>
-				<Modal open={createModalOpen} setOpen={setCreateModalOpen}>
-					<Form
-						method={'POST'}
-						config={getCreateConfiguration()}
-						validationSchema={validationSchema}
-						resourcePath={`${subject.path}`}
-						onSubmit={() => {setCreateModalOpen(false); reloadCallback();}}
+		<>
+			<Meta/>
+			<Grid className={styles.ctn}>
+				<Grid item xs={12}>
+					<Table
+						subject={subject}
+						columns={columns} defaultPageSize={25} pageQuery={getPage} serverData={true}
+						globalFilterEnabled={true}
+						onRowCreate={onRowCreate}
+						onRowDelete={onRowDelete}
+						onRowUpdate={onRowEdit}
 					/>
-				</Modal>
-			</Grid>
+					<Modal open={editModalOpen} setOpen={setEditModalOpen}>
+						<ResourceContainer path={entityId ? `${subject.path}/${entityId}` : null} resourceName={'initialData'}>
+							<Form
+								config={editConfiguration}
+								validationSchema={validationSchema}
+								resourcePath={`${subject.path}/${entityId}`}
+								onSubmit={() => {setEditModalOpen(false)}}
+							/>
+						</ResourceContainer>
+					</Modal>
+					<Modal open={createModalOpen} setOpen={setCreateModalOpen}>
+						<Form
+							method={'POST'}
+							config={getCreateConfiguration()}
+							validationSchema={validationSchema}
+							resourcePath={`${subject.path}`}
+							onSubmit={() => {setCreateModalOpen(false); reloadCallback();}}
+						/>
+					</Modal>
+				</Grid>
 
-		</Grid>
+			</Grid>
+		</>
 	)
 }
 
