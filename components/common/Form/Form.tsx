@@ -110,6 +110,7 @@ const Form: FC<props> = (
 	const StringField = (item:any, idx:number) => {
 		return (
 			<TextField
+				size={'small'}
 				fullWidth
 				key={`${idx}-${item.key}`}
 				id={item.key}
@@ -130,6 +131,7 @@ const Form: FC<props> = (
 	const LongStringField = (item:any, idx:number) => {
 		return (
 			<TextField
+				size={'small'}
 				fullWidth
 				multiline
 				rows={4}
