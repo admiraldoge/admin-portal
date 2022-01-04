@@ -3,28 +3,24 @@ import React, {useEffect, useState} from 'react'
 import styles from '../../../styles/pages/Role.module.scss';
 import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
 import Table from "../../../components/common/Table";
-import {
-	ADMINISTRATION_EXPENSE_TYPE,
-} from "../../../constants/subjects";
+import {ADMINISTRATION_PAYMENT_METHOD,} from "../../../constants/subjects";
 import Grid from "@mui/material/Grid";
 import {RootState} from "../../../redux/store";
 import {deleteRow, getPage} from "../../../services/tableService";
 import Modal from "../../../components/common/Modal";
 import Form from "../../../components/common/Form/Form";
 import ResourceContainer from "../../../components/containers/ResourceContainer";
-import {
-	ADMINISTRATION_EXPENSE_TYPE_PATH,
-} from "../../../resources/paths";
+import {ADMINISTRATION_PAYMENT_METHOD_PATH,} from "../../../resources/paths";
 import {
 	createConfiguration,
 	editConfiguration,
 	validationSchema
-} from "../../../configurations/forms/ExpenseTypeFormConfiguration";
+} from "../../../configurations/forms/IncomeTypeFormConfiguration";
 import {getListOfChartAccounts} from "../../../services/chartAccounts";
-const ExpenseType: NextPage = () => {
+const PaymentMethod: NextPage = () => {
 	const dispatch = useAppDispatch();
 	const list = useAppSelector((state: RootState) => state.list);
-	const subject = {path: ADMINISTRATION_EXPENSE_TYPE_PATH, name: ADMINISTRATION_EXPENSE_TYPE};
+	const subject = {path: ADMINISTRATION_PAYMENT_METHOD_PATH, name: ADMINISTRATION_PAYMENT_METHOD};
 	const [editModalOpen, setEditModalOpen] = useState(false);
 	const [createModalOpen, setCreateModalOpen] = useState(false);
 	const [entityId, setEntityId] = useState(null);
@@ -105,4 +101,4 @@ const ExpenseType: NextPage = () => {
 	)
 }
 
-export default ExpenseType
+export default PaymentMethod
