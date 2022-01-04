@@ -40,7 +40,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {deleteRow} from "../../services/tableService";
+import {deleteRow, onSetIsActive} from "../../services/tableService";
 import Checkbox from "@mui/material/Checkbox";
 import {width} from "@mui/system";
 import Divider from "@mui/material/Divider";
@@ -242,7 +242,13 @@ const Table:FC<TableProps> = (
 		accessor: (row:any, index:any) => {
 			return (
 				<Grid container direction={"row"} justifyContent={"center"} alignItems={"center"}>
-					<Checkbox checked={row.appUserIsActive} style={{padding: 0}} />
+					<Checkbox
+						checked={row.appUserIsActive}
+						style={{padding: 0}}
+						onChange={(e, checked) => {
+							dispatch(onSetIsActive(subject, row.id, checked, updateData));
+						}}
+					/>
 					<ModeEditIcon
 						onClick={() => {
 							console.log('OnClick edit');

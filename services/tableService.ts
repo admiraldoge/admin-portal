@@ -40,3 +40,21 @@ export const deleteRow = (subject:any, id:number, callback?:any) => async (dispa
 	callback();
 
 }
+
+export const onSetIsActive = (subject:any, id:number, isActive:boolean,  callback?:any) => async (dispatch:any) => {
+	const body = JSON.stringify({id, isActive});
+	const request
+		= await fetch(`${process.env.NEXT_PUBLIC_PANAMA_HOST}${subject.path}/${id}`,
+		{
+			method: 'PATCH',
+			credentials: 'include',
+			body: body,
+			headers: {
+				'Content-Type': 'application/json',
+				'accept':  'application/json'
+			}
+		});
+	//dispatch(deleteRowFromTable({subject: subject.name, id}));
+	callback();
+
+}
