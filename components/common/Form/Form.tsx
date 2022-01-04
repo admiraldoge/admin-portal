@@ -189,7 +189,7 @@ const Form: FC<props> = (
 			);
 		})
 		return (
-			<Grid>
+			<Grid key={`one_selection_radio-${idx}`}>
 				<FormControl component="fieldset" className={styles.formItem} key={`${idx}-${item.key}`}>
 					<FormLabel component="legend" required={item.required}>{item.label}</FormLabel>
 					<RadioGroup row aria-label="options" name={item.key} onChange={formik.handleChange}>
@@ -205,7 +205,7 @@ const Form: FC<props> = (
 			return <MenuItem key={`option-${idx}-${option.value}`} value={option.value}>{option.label}</MenuItem>;
 		})
 		return (
-			<FormControl fullWidth>
+			<FormControl fullWidth key={`select-${idx}`}>
 				<InputLabel id="demo-simple-select-label">{item.label}</InputLabel>
 				<Select
 					name={item.key}
