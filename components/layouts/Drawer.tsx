@@ -74,6 +74,17 @@ const MaterialUIDrawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !
 			...closedMixin(theme),
 			'& .MuiDrawer-paper': closedMixin(theme),
 		}),
+		'& .MuiListItemButton-root': {
+			fontSize: 15,
+			paddingRight: 24,
+		},
+		'& .MuiListItemIcon-root': {
+			minWidth: 0,
+			marginRight: 16,
+		},
+		'& .MuiSvgIcon-root': {
+			fontSize: 20,
+		},
 	}),
 );
 
@@ -139,7 +150,15 @@ const Drawer: React.FunctionComponent<drawerProps> = ({}) => {
 						<ListItemIcon>
 
 						</ListItemIcon>
-						<ListItemText primary={item.loc} />
+						<ListItemText
+							sx={{ my: 0 }}
+							primary={item.loc}
+							primaryTypographyProps={{
+								fontSize: 15,
+								fontWeight: 'medium',
+								letterSpacing: 0,
+							}}
+						/>
 					</ListItemButton>
 				);
 				break;
@@ -171,7 +190,15 @@ const Drawer: React.FunctionComponent<drawerProps> = ({}) => {
 							<ListItemIcon>
 								{item.icon}
 							</ListItemIcon>
-							<ListItemText primary={me.subjectsLocMap ? item.loc : me.subjectsLocMap[item.subject]}/>
+							<ListItemText
+								sx={{ my: 0 }}
+								primary={me.subjectsLocMap ? item.loc : me.subjectsLocMap[item.subject]}
+								primaryTypographyProps={{
+									fontSize: 15,
+									fontWeight: 'medium',
+									letterSpacing: 0,
+								}}
+							/>
 						</ListItemButton>
 					)
 				}
@@ -200,7 +227,15 @@ const Drawer: React.FunctionComponent<drawerProps> = ({}) => {
 						<ListItemIcon>
 							{item.icon}
 						</ListItemIcon>
-						<ListItemText primary={item.loc}/>
+						<ListItemText
+							sx={{ my: 0 }}
+							primary={item.loc}
+							primaryTypographyProps={{
+								fontSize: 15,
+								fontWeight: 'medium',
+								letterSpacing: 0,
+							}}
+						/>
 						{state[idx].expanded ? <ExpandLess/> : <ExpandMore/>}
 					</ListItemButton>,
 					<Collapse key={`module-${idx}-list`} in={state[idx].expanded} timeout="auto" unmountOnExit>
