@@ -40,16 +40,16 @@ const Brand: NextPage = () => {
 			align: 'center'
 		},
 		{
+			Header: 'Código',
+			accessor: 'code',
+			width: 20,
+			align: 'center'
+		},
+		{
 			Header: 'Nombre',
 			accessor: 'name',
 			width: 62,
 			align: 'flex-start'
-		},
-		{
-			Header: 'Nivel',
-			accessor: 'level',
-			width: 20,
-			align: 'center'
 		}
 	]
 

@@ -243,7 +243,7 @@ const Table:FC<TableProps> = (
 			return (
 				<Grid container direction={"row"} justifyContent={"center"} alignItems={"center"}>
 					<Checkbox
-						checked={row.appUserIsActive}
+						checked={row.isActive}
 						style={{padding: 0}}
 						onChange={(e, checked) => {
 							dispatch(onSetIsActive(subject, row.id, checked, updateData));
