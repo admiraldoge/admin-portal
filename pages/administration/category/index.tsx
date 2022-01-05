@@ -24,7 +24,6 @@ import {
 	editConfiguration,
 	validationSchema
 } from "../../../configurations/forms/CategoryFormConfiguration";
-import {getListOfChartAccounts} from "../../../services/chartAccounts";
 import {CHART_ACCOUNT_LIST} from "../../../constants/lists";
 const Category: NextPage = () => {
 	const dispatch = useAppDispatch();
@@ -61,7 +60,6 @@ const Category: NextPage = () => {
 	]
 
 	function onRowCreate(callback:any){
-		dispatch(getListOfChartAccounts());
 		setCreateModalOpen(true);
 		setReloadCallback(() => () => callback());
 	}
@@ -74,17 +72,6 @@ const Category: NextPage = () => {
 
 	function onRowDelete(row:any, callback:any){
 		dispatch(deleteRow(subject, row.id, callback));
-	}
-
-	const getCreateConfiguration = () => {
-		const conf = JSON.parse(JSON.stringify(createConfiguration));
-		conf[0].options = list[CHART_ACCOUNT_LIST].map((item:any,idx:number) => {
-			return {
-				label: item.name,
-				value: item.id
-			}
-		})
-		return conf;
 	}
 
 	return (
@@ -111,7 +98,7 @@ const Category: NextPage = () => {
 				<Modal open={createModalOpen} setOpen={setCreateModalOpen}>
 					<Form
 						method={'POST'}
-						config={getCreateConfiguration()}
+						config={createConfiguration}
 						validationSchema={validationSchema}
 						resourcePath={`${subject.path}`}
 						onSubmit={() => {setCreateModalOpen(false); reloadCallback();}}

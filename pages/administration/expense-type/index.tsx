@@ -20,7 +20,7 @@ import {
 	editConfiguration,
 	validationSchema
 } from "../../../configurations/forms/ExpenseTypeFormConfiguration";
-import {getListOfChartAccounts} from "../../../services/chartAccounts";
+
 const ExpenseType: NextPage = () => {
 	const dispatch = useAppDispatch();
 	const list = useAppSelector((state: RootState) => state.list);
@@ -54,7 +54,6 @@ const ExpenseType: NextPage = () => {
 	]
 
 	function onRowCreate(callback:any){
-		dispatch(getListOfChartAccounts());
 		setCreateModalOpen(true);
 		setReloadCallback(() => () => callback());
 	}

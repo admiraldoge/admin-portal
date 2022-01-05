@@ -17,8 +17,8 @@ import {
 	editConfiguration,
 	validationSchema
 } from "../../../configurations/forms/ChartAccountFormConfiguration";
-import {getListOfChartAccounts} from "../../../services/chartAccounts";
 import {CHART_ACCOUNT_LIST} from "../../../constants/lists";
+import {getList} from "../../../services/listService";
 const ChartAccount: NextPage = () => {
 	const dispatch = useAppDispatch();
 	const router = useRouter();
@@ -54,7 +54,7 @@ const ChartAccount: NextPage = () => {
 	]
 
 	function onRowCreate(callback:any){
-		dispatch(getListOfChartAccounts());
+		dispatch(getList(CHART_ACCOUNT_LIST));
 		setCreateModalOpen(true);
 		setReloadCallback(() => () => callback());
 	}
@@ -70,7 +70,7 @@ const ChartAccount: NextPage = () => {
 
 	const getCreateConfiguration = () => {
 		const conf = JSON.parse(JSON.stringify(createConfiguration));
-		conf[0].options = list[CHART_ACCOUNT_LIST].map((item:any,idx:number) => {
+		conf[0].options = list[CHART_ACCOUNT_LIST.name].map((item:any,idx:number) => {
 			return {
 				label: item.name,
 				value: item.id

@@ -186,6 +186,7 @@ const Form: FC<props> = (
 					value={option.value}
 					control={<Radio style={{padding: '0px 9px 0 0', margin: '0 0 0 0'}}/>}
 					label={option.label}
+					className={styles.formItem}
 					style={{padding: '9px 9px 0 0', margin: '0 0 0 0'}}
 				/>
 			);
@@ -207,9 +208,10 @@ const Form: FC<props> = (
 			return <MenuItem key={`option-${idx}-${option.value}`} value={option.value}>{option.label}</MenuItem>;
 		})
 		return (
-			<FormControl fullWidth key={`select-${idx}`}>
+			<FormControl fullWidth key={`select-${idx}`} className={styles.formItem}>
 				<InputLabel id="demo-simple-select-label">{item.label}</InputLabel>
 				<Select
+					size={'small'}
 					name={item.key}
 					value={formik.values[item.key]}
 					label={item.label}

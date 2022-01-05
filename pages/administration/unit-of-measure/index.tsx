@@ -16,7 +16,7 @@ import {
 	editConfiguration,
 	validationSchema
 } from "../../../configurations/forms/UnitOfMeasureFormConfiguration";
-import {getListOfChartAccounts} from "../../../services/chartAccounts";
+
 const UnitOfMeasure: NextPage = () => {
 	const dispatch = useAppDispatch();
 	const list = useAppSelector((state: RootState) => state.list);
@@ -50,7 +50,6 @@ const UnitOfMeasure: NextPage = () => {
 	]
 
 	function onRowCreate(callback:any){
-		dispatch(getListOfChartAccounts());
 		setCreateModalOpen(true);
 		setReloadCallback(() => () => callback());
 	}

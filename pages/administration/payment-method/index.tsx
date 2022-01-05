@@ -16,7 +16,7 @@ import {
 	editConfiguration,
 	validationSchema
 } from "../../../configurations/forms/IncomeTypeFormConfiguration";
-import {getListOfChartAccounts} from "../../../services/chartAccounts";
+
 const PaymentMethod: NextPage = () => {
 	const dispatch = useAppDispatch();
 	const list = useAppSelector((state: RootState) => state.list);
@@ -50,7 +50,6 @@ const PaymentMethod: NextPage = () => {
 	]
 
 	function onRowCreate(callback:any){
-		dispatch(getListOfChartAccounts());
 		setCreateModalOpen(true);
 		setReloadCallback(() => () => callback());
 	}

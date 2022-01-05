@@ -16,7 +16,7 @@ import {
 	editConfiguration,
 	validationSchema
 } from "../../../configurations/forms/CountryFormConfiguration";
-import {getListOfChartAccounts} from "../../../services/chartAccounts";
+
 const Country: NextPage = () => {
 	const dispatch = useAppDispatch();
 	const list = useAppSelector((state: RootState) => state.list);
@@ -50,7 +50,6 @@ const Country: NextPage = () => {
 	]
 
 	function onRowCreate(callback:any){
-		dispatch(getListOfChartAccounts());
 		setCreateModalOpen(true);
 		setReloadCallback(() => () => callback());
 	}

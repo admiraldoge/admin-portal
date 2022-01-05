@@ -17,7 +17,6 @@ import {
 	editConfiguration,
 	validationSchema
 } from "../../../configurations/forms/TransactionTypeFormConfiguration";
-import {getListOfChartAccounts} from "../../../services/chartAccounts";
 import {CHART_ACCOUNT_LIST} from "../../../constants/lists";
 const TransactionType: NextPage = () => {
 	const dispatch = useAppDispatch();
@@ -54,7 +53,6 @@ const TransactionType: NextPage = () => {
 	]
 
 	function onRowCreate(callback:any){
-		dispatch(getListOfChartAccounts());
 		setCreateModalOpen(true);
 		setReloadCallback(() => () => callback());
 	}
@@ -69,16 +67,6 @@ const TransactionType: NextPage = () => {
 		dispatch(deleteRow(subject, row.id, callback));
 	}
 
-	const getCreateConfiguration = () => {
-		const conf = JSON.parse(JSON.stringify(createConfiguration));
-		conf[0].options = list[CHART_ACCOUNT_LIST].map((item:any,idx:number) => {
-			return {
-				label: item.name,
-				value: item.id
-			}
-		})
-		return conf;
-	}
 
 	return (
 		<Grid className={styles.ctn}>
@@ -104,7 +92,7 @@ const TransactionType: NextPage = () => {
 				<Modal open={createModalOpen} setOpen={setCreateModalOpen}>
 					<Form
 						method={'POST'}
-						config={getCreateConfiguration()}
+						config={createConfiguration}
 						validationSchema={validationSchema}
 						resourcePath={`${subject.path}`}
 						onSubmit={() => {setCreateModalOpen(false); reloadCallback();}}

@@ -17,7 +17,6 @@ import {
 	editConfiguration,
 	validationSchema
 } from "../../../configurations/forms/BrandFormConfiguration";
-import {getListOfChartAccounts} from "../../../services/chartAccounts";
 import {CHART_ACCOUNT_LIST} from "../../../constants/lists";
 import Meta from "../../../components/layouts/Meta";
 const Brand: NextPage = () => {
@@ -55,7 +54,6 @@ const Brand: NextPage = () => {
 	]
 
 	function onRowCreate(callback:any){
-		dispatch(getListOfChartAccounts());
 		setCreateModalOpen(true);
 		setReloadCallback(() => () => callback());
 	}
@@ -69,16 +67,6 @@ const Brand: NextPage = () => {
 		dispatch(deleteRow(subject, row.id));
 	}
 
-	const getCreateConfiguration = () => {
-		const conf = JSON.parse(JSON.stringify(createConfiguration));
-		conf[0].options = list[CHART_ACCOUNT_LIST].map((item:any,idx:number) => {
-			return {
-				label: item.name,
-				value: item.id
-			}
-		})
-		return conf;
-	}
 
 	return (
 		<>

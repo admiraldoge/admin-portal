@@ -112,7 +112,7 @@ const tableReducer = createReducer(
 
 const listsReducer = createReducer(
 	{
-		[CHART_ACCOUNT_LIST]: []
+		[CHART_ACCOUNT_LIST.name]: []
 	},
 	(builder) => {
 		builder
