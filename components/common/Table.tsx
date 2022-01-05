@@ -29,7 +29,7 @@ import {
 	TableHead,
 	TableRow,
 	TextField,
-	Table as MuiTable, Pagination, TablePagination, Stack
+	Table as MuiTable, Pagination, TablePagination, Stack, useMediaQuery
 } from "@mui/material";
 import {RootState} from "../../redux/store";
 import Typography from "@mui/material/Typography";
@@ -171,6 +171,7 @@ const Table:FC<TableProps> = (
 	const classes = useStyles();
 	const dispatch = useAppDispatch();
 	const table = useAppSelector((state: RootState) => state.table[subject.name]);
+	const isMobile = useMediaQuery('(max-width:600px)');
 
 	function GlobalFilter({ preGlobalFilteredRows, globalFilter, setGlobalFilter}:any) {
 		const count = preGlobalFilteredRows.length
@@ -325,7 +326,13 @@ const Table:FC<TableProps> = (
 				<Grid container direction={"row"}>
 					<Grid item xs={12}>
 						<TableContainer component={Paper}>
-							<MuiTable {...getTableProps()} sx={{ minWidth: 1024 }} size="small" aria-label="a dense table" padding={'none'} stickyHeader={true}>
+							<MuiTable
+								{...getTableProps()} sx={{ minWidth: isMobile ? 'calc(100vw - 57px - 48px)' : 1024 }}
+								size="small"
+								aria-label="a dense table"
+								padding={'none'}
+								stickyHeader={true}
+							>
 								{headerGroups.map((headerGroup, idx:number) => {
 									return (
 										<colgroup {...headerGroup.getHeaderGroupProps()} key={idx}>

@@ -15,7 +15,7 @@ import {
 	ROLE,
 	USER
 } from "../constants/subjects";
-import {CHART_ACCOUNT_LIST} from "../constants/lists";
+import {CHART_ACCOUNT_LIST, TAX_TYPE_LIST, TRANSACTION_TYPE_LIST} from "../constants/lists";
 
 const layoutReducer = createReducer(
 	{
@@ -112,7 +112,9 @@ const tableReducer = createReducer(
 
 const listsReducer = createReducer(
 	{
-		[CHART_ACCOUNT_LIST.name]: []
+		[CHART_ACCOUNT_LIST.name]: [],
+		[TRANSACTION_TYPE_LIST.name]: [],
+		[TAX_TYPE_LIST.name]: [],
 	},
 	(builder) => {
 		builder

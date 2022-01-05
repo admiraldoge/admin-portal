@@ -21,7 +21,8 @@ import {
 	editConfiguration,
 	validationSchema
 } from "../../../configurations/forms/TaxTypeFormConfiguration";
-import {CHART_ACCOUNT_LIST} from "../../../constants/lists";
+import {CHART_ACCOUNT_LIST, TRANSACTION_TYPE_LIST} from "../../../constants/lists";
+import {getList} from "../../../services/listService";
 const TaxType: NextPage = () => {
 	const dispatch = useAppDispatch();
 	const router = useRouter();
@@ -57,6 +58,8 @@ const TaxType: NextPage = () => {
 	]
 
 	function onRowCreate(callback:any){
+		dispatch(getList(CHART_ACCOUNT_LIST));
+		dispatch(getList(TRANSACTION_TYPE_LIST));
 		setCreateModalOpen(true);
 		setReloadCallback(() => () => callback());
 	}
@@ -69,6 +72,23 @@ const TaxType: NextPage = () => {
 
 	function onRowDelete(row:any, callback:any){
 		dispatch(deleteRow(subject, row.id, callback));
+	}
+
+	const getCreateConfiguration = () => {
+		const conf = JSON.parse(JSON.stringify(createConfiguration));
+		conf[4].options = list[CHART_ACCOUNT_LIST.name].map((item:any,idx:number) => {
+			return {
+				label: item.name,
+				value: item.id
+			}
+		})
+		conf[6].options = list[TRANSACTION_TYPE_LIST.name].map((item:any,idx:number) => {
+			return {
+				label: item.name,
+				value: item.id
+			}
+		})
+		return conf;
 	}
 
 	return (
@@ -95,7 +115,7 @@ const TaxType: NextPage = () => {
 				<Modal open={createModalOpen} setOpen={setCreateModalOpen}>
 					<Form
 						method={'POST'}
-						config={createConfiguration}
+						config={getCreateConfiguration()}
 						validationSchema={validationSchema}
 						resourcePath={`${subject.path}`}
 						onSubmit={() => {setCreateModalOpen(false); reloadCallback();}}

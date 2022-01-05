@@ -32,6 +32,11 @@ export const createConfiguration = [
 	},
 	{
 		_template: 'select',
+		key: 'chartAccount',
+		label: 'Plan de cuentas'
+	},
+	{
+		_template: 'select',
 		key: 'type',
 		label: 'Tipo',
 		options: [
@@ -44,6 +49,11 @@ export const createConfiguration = [
 				value: 'SALE_TAX'
 			}
 			]
+	},
+	{
+		_template: 'select',
+		key: 'transactionTypeId',
+		label: 'Tipo de transanction'
 	},
 	{
 		_template: 'string_long',
