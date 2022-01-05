@@ -94,10 +94,64 @@ export const editConfiguration = [
 		required: true
 	},
 	{
+		_template: 'string',
+		key: 'percentage',
+		label: 'Porcentage',
+		type: 'number',
+		placeholder: '100',
+		required: true
+	},
+	{
+		_template: 'string',
+		key: 'percentageSubjectToTaxCredit',
+		label: 'Porcentage sujeto a C.F.',
+		type: 'number',
+		placeholder: '100',
+		required: true
+	},
+	{
+		_template: 'select',
+		key: 'chartAccountId',
+		label: 'Plan de cuentas',
+		options: [],
+		required: true
+	},
+	{
+		_template: 'select',
+		key: 'type',
+		label: 'Tipo',
+		options: [
+			{
+				label: 'Impuestos de compra',
+				value: 'PURCHASE_TAX'
+			},
+			{
+				label: 'Impuestos de venta',
+				value: 'SALE_TAX'
+			}
+		],
+		required: true
+	},
+	{
+		_template: 'select',
+		key: 'transactionTypeId',
+		label: 'Tipo de transanction',
+		options: [],
+		required: true
+	},
+	{
 		_template: 'string_long',
 		key: 'description',
 		label: 'Descripción',
 		type: 'text',
+		placeholder: 'ABC...'
+	},
+	{
+		_template: 'boolean',
+		key: 'transferTaxEnabled',
+		options: ['Habilitado','Desabilitado'],
+		label: 'Impuesto a las transferencias',
+		type: 'boolean',
 		placeholder: 'ABC...'
 	}
 ]

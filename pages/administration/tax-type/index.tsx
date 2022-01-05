@@ -65,6 +65,8 @@ const TaxType: NextPage = () => {
 	}
 
 	function onRowEdit(row:any, callback:any){
+		dispatch(getList(CHART_ACCOUNT_LIST));
+		dispatch(getList(TRANSACTION_TYPE_LIST));
 		setEditModalOpen(true);
 		setEntityId(row.id);
 		setReloadCallback(() => () => callback());
@@ -74,8 +76,8 @@ const TaxType: NextPage = () => {
 		dispatch(deleteRow(subject, row.id, callback));
 	}
 
-	const getCreateConfiguration = () => {
-		const conf = JSON.parse(JSON.stringify(createConfiguration));
+	const getConfiguration = (initialConf:any) => {
+		const conf = JSON.parse(JSON.stringify(initialConf));
 		conf[4].options = list[CHART_ACCOUNT_LIST.name].map((item:any,idx:number) => {
 			return {
 				label: item.name,
@@ -105,7 +107,7 @@ const TaxType: NextPage = () => {
 				<Modal open={editModalOpen} setOpen={setEditModalOpen}>
 					<ResourceContainer path={entityId ? `${subject.path}/${entityId}` : null} resourceName={'initialData'}>
 						<Form
-							config={editConfiguration}
+							config={getConfiguration(editConfiguration)}
 							validationSchema={validationSchema}
 							resourcePath={`${subject.path}/${entityId}`}
 							onSubmit={() => {setEditModalOpen(false); reloadCallback();}}
@@ -115,7 +117,7 @@ const TaxType: NextPage = () => {
 				<Modal open={createModalOpen} setOpen={setCreateModalOpen}>
 					<Form
 						method={'POST'}
-						config={getCreateConfiguration()}
+						config={getConfiguration(createConfiguration)}
 						validationSchema={validationSchema}
 						resourcePath={`${subject.path}`}
 						onSubmit={() => {setCreateModalOpen(false); reloadCallback();}}

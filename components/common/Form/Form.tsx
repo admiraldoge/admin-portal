@@ -69,10 +69,14 @@ const Form: FC<props> = (
 	const processValues = (values:any) => {
 		const res = {} as any;
 		config.forEach((item:{key: string, type:string}, idx:number) => {
-			//console.log('Proccesing: ',item.key,values[item.key], typeof values[item.key],values[item.key] === 'true');
+			console.log('Proccesing: ',item.key,values[item.key], typeof values[item.key],values[item.key] === 'true');
 			switch(item.type) {
 				case 'boolean':
-					res[item.key] = values[item.key] === 'true';
+					if(typeof values[item.key] === 'boolean') {
+						res[item.key] =  values[item.key];
+					} else {
+						res[item.key] = values[item.key] === 'true';
+					}
 					break;
 				default:
 					if(values[item.key] !== '') {
@@ -166,6 +170,7 @@ const Form: FC<props> = (
 				<FormLabel component="legend">{item.label}</FormLabel>
 				<FormControlLabel
 					key={`${idx}-${item.key}`}
+					id={item.key}
 					name={item.key}
 					control={
 						<Checkbox
@@ -173,7 +178,7 @@ const Form: FC<props> = (
 							onChange={(e, checked) => {
 								const se = e;
 								// @ts-ignore
-								se.target.value = se.target.checked;
+								se.target.value = se.target.checked ? 'true' : 'false';
 								//console.log('Checked',e.target.checked,e.target.value,checked);
 								formik.handleChange(se)
 							}}
