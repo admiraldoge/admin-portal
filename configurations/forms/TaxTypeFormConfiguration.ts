@@ -21,19 +21,22 @@ export const createConfiguration = [
 		key: 'percentage',
 		label: 'Porcentage',
 		type: 'number',
-		placeholder: '100'
+		placeholder: '100',
+		required: true
 	},
 	{
 		_template: 'string',
 		key: 'percentageSubjectToTaxCredit',
 		label: 'Porcentage sujeto a C.F.',
 		type: 'number',
-		placeholder: '100'
+		placeholder: '100',
+		required: true
 	},
 	{
 		_template: 'select',
-		key: 'chartAccount',
-		label: 'Plan de cuentas'
+		key: 'chartAccountId',
+		label: 'Plan de cuentas',
+		required: true
 	},
 	{
 		_template: 'select',
@@ -48,12 +51,14 @@ export const createConfiguration = [
 				label: 'Impuestos de venta',
 				value: 'SALE_TAX'
 			}
-			]
+			],
+		required: true
 	},
 	{
 		_template: 'select',
 		key: 'transactionTypeId',
-		label: 'Tipo de transanction'
+		label: 'Tipo de transanction',
+		required: true
 	},
 	{
 		_template: 'string_long',
@@ -103,5 +108,23 @@ export const validationSchema = {
 		.required('El nombre es obligatorio.'),
 	code: yup
 		.string()
-		.min(3,'El código debe tener al menos 3 carácteres.')
+		.min(3,'El código debe tener al menos 3 carácteres.'),
+	percentage: yup
+		.number()
+		.min(0,'El porcentaje debe ser positivo.'),
+	percentageSubjectToTaxCredit: yup
+		.number()
+		.min(0,'El porcentaje debe ser positivo.'),
+	chartAccountId: yup
+		.string()
+		.min(0,'El plan de cuentas es obligatorio.')
+		.required('El plan de cuentas es obligatorio.'),
+	type: yup
+		.string()
+		.min(0,'El tipo es obligatorio.')
+		.required('El tipo es obligatorio.'),
+	transactionTypeId: yup
+		.string()
+		.min(0,'El plan de cuentas es obligatorio.')
+		.required('El plan de cuentas es obligatorio.'),
 }

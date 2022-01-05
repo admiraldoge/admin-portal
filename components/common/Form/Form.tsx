@@ -8,7 +8,16 @@ import styles from '../../../styles/components/Form.module.scss';
 import _ from 'lodash';
 import {updateObjectInArray} from "../../../utils/table";
 import Checkbox from "@mui/material/Checkbox";
-import {FormControl, FormControlLabel, FormLabel, RadioGroup, Radio, InputLabel, Select} from "@mui/material";
+import {
+	FormControl,
+	FormControlLabel,
+	FormLabel,
+	RadioGroup,
+	Radio,
+	InputLabel,
+	Select,
+	FormHelperText
+} from "@mui/material";
 import Snackbar from "../Snackbar";
 import {useAppDispatch} from "../../../redux/hooks";
 import {setLayout} from "../../../redux/actions";
@@ -110,6 +119,7 @@ const Form: FC<props> = (
 	const StringField = (item:any, idx:number) => {
 		return (
 			<TextField
+				type={item.type ? item.type : 'text'}
 				size={'small'}
 				fullWidth
 				key={`${idx}-${item.key}`}
@@ -208,7 +218,11 @@ const Form: FC<props> = (
 			return <MenuItem key={`option-${idx}-${option.value}`} value={option.value}>{option.label}</MenuItem>;
 		})
 		return (
-			<FormControl fullWidth key={`select-${idx}`} className={styles.formItem}>
+			<FormControl
+				fullWidth key={`select-${idx}`}
+				className={styles.formItem}
+				required={item.required}
+			>
 				<InputLabel id="demo-simple-select-label">{item.label}</InputLabel>
 				<Select
 					size={'small'}
@@ -216,9 +230,13 @@ const Form: FC<props> = (
 					value={formik.values[item.key]}
 					label={item.label}
 					onChange={formik.handleChange}
+					error={Boolean(formik.errors[item.key])}
 				>
 					{options}
 				</Select>
+				{Boolean(formik.errors[item.key])
+				&& <FormHelperText error={true}>{formik.errors[item.key]}</FormHelperText>
+				}
 			</FormControl>
 		)
 	}
