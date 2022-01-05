@@ -20,6 +20,8 @@ import {
 	editConfiguration,
 	validationSchema
 } from "../../../configurations/forms/ExpenseTypeFormConfiguration";
+import {getList} from "../../../services/listService";
+import {CHART_ACCOUNT_LIST} from "../../../constants/lists";
 
 const ExpenseType: NextPage = () => {
 	const dispatch = useAppDispatch();
@@ -54,11 +56,13 @@ const ExpenseType: NextPage = () => {
 	]
 
 	function onRowCreate(callback:any){
+		dispatch(getList(CHART_ACCOUNT_LIST));
 		setCreateModalOpen(true);
 		setReloadCallback(() => () => callback());
 	}
 
 	function onRowEdit(row:any, callback:any){
+		dispatch(getList(CHART_ACCOUNT_LIST));
 		setEditModalOpen(true);
 		setEntityId(row.id);
 		setReloadCallback(() => () => callback());
@@ -66,6 +70,24 @@ const ExpenseType: NextPage = () => {
 
 	function onRowDelete(row:any, callback:any){
 		dispatch(deleteRow(subject, row.id, callback));
+	}
+
+	const getConfiguration = (initialConf:any) => {
+		const conf = JSON.parse(JSON.stringify(initialConf));
+		conf[3].options = list[CHART_ACCOUNT_LIST.name].map((item:any,idx:number) => {
+			return {
+				label: item.name,
+				value: item.id
+			}
+		})
+		conf[4].options = list[CHART_ACCOUNT_LIST.name].map((item:any,idx:number) => {
+			return {
+				label: item.name,
+				value: item.id
+			}
+		})
+
+		return conf;
 	}
 
 	return (
@@ -82,7 +104,7 @@ const ExpenseType: NextPage = () => {
 				<Modal open={editModalOpen} setOpen={setEditModalOpen}>
 					<ResourceContainer path={entityId ? `${subject.path}/${entityId}` : null} resourceName={'initialData'}>
 						<Form
-							config={editConfiguration}
+							config={getConfiguration(editConfiguration)}
 							validationSchema={validationSchema}
 							resourcePath={`${subject.path}/${entityId}`}
 							onSubmit={() => {setEditModalOpen(false); reloadCallback();}}
@@ -92,7 +114,7 @@ const ExpenseType: NextPage = () => {
 				<Modal open={createModalOpen} setOpen={setCreateModalOpen}>
 					<Form
 						method={'POST'}
-						config={createConfiguration}
+						config={getConfiguration(createConfiguration)}
 						validationSchema={validationSchema}
 						resourcePath={`${subject.path}`}
 						onSubmit={() => {setCreateModalOpen(false); reloadCallback();}}

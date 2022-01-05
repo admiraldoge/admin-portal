@@ -22,7 +22,21 @@ export const createConfiguration = [
 		label: 'Descripción',
 		type: 'text',
 		placeholder: 'ABC...'
-	}
+	},
+	{
+		_template: 'select',
+		key: 'costChartAccountId',
+		label: 'Cuenta contable costo',
+		options: [],
+		required: true
+	},
+	{
+		_template: 'select',
+		key: 'expenseChartAccountId',
+		label: 'Cuenta contable gasto',
+		options: [],
+		required: true
+	},
 ]
 
 export const editConfiguration = [
@@ -47,7 +61,21 @@ export const editConfiguration = [
 		label: 'Descripción',
 		type: 'text',
 		placeholder: 'ABC...'
-	}
+	},
+	{
+		_template: 'select',
+		key: 'costChartAccountId',
+		label: 'Cuenta contable costo',
+		options: [],
+		required: true
+	},
+	{
+		_template: 'select',
+		key: 'expenseChartAccountId',
+		label: 'Cuenta contable gasto',
+		options: [],
+		required: true
+	},
 ]
 export const validationSchema = {
 	name: yup

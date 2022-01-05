@@ -112,7 +112,7 @@ export const editConfiguration = [
 	{
 		_template: 'select',
 		key: 'chartAccountId',
-		label: 'Plan de cuentas',
+		label: 'Cuenta contable',
 		options: [],
 		required: true
 	},
