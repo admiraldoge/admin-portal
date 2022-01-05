@@ -1,19 +1,49 @@
 import * as yup from "yup";
 
-export const editModalConfiguration = [
+export const createConfiguration = [
 	{
 		_template: 'string',
 		key: 'name',
 		label: 'Nombre',
 		type: 'text',
-		placeholder: 'abc...'
+		placeholder: 'Boliviano'
 	},
 	{
 		_template: 'string',
 		key: 'iso',
 		label: 'ISO',
 		type: 'text',
-		placeholder: 'abc...'
+		placeholder: 'BOB'
+	},
+	{
+		_template: 'string',
+		key: 'symbol',
+		label: 'Símbolo',
+		type: 'text',
+		placeholder: 'Bs.'
+	},
+]
+export const editConfiguration = [
+	{
+		_template: 'string',
+		key: 'name',
+		label: 'Nombre',
+		type: 'text',
+		placeholder: 'Boliviano'
+	},
+	{
+		_template: 'string',
+		key: 'iso',
+		label: 'ISO',
+		type: 'text',
+		placeholder: 'BOB'
+	},
+	{
+		_template: 'string',
+		key: 'symbol',
+		label: 'Símbolo',
+		type: 'text',
+		placeholder: 'Bs.'
 	},
 ]
 export const validationSchema = {

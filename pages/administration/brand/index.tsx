@@ -67,7 +67,6 @@ const Brand: NextPage = () => {
 		dispatch(deleteRow(subject, row.id));
 	}
 
-
 	return (
 		<>
 			<Meta/>
@@ -94,7 +93,7 @@ const Brand: NextPage = () => {
 					<Modal open={createModalOpen} setOpen={setCreateModalOpen}>
 						<Form
 							method={'POST'}
-							config={getCreateConfiguration()}
+							config={createConfiguration}
 							validationSchema={validationSchema}
 							resourcePath={`${subject.path}`}
 							onSubmit={() => {setCreateModalOpen(false); reloadCallback();}}
