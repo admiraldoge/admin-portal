@@ -6,3 +6,4 @@ export const INCOME_TYPE_LIST = {name: 'INCOME_TYPE_LIST', path: '/income-types'
 export const CATEGORY_LIST = {name: 'CATEGORY_LIST', path: '/categories'}
 export const BRAND_LIST = {name: 'BRAND_LIST', path: '/brands'}
 export const UNIT_OF_MEASURE_LIST = {name: 'UNIT_OF_MEASURE_LIST', path: '/units-of-measure'}
+export const ACTIVITY_TYPE_LIST = {name: 'ACTIVITY_TYPE_LIST', path: '/activity-types'}
