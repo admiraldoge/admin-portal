@@ -11,7 +11,7 @@ import {
 	ADMINISTRATION_TAX_TYPE,
 	ADMINISTRATION_TRANSACTION_TYPE,
 	ADMINISTRATION_UNIT_OF_MEASURE,
-	CURRENCY,
+	CURRENCY, PURCHASE_ORDER,
 	ROLE,
 	USER
 } from "../constants/subjects";
@@ -103,6 +103,7 @@ const tableReducer = createReducer(
 		[ADMINISTRATION_COUNTRY]: {pageCount: 0, items: [], total: 0},
 		[ADMINISTRATION_CITY]: {pageCount: 0, items: [], total: 0},
 		[ADMINISTRATION_ITEM.name]: {pageCount: 0, items: [], total: 0},
+		[PURCHASE_ORDER.name]: {pageCount: 0, items: [], total: 0},
 	},
 	(builder) => {
 		builder

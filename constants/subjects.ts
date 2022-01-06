@@ -16,6 +16,7 @@ export const ADMINISTRATION_COUNTRY = 'ADMINISTRATION_COUNTRY';
 export const ADMINISTRATION_CITY = 'ADMINISTRATION_CITY';
 export const ADMINISTRATION_ROLE = {name: 'ADMINISTRATION_ROLE', path: '/roles'};
 export const ADMINISTRATION_ITEM = {name: 'ADMINISTRATION_ITEM', path: '/items'};
+export const PURCHASE_ORDER = {name: 'PURCHASE_ORDER', path: '/items'};
 
 
 export const SUBJECTS = [USER, ROLE, CURRENCY, LAYOUT, COMPANY];

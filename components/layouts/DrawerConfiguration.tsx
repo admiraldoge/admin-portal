@@ -18,6 +18,8 @@ import IsoIcon from '@mui/icons-material/Iso';
 import ExposureIcon from '@mui/icons-material/Exposure';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import InventoryIcon from '@mui/icons-material/Inventory';
+import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
+import ReceiptIcon from '@mui/icons-material/Receipt';
 import {
 	ADMINISTRATION_BRAND,
 	ADMINISTRATION_CATEGORY, ADMINISTRATION_CITY,
@@ -27,7 +29,7 @@ import {
 	ADMINISTRATION_PAYMENT_METHOD,
 	ADMINISTRATION_TAX_TYPE,
 	ADMINISTRATION_TRANSACTION_TYPE,
-	ADMINISTRATION_UNIT_OF_MEASURE
+	ADMINISTRATION_UNIT_OF_MEASURE, PURCHASE_ORDER
 } from "../../constants/subjects";
 
 export const CONFIGURATION = 'CONFIGURATION';
@@ -40,6 +42,24 @@ export const showDrawerCategory = {
 
 
 export const conf = [
+	{
+		_template: 'module',
+		path: 'purchase',
+		icon: <PointOfSaleIcon/>,
+		subject: "PURCHASE",
+		loc: 'Compras',
+		expanded: false,
+		children: [
+			{
+				_template: 'subject',
+				path: '/purchase/order',
+				icon: <ReceiptIcon/>,
+				subject: PURCHASE_ORDER.name,
+				loc: 'Pedidos',
+				selected: false
+			},
+			]
+	},
 	{
 		_template: 'module',
 		path: 'administration',
