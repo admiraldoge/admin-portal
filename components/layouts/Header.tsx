@@ -10,7 +10,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import {alpha, InputBase} from "@mui/material";
+import {alpha, FormControl, InputBase, InputLabel, Select} from "@mui/material";
 import Badge from '@mui/material/Badge';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
@@ -133,6 +133,10 @@ const Header: React.FunctionComponent<headerProps> = ({}) => {
 		router.push("/login");
 	}
 
+	const handleActivityChange = (e:any) => {
+		dispatch(setLayout({activity: e.target.value }))
+	}
+
 	const menuId = 'primary-search-account-menu';
 	const renderMenu = (
 		<Menu
@@ -175,6 +179,9 @@ const Header: React.FunctionComponent<headerProps> = ({}) => {
 			onClose={handleMobileMenuClose}
 		>
 			<MenuItem>
+				<p>Messages</p>
+			</MenuItem>
+			<MenuItem>
 				<IconButton size="large" aria-label="show 4 new mails" color="inherit">
 					<Badge badgeContent={4} color="error">
 						<MailIcon />
@@ -188,7 +195,7 @@ const Header: React.FunctionComponent<headerProps> = ({}) => {
 					aria-label="show 17 new notifications"
 					color="inherit"
 				>
-					<Badge badgeContent={17} color="error">
+					<Badge badgeContent={100} color="error">
 						<NotificationsIcon />
 					</Badge>
 				</IconButton>
@@ -237,6 +244,24 @@ const Header: React.FunctionComponent<headerProps> = ({}) => {
 				</Search>
 				<Box sx={{ flexGrow: 1 }} />
 				<Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+					<FormControl fullWidth>
+						<Select
+							labelId="demo-simple-select-label"
+							id="demo-simple-select"
+							value={layout.activity}
+							onChange={handleActivityChange}
+							variant={'outlined'}
+							style={{
+								backgroundColor: 'white',
+								width: '120px',
+							}}
+							size={'small'}
+						>
+							<MenuItem value={10}>Ten</MenuItem>
+							<MenuItem value={20}>Twenty</MenuItem>
+							<MenuItem value={30}>Thirty</MenuItem>
+						</Select>
+					</FormControl>
 					<IconButton size="large" aria-label="show 4 new mails" color="inherit">
 						<Badge badgeContent={4} color="error">
 							<MailIcon />

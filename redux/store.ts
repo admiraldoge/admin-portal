@@ -43,7 +43,8 @@ const layoutReducer = createReducer(
 			message: ''
 		},
 		theme: 'light',
-		initialPath: "/panel"
+		initialPath: "/panel",
+		activity: ''
 	},
 	(builder) => {
 		builder
