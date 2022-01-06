@@ -7,7 +7,7 @@ import {
 	ADMINISTRATION_COUNTRY,
 	ADMINISTRATION_EXPENSE_TYPE,
 	ADMINISTRATION_INCOME_TYPE,
-	ADMINISTRATION_PAYMENT_METHOD,
+	ADMINISTRATION_PAYMENT_METHOD, ADMINISTRATION_ROLE,
 	ADMINISTRATION_TAX_TYPE,
 	ADMINISTRATION_TRANSACTION_TYPE,
 	ADMINISTRATION_UNIT_OF_MEASURE,
@@ -80,7 +80,7 @@ const meReducer = createReducer(
 
 const tableReducer = createReducer(
 	{
-		[ROLE]: {pageCount: 0, items: [], total: 0},
+		[ADMINISTRATION_ROLE.name]: {pageCount: 0, items: [], total: 0},
 		[USER]: {pageCount: 0, items: [], total: 0},
 		[CURRENCY]: {pageCount: 0, items: [], total: 0},
 		[ADMINISTRATION_CHART_ACCOUNT]: {pageCount: 0, items: [], total: 0},

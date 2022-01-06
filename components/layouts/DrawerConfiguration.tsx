@@ -150,7 +150,15 @@ export const conf = [
 				subject: ADMINISTRATION_CITY,
 				loc: 'Ciudades',
 				selected: false
-			}
+			},
+			{
+				_template: 'subject',
+				path: '/administration/role',
+				icon: <EmojiPeopleIcon/>,
+				subject: "ADMINISTRATION_ROLE",
+				loc: 'Roles',
+				selected: false
+			},
 		]
 	},
 	{
@@ -161,14 +169,6 @@ export const conf = [
 		loc: 'Configuración',
 		expanded: false,
 		children: [
-			{
-				_template: 'subject',
-				path: '/configuration/role',
-				icon: <EmojiPeopleIcon/>,
-				subject: "CONFIGURATION_ROLE",
-				loc: 'Roles',
-				selected: false
-			},
 			{
 				_template: 'subject',
 				path: '/configuration/company',

@@ -69,7 +69,6 @@ const Brand: NextPage = () => {
 
 	return (
 		<>
-			<Meta/>
 			<Grid className={styles.ctn}>
 				<Grid item xs={12}>
 					<Table
