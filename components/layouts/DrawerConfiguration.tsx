@@ -17,6 +17,7 @@ import SquareFootIcon from '@mui/icons-material/SquareFoot';
 import IsoIcon from '@mui/icons-material/Iso';
 import ExposureIcon from '@mui/icons-material/Exposure';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import InventoryIcon from '@mui/icons-material/Inventory';
 import {
 	ADMINISTRATION_BRAND,
 	ADMINISTRATION_CATEGORY, ADMINISTRATION_CITY,
@@ -47,6 +48,14 @@ export const conf = [
 		loc: 'Administración',
 		expanded: false,
 		children: [
+			{
+				_template: 'subject',
+				path: '/administration/item',
+				icon: <InventoryIcon/>,
+				subject: "ADMINISTRATION_ITEM",
+				loc: 'Items',
+				selected: false
+			},
 			{
 				_template: 'subject',
 				path: '/administration/user',

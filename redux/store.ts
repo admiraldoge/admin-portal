@@ -6,7 +6,7 @@ import {
 	ADMINISTRATION_CHART_ACCOUNT, ADMINISTRATION_CITY,
 	ADMINISTRATION_COUNTRY,
 	ADMINISTRATION_EXPENSE_TYPE,
-	ADMINISTRATION_INCOME_TYPE,
+	ADMINISTRATION_INCOME_TYPE, ADMINISTRATION_ITEM,
 	ADMINISTRATION_PAYMENT_METHOD, ADMINISTRATION_ROLE,
 	ADMINISTRATION_TAX_TYPE,
 	ADMINISTRATION_TRANSACTION_TYPE,
@@ -15,7 +15,15 @@ import {
 	ROLE,
 	USER
 } from "../constants/subjects";
-import {CHART_ACCOUNT_LIST, TAX_TYPE_LIST, TRANSACTION_TYPE_LIST} from "../constants/lists";
+import {
+	BRAND_LIST,
+	CATEGORY_LIST,
+	CHART_ACCOUNT_LIST,
+	EXPENSE_TYPE_LIST,
+	INCOME_TYPE_LIST,
+	TAX_TYPE_LIST,
+	TRANSACTION_TYPE_LIST, UNIT_OF_MEASURE_LIST
+} from "../constants/lists";
 
 const layoutReducer = createReducer(
 	{
@@ -94,6 +102,7 @@ const tableReducer = createReducer(
 		[ADMINISTRATION_EXPENSE_TYPE]: {pageCount: 0, items: [], total: 0},
 		[ADMINISTRATION_COUNTRY]: {pageCount: 0, items: [], total: 0},
 		[ADMINISTRATION_CITY]: {pageCount: 0, items: [], total: 0},
+		[ADMINISTRATION_ITEM.name]: {pageCount: 0, items: [], total: 0},
 	},
 	(builder) => {
 		builder
@@ -115,6 +124,11 @@ const listsReducer = createReducer(
 		[CHART_ACCOUNT_LIST.name]: [],
 		[TRANSACTION_TYPE_LIST.name]: [],
 		[TAX_TYPE_LIST.name]: [],
+		[EXPENSE_TYPE_LIST.name]: [],
+		[INCOME_TYPE_LIST.name]: [],
+		[CATEGORY_LIST.name]: [],
+		[BRAND_LIST.name]: [],
+		[UNIT_OF_MEASURE_LIST.name]: [],
 	},
 	(builder) => {
 		builder
