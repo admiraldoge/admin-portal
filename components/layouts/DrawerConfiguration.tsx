@@ -21,6 +21,7 @@ import InventoryIcon from '@mui/icons-material/Inventory';
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import {
+	ADMINISTRATION_ACTIVITY, ADMINISTRATION_ACTIVITY_TYPE,
 	ADMINISTRATION_BRAND,
 	ADMINISTRATION_CATEGORY, ADMINISTRATION_CITY,
 	ADMINISTRATION_COUNTRY,
@@ -186,6 +187,28 @@ export const conf = [
 				icon: <EmojiPeopleIcon/>,
 				subject: "ADMINISTRATION_ROLE",
 				loc: 'Roles',
+				selected: false
+			},
+			{
+				_template: 'title',
+				loc: 'Actividades',
+				path: '/others',
+				icon: <ExtensionIcon/>
+			},
+			{
+				_template: 'subject',
+				path: '/administration/activity',
+				icon: <EmojiPeopleIcon/>,
+				subject: ADMINISTRATION_ACTIVITY.name,
+				loc: 'Actividades',
+				selected: false
+			},
+			{
+				_template: 'subject',
+				path: '/administration/activity-type',
+				icon: <EmojiPeopleIcon/>,
+				subject: ADMINISTRATION_ACTIVITY_TYPE.name,
+				loc: 'Tipos de actividades',
 				selected: false
 			},
 		]
