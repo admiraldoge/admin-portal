@@ -14,7 +14,7 @@ type actionsModalProps = {
 const Modal: FC<actionsModalProps> = ({children, open, setOpen, width= 400}) => {
 
 	const isMobile = useMediaQuery('(max-width:600px)');
-	const responsiveWidth = isMobile ? 350 : (width ? width : 200);
+	const responsiveWidth = isMobile ? 350 : (width ? width : 400);
 	const style = {
 		position: 'absolute' as 'absolute',
 		top: '50%',
