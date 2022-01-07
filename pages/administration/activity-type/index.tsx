@@ -4,7 +4,7 @@ import styles from '../../../styles/pages/Role.module.scss';
 import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
 import {useRouter} from "next/router";
 import Table from "../../../components/common/Table";
-import {ADMINISTRATION_ACTIVITY} from "../../../constants/subjects";
+import {ADMINISTRATION_ACTIVITY, ADMINISTRATION_ACTIVITY_TYPE} from "../../../constants/subjects";
 import Grid from "@mui/material/Grid";
 import {RootState} from "../../../redux/store";
 import {deleteRow, getPage} from "../../../services/tableService";
@@ -15,11 +15,11 @@ import {
 	createConfiguration,
 	editConfiguration,
 	validationSchema
-} from "../../../configurations/forms/ActivityFormConfiguration";
+} from "../../../configurations/forms/ActivityTypeFormConfiguration";
 import {ACTIVITY_TYPE_LIST, CHART_ACCOUNT_LIST, TRANSACTION_TYPE_LIST} from "../../../constants/lists";
 import {getList} from "../../../services/listService";
 
-const Activity: NextPage = () => {
+const ActivityType: NextPage = () => {
 	const dispatch = useAppDispatch();
 	const router = useRouter();
 	const me = useAppSelector((state: RootState) => state.me);
@@ -53,29 +53,21 @@ const Activity: NextPage = () => {
 	]
 
 	function onRowCreate(callback:any){
-		dispatch(getList(ACTIVITY_TYPE_LIST));
 		setCreateModalOpen(true);
 		setReloadCallback(() => () => callback());
 	}
 
 	function onRowEdit(row:any, callback:any){
-		dispatch(getList(ACTIVITY_TYPE_LIST));
 		setEditModalOpen(true);
 		setEntityId(row.id);
 	}
 
 	function onRowDelete(row:any){
-		dispatch(deleteRow(ADMINISTRATION_ACTIVITY, row.id));
+		dispatch(deleteRow(ADMINISTRATION_ACTIVITY_TYPE, row.id));
 	}
 
 	const getConfiguration = (initialConf:any) => {
 		const conf = JSON.parse(JSON.stringify(initialConf));
-		conf[3].options = list[ACTIVITY_TYPE_LIST.name].map((item:any,idx:number) => {
-			return {
-				label: item.name,
-				value: item.id
-			}
-		})
 		return conf;
 	}
 
@@ -85,7 +77,7 @@ const Activity: NextPage = () => {
 			<Grid className={styles.ctn}>
 				<Grid item xs={12}>
 					<Table
-						subject={ADMINISTRATION_ACTIVITY}
+						subject={ADMINISTRATION_ACTIVITY_TYPE}
 						columns={columns} defaultPageSize={25} pageQuery={getPage} serverData={true}
 						globalFilterEnabled={true}
 						onRowCreate={onRowCreate}
@@ -93,11 +85,11 @@ const Activity: NextPage = () => {
 						onRowUpdate={onRowEdit}
 					/>
 					<Modal open={editModalOpen} setOpen={setEditModalOpen}>
-						<ResourceContainer path={entityId ? `${ADMINISTRATION_ACTIVITY.path}/${entityId}` : null} resourceName={'initialData'}>
+						<ResourceContainer path={entityId ? `${ADMINISTRATION_ACTIVITY_TYPE.path}/${entityId}` : null} resourceName={'initialData'}>
 							<Form
 								config={getConfiguration(editConfiguration)}
 								validationSchema={validationSchema}
-								resourcePath={`${ADMINISTRATION_ACTIVITY.path}/${entityId}`}
+								resourcePath={`${ADMINISTRATION_ACTIVITY_TYPE.path}/${entityId}`}
 								onSubmit={() => {setEditModalOpen(false)}}
 							/>
 						</ResourceContainer>
@@ -107,7 +99,7 @@ const Activity: NextPage = () => {
 							method={'POST'}
 							config={getConfiguration(createConfiguration)}
 							validationSchema={validationSchema}
-							resourcePath={`${ADMINISTRATION_ACTIVITY.path}`}
+							resourcePath={`${ADMINISTRATION_ACTIVITY_TYPE.path}`}
 							onSubmit={() => {setCreateModalOpen(false); reloadCallback();}}
 						/>
 					</Modal>
@@ -118,4 +110,4 @@ const Activity: NextPage = () => {
 	)
 }
 
-export default Activity
+export default ActivityType

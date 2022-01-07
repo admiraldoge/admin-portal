@@ -17,6 +17,7 @@ import {
 	USER
 } from "../constants/subjects";
 import {
+	ACTIVITY_TYPE_LIST,
 	BRAND_LIST,
 	CATEGORY_LIST,
 	CHART_ACCOUNT_LIST,
@@ -134,6 +135,7 @@ const listsReducer = createReducer(
 		[CATEGORY_LIST.name]: [],
 		[BRAND_LIST.name]: [],
 		[UNIT_OF_MEASURE_LIST.name]: [],
+		[ACTIVITY_TYPE_LIST.name]: [],
 	},
 	(builder) => {
 		builder
