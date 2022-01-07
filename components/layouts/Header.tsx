@@ -22,6 +22,8 @@ import Menu from '@mui/material/Menu';
 import {useRouter} from "next/router";
 import Box from '@mui/material/Box';
 import {logout} from "../../services/auth";
+import {getList} from "../../services/listService";
+import {ACTIVITY_TYPE_LIST} from "../../constants/lists";
 
 type headerProps = {
 
@@ -94,11 +96,16 @@ const AppBar = styled(MuiAppBar, {
 const Header: React.FunctionComponent<headerProps> = ({}) => {
 	const dispatch = useAppDispatch();
 	const layout = useAppSelector((state: RootState) => state.layout);
+	const list = useAppSelector((state: RootState) => state.list);
 	const theme = useTheme();
 	const router = useRouter();
 	const [open, setOpen] = React.useState(false);
 
 	const showHeader = router.pathname !== "/login" && router.pathname !== "/" ? false : true;
+
+	useEffect(() => {
+		dispatch(getList(ACTIVITY_TYPE_LIST));
+	},[])
 
 	const handleDrawerOpen = () => {
 		dispatch(setLayout({drawerExpanded: true}));
@@ -135,6 +142,29 @@ const Header: React.FunctionComponent<headerProps> = ({}) => {
 
 	const handleActivityChange = (e:any) => {
 		dispatch(setLayout({activity: e.target.value }))
+	}
+
+	const ActivitySelector = () => {
+		let activities = list[ACTIVITY_TYPE_LIST.name].map((activity:any, idx:number) => {
+			return <MenuItem key={`activity-selector-${idx}`} value={activity.id}>{activity.name}</MenuItem>;
+		})
+		activities = [<MenuItem key={`activity-selector-${-1}`} value={-1}>Todos</MenuItem>, ...activities];
+		return (
+			<Select
+				labelId="demo-simple-select-label"
+				id="demo-simple-select"
+				value={layout.activity}
+				onChange={handleActivityChange}
+				variant={'outlined'}
+				style={{
+					backgroundColor: 'white',
+					width: '200px',
+				}}
+				size={'small'}
+			>
+				{activities}
+			</Select>
+		)
 	}
 
 	const menuId = 'primary-search-account-menu';
@@ -245,22 +275,7 @@ const Header: React.FunctionComponent<headerProps> = ({}) => {
 				<Box sx={{ flexGrow: 1 }} />
 				<Box sx={{ display: { xs: 'none', md: 'flex' } }}>
 					<FormControl fullWidth>
-						<Select
-							labelId="demo-simple-select-label"
-							id="demo-simple-select"
-							value={layout.activity}
-							onChange={handleActivityChange}
-							variant={'outlined'}
-							style={{
-								backgroundColor: 'white',
-								width: '120px',
-							}}
-							size={'small'}
-						>
-							<MenuItem value={10}>Ten</MenuItem>
-							<MenuItem value={20}>Twenty</MenuItem>
-							<MenuItem value={30}>Thirty</MenuItem>
-						</Select>
+						{ActivitySelector()}
 					</FormControl>
 					<IconButton size="large" aria-label="show 4 new mails" color="inherit">
 						<Badge badgeContent={4} color="error">
