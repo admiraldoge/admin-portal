@@ -15,14 +15,12 @@ import Modal from "../../../components/common/Modal";
 import Form from "../../../components/common/Form/Form";
 import ResourceContainer from "../../../components/containers/ResourceContainer";
 import {
-	ADMINISTRATION_TAX_TYPE_PATH,
-} from "../../../resources/paths";
-import {
 	createConfiguration,
 	editConfiguration,
 	validationSchema
-} from "../../../configurations/forms/InputItemFormConfiguration";
+} from "../../../configurations/forms/OrderFormConfiguration";
 import {
+	ACTIVITY_LIST,
 	BRAND_LIST,
 	CATEGORY_LIST,
 	CHART_ACCOUNT_LIST,
@@ -67,18 +65,15 @@ const Item: NextPage = () => {
 	]
 
 	function onRowCreate(callback:any){
-		dispatch(getList(CHART_ACCOUNT_LIST));
+		dispatch(getList(ACTIVITY_LIST));
 		dispatch(getList(EXPENSE_TYPE_LIST));
-		dispatch(getList(UNIT_OF_MEASURE_LIST));
-		dispatch(getList(CATEGORY_LIST));
-		dispatch(getList(BRAND_LIST));
 		setCreateModalOpen(true);
 		setReloadCallback(() => () => callback());
 	}
 
 	function onRowEdit(row:any, callback:any){
-		dispatch(getList(CHART_ACCOUNT_LIST));
-		dispatch(getList(TRANSACTION_TYPE_LIST));
+		dispatch(getList(ACTIVITY_LIST));
+		dispatch(getList(EXPENSE_TYPE_LIST));
 		setEditModalOpen(true);
 		setEntityId(row.id);
 		setReloadCallback(() => () => callback());
@@ -90,31 +85,13 @@ const Item: NextPage = () => {
 
 	const getConfiguration = (initialConf:any) => {
 		const conf = JSON.parse(JSON.stringify(initialConf));
-		conf[0].options = list[EXPENSE_TYPE_LIST.name].map((item:any,idx:number) => {
+		conf[0].options = list[ACTIVITY_LIST.name].map((item:any,idx:number) => {
 			return {
 				label: item.name,
 				value: item.id
 			}
 		})
-		conf[1].options = list[CATEGORY_LIST.name].map((item:any,idx:number) => {
-			return {
-				label: item.name,
-				value: item.id
-			}
-		})
-		conf[2].options = list[BRAND_LIST.name].map((item:any,idx:number) => {
-			return {
-				label: item.name,
-				value: item.id
-			}
-		})
-		conf[3].options = list[UNIT_OF_MEASURE_LIST.name].map((item:any,idx:number) => {
-			return {
-				label: item.name,
-				value: item.id
-			}
-		})
-		conf[9].options = list[CHART_ACCOUNT_LIST.name].map((item:any,idx:number) => {
+		conf[1].options = list[EXPENSE_TYPE_LIST.name].map((item:any,idx:number) => {
 			return {
 				label: item.name,
 				value: item.id
