@@ -5,8 +5,7 @@ import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
 import {useRouter} from "next/router";
 import Table from "../../../components/common/Table";
 import {
-	ADMINISTRATION_ITEM,
-	ADMINISTRATION_TAX_TYPE,
+	ADMINISTRATION_INPUT_ITEM,
 } from "../../../constants/subjects";
 import Grid from "@mui/material/Grid";
 import {RootState} from "../../../redux/store";
@@ -15,13 +14,10 @@ import Modal from "../../../components/common/Modal";
 import Form from "../../../components/common/Form/Form";
 import ResourceContainer from "../../../components/containers/ResourceContainer";
 import {
-	ADMINISTRATION_TAX_TYPE_PATH,
-} from "../../../resources/paths";
-import {
 	createConfiguration,
 	editConfiguration,
 	validationSchema
-} from "../../../configurations/forms/ItemFormConfiguration";
+} from "../../../configurations/forms/InputItemFormConfiguration";
 import {
 	BRAND_LIST,
 	CATEGORY_LIST,
@@ -32,7 +28,7 @@ import {
 	UNIT_OF_MEASURE_LIST
 } from "../../../constants/lists";
 import {getList} from "../../../services/listService";
-const Item: NextPage = () => {
+const InputItem: NextPage = () => {
 	const dispatch = useAppDispatch();
 	const router = useRouter();
 	const me = useAppSelector((state: RootState) => state.me);
@@ -84,7 +80,7 @@ const Item: NextPage = () => {
 	}
 
 	function onRowDelete(row:any, callback:any){
-		dispatch(deleteRow(ADMINISTRATION_ITEM, row.id, callback));
+		dispatch(deleteRow(ADMINISTRATION_INPUT_ITEM, row.id, callback));
 	}
 
 	const getConfiguration = (initialConf:any) => {
@@ -113,6 +109,12 @@ const Item: NextPage = () => {
 				value: item.id
 			}
 		})
+		conf[8].options = list[CHART_ACCOUNT_LIST.name].map((item:any,idx:number) => {
+			return {
+				label: item.name,
+				value: item.id
+			}
+		})
 		conf[9].options = list[CHART_ACCOUNT_LIST.name].map((item:any,idx:number) => {
 			return {
 				label: item.name,
@@ -126,7 +128,7 @@ const Item: NextPage = () => {
 		<Grid className={styles.ctn}>
 			<Grid item xs={12}>
 				<Table
-					subject={ADMINISTRATION_ITEM}
+					subject={ADMINISTRATION_INPUT_ITEM}
 					columns={columns} defaultPageSize={25} pageQuery={getPage} serverData={true}
 					globalFilterEnabled={true}
 					onRowCreate={onRowCreate}
@@ -138,16 +140,16 @@ const Item: NextPage = () => {
 						method={'POST'}
 						config={getConfiguration(createConfiguration)}
 						validationSchema={validationSchema}
-						resourcePath={`${ADMINISTRATION_ITEM.path}`}
+						resourcePath={`${ADMINISTRATION_INPUT_ITEM.path}`}
 						onSubmit={() => {setCreateModalOpen(false); reloadCallback();}}
 					/>
 				</Modal>
 				<Modal open={editModalOpen} setOpen={setEditModalOpen}>
-					<ResourceContainer path={entityId ? `${ADMINISTRATION_ITEM.path}/${entityId}` : null} resourceName={'initialData'}>
+					<ResourceContainer path={entityId ? `${ADMINISTRATION_INPUT_ITEM.path}/${entityId}` : null} resourceName={'initialData'}>
 						<Form
 							config={getConfiguration(editConfiguration)}
 							validationSchema={validationSchema}
-							resourcePath={`${ADMINISTRATION_ITEM.path}/${entityId}`}
+							resourcePath={`${ADMINISTRATION_INPUT_ITEM.path}/${entityId}`}
 							onSubmit={() => {setEditModalOpen(false); reloadCallback();}}
 						/>
 					</ResourceContainer>
@@ -158,4 +160,4 @@ const Item: NextPage = () => {
 	)
 }
 
-export default Item
+export default InputItem

@@ -196,7 +196,7 @@ const Drawer: React.FunctionComponent<drawerProps> = ({}) => {
 	}
 
 	const navItems = conf.map((item:any, idx:number) => {
-		//console.log('Conf item: ',item);
+		//console.log('Conf input-item: ',input-item);
 		switch (item._template) {
 			case 'title':
 				return (

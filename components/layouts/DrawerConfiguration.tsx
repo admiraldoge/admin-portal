@@ -71,7 +71,7 @@ export const conf = [
 		children: [
 			{
 				_template: 'subject',
-				path: '/administration/item',
+				path: '/administration/input-item',
 				icon: <InventoryIcon/>,
 				subject: "ADMINISTRATION_ITEM",
 				loc: 'Items',

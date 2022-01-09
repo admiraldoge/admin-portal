@@ -5,7 +5,7 @@ import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
 import {useRouter} from "next/router";
 import Table from "../../../components/common/Table";
 import {
-	ADMINISTRATION_ITEM,
+	ADMINISTRATION_INPUT_ITEM,
 	ADMINISTRATION_TAX_TYPE, PURCHASE_ORDER,
 } from "../../../constants/subjects";
 import Grid from "@mui/material/Grid";
@@ -21,7 +21,7 @@ import {
 	createConfiguration,
 	editConfiguration,
 	validationSchema
-} from "../../../configurations/forms/ItemFormConfiguration";
+} from "../../../configurations/forms/InputItemFormConfiguration";
 import {
 	BRAND_LIST,
 	CATEGORY_LIST,
@@ -84,7 +84,7 @@ const Item: NextPage = () => {
 	}
 
 	function onRowDelete(row:any, callback:any){
-		dispatch(deleteRow(ADMINISTRATION_ITEM, row.id, callback));
+		dispatch(deleteRow(ADMINISTRATION_INPUT_ITEM, row.id, callback));
 	}
 
 	const getConfiguration = (initialConf:any) => {
