@@ -1,5 +1,5 @@
 import Grid from "@mui/material/Grid";
-import React, {FC, useEffect, useState} from "react";
+import React, {Component, FC, useEffect, useState} from "react";
 import * as yup from "yup";
 import {useFormik} from "formik";
 import TextField from "@mui/material/TextField";
@@ -34,7 +34,9 @@ type props = {
 	submitButtonLabel?: string,
 	onSubmit?: any,
 	onSubmitMessage?: string,
-	onSubmitErrorMessage?: string
+	onSubmitErrorMessage?: string,
+	layout?: any,
+	layoutProps?: any
 }
 
 const Form: FC<props> = (
@@ -48,7 +50,9 @@ const Form: FC<props> = (
 		onSubmitMessage= 'Se ha ejecutado exitosamente.',
 		onSubmitErrorMessage = 'Ha ocurrido un error.',
 		title = 'Formulario',
-		submitButtonLabel = 'Enviar'
+		submitButtonLabel = 'Enviar',
+		layout,
+		layoutProps
 	}
 ) => {
 	const yupValidationSchema = yup.object(validationSchema);
@@ -261,13 +265,21 @@ const Form: FC<props> = (
 		}
 	})
 
+	const FormLayout = () => {
+		if(layout) {
+			console.log(':::Form: ', layout);
+			return layout({...layoutProps, children: formItems})
+		}
+		return formItems;
+	}
+
 	return (
 		<Grid container direction={"row"} justifyContent={"stretch"} alignContent={"center"}
 		      style={{backgroundColor: "transparent"}}
 		>
 			<Typography variant="h6">{title}</Typography>
 			<form onSubmit={formik.handleSubmit} className={styles.form}>
-				{formItems}
+				{FormLayout()}
 				<Button color="primary" variant="contained" fullWidth type="submit" className={styles.submitBtn}>
 					{submitButtonLabel}
 				</Button>
