@@ -134,7 +134,7 @@ const Drawer: React.FunctionComponent<drawerProps> = ({}) => {
 	const ListItem = (item:any, idx:number, i:number) => {
 		switch (item._template) {
 			case 'title':
-				return (
+				return layout.drawerExpanded ? (
 					<ListItemButton key={item.loc}>
 						<ListItemIcon>
 
@@ -149,7 +149,7 @@ const Drawer: React.FunctionComponent<drawerProps> = ({}) => {
 							}}
 						/>
 					</ListItemButton>
-				);
+				) : <Divider />;
 				break;
 			case 'subject':
 				if(me.read[item.subject]) {
@@ -179,15 +179,15 @@ const Drawer: React.FunctionComponent<drawerProps> = ({}) => {
 							<ListItemIcon>
 								{item.icon}
 							</ListItemIcon>
-							<ListItemText
-								sx={{ my: 0 }}
+							{layout.drawerExpanded && <ListItemText
+								sx={{my: 0}}
 								primary={me.subjectsLocMap ? item.loc : me.subjectsLocMap[item.subject]}
 								primaryTypographyProps={{
 									fontSize: 14,
 									fontWeight: 'medium',
 									letterSpacing: 0,
 								}}
-							/>
+							/>}
 						</ListItemButton>
 					)
 				}
@@ -199,14 +199,14 @@ const Drawer: React.FunctionComponent<drawerProps> = ({}) => {
 		//console.log('Conf input-item: ',input-item);
 		switch (item._template) {
 			case 'title':
-				return (
+				return layout.drawerExpanded ?
 					<ListItemButton key={`title-${idx}`}>
 						<ListItemIcon>
 							{item.icon}
 						</ListItemIcon>
 						<ListItemText primary={item.loc} />
 					</ListItemButton>
-				);
+					: <Divider />;
 				break;
 			case 'module':
 				return [
