@@ -21,11 +21,13 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-redux": "^7.2.6",
+    "react-spreadsheet": "^0.6.1",
     "react-table": "^7.7.0",
     "sass": "^1.43.4",
     "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@types/jspreadsheet-ce": "^4.7.2",
     "@types/node": "16.11.10",
     "@types/react": "17.0.36",
     "@types/react-table": "^7.7.8",

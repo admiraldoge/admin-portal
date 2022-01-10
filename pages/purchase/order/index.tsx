@@ -31,6 +31,7 @@ import {
 } from "../../../constants/lists";
 import {getList} from "../../../services/listService";
 import GridLayout from "../../../components/layouts/GridLayout";
+import SpreadSheet from "../../../components/common/spreadsheet/SpreadSheet";
 const Item: NextPage = () => {
 	const dispatch = useAppDispatch();
 	const router = useRouter();
@@ -111,14 +112,17 @@ const Item: NextPage = () => {
 					onRowDelete={onRowDelete}
 					onRowUpdate={onRowEdit}
 				/>
-				<Modal open={createModalOpen} setOpen={setCreateModalOpen}>
+				<Modal open={createModalOpen} setOpen={setCreateModalOpen} width={800}>
 					<Form
 						method={'POST'}
 						config={getConfiguration(createConfiguration)}
 						validationSchema={validationSchema}
 						resourcePath={`${PURCHASE_ORDER.path}`}
 						onSubmit={() => {setCreateModalOpen(false); reloadCallback();}}
+						layout={GridLayout}
+						layoutProps={{columns: 2}}
 					/>
+					<SpreadSheet/>
 				</Modal>
 				<Modal open={editModalOpen} setOpen={setEditModalOpen}>
 					<ResourceContainer path={entityId ? `${PURCHASE_ORDER.path}/${entityId}` : null} resourceName={'initialData'}>

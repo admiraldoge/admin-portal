@@ -1,4 +1,5 @@
 import '../styles/globals.scss'
+import '../components/common/spreadsheet/jspreadsheet.css';
 import 'regenerator-runtime/runtime'
 import type { AppProps } from 'next/app'
 import Header from "../components/layouts/Header";

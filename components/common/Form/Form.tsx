@@ -197,6 +197,28 @@ const Form: FC<props> = (
 		)
 	}
 
+	const DateField = (item:any, idx:number) => {
+		return (
+			<TextField
+				size={'small'}
+				fullWidth
+				key={`${idx}-${item.key}`}
+				id={item.key}
+				name={item.key}
+				//label={item.label}
+				value={formik.values[item.key]}
+				onChange={formik.handleChange}
+				placeholder={item.placeholder}
+				error={formik.touched[item.key] && Boolean(formik.errors[item.key])}
+				helperText={formik.touched[item.key] && formik.errors[item.key]}
+				className={styles.formItem}
+				style={{display: item.hidden ? 'none' : undefined}}
+				type={'date'}
+				lang={'es'}
+			/>
+		)
+	}
+
 	const OneSelectionOfMultipleField = (item:any, idx:number) => {
 		const FormControlLabels = item.options.map((option:any, i:number) => {
 			return (
@@ -262,6 +284,8 @@ const Form: FC<props> = (
 				return OneSelectionOfMultipleField(item, idx);
 			case 'select':
 				return SelectField(item, idx);
+			case 'date':
+				return DateField(item, idx);
 		}
 	})
 

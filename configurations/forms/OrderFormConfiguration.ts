@@ -47,7 +47,7 @@ export const editConfiguration = [
 		required: true
 	},
 	{
-		_template: 'string',
+		_template: 'string_long',
 		key: 'description',
 		label: 'Descripción',
 		required: true
