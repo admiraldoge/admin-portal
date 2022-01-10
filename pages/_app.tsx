@@ -1,5 +1,4 @@
 import '../styles/globals.scss'
-import '../components/common/spreadsheet/jspreadsheet.css';
 import 'regenerator-runtime/runtime'
 import type { AppProps } from 'next/app'
 import Header from "../components/layouts/Header";
@@ -8,8 +7,6 @@ import store from "../redux/store";
 import Drawer from "../components/layouts/Drawer";
 import { StyledEngineProvider } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import {CssBaseline} from "@mui/material";
-import {lightTheme} from "../theme/themes";
 import Content from "../components/layouts/Content";
 import App from "../components/layouts/App";
 import Meta from "../components/layouts/Meta";

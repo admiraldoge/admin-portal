@@ -23,6 +23,12 @@ import {useAppDispatch} from "../../../redux/hooks";
 import {setLayout} from "../../../redux/actions";
 import Typography from "@mui/material/Typography";
 import MenuItem from "@mui/material/MenuItem";
+import StringField from "./components/StringField";
+import LongStringField from "./components/LongStringField";
+import SelectField from "./components/SelectField";
+import OneSelectionOfMultipleField from "./components/OneSelectionOfMultipleField";
+import DateField from "./components/DateField";
+import BooleanField from "./components/BooleanField";
 
 type props = {
 	method?: 'POST' | 'PATCH' | 'DELETE',
@@ -124,168 +130,20 @@ const Form: FC<props> = (
 		},
 	});
 
-	const StringField = (item:any, idx:number) => {
-		return (
-			<TextField
-				type={item.type ? item.type : 'text'}
-				size={'small'}
-				fullWidth
-				key={`${idx}-${item.key}`}
-				id={item.key}
-				name={item.key}
-				label={item.label}
-				value={formik.values[item.key]}
-				onChange={formik.handleChange}
-				placeholder={item.placeholder}
-				required={item.required}
-				error={formik.touched[item.key] && Boolean(formik.errors[item.key])}
-				helperText={formik.touched[item.key] && formik.errors[item.key]}
-				className={styles.formItem}
-				style={{display: item.hidden ? 'none' : undefined}}
-			/>
-		)
-	}
-
-	const LongStringField = (item:any, idx:number) => {
-		return (
-			<TextField
-				size={'small'}
-				fullWidth
-				multiline
-				rows={4}
-				key={`${idx}-${item.key}`}
-				id={item.key}
-				name={item.key}
-				label={item.label}
-				value={formik.values[item.key]}
-				onChange={formik.handleChange}
-				placeholder={item.placeholder}
-				error={formik.touched[item.key] && Boolean(formik.errors[item.key])}
-				helperText={formik.touched[item.key] && formik.errors[item.key]}
-				className={styles.formItem}
-				style={{display: item.hidden ? 'none' : undefined}}
-			/>
-		)
-	}
-
-	const BooleanField = (item:any, idx:number) => {
-		return (
-			<FormControl component="fieldset" className={styles.formItem} key={`${idx}-${item.key}`}>
-				<FormLabel component="legend">{item.label}</FormLabel>
-				<FormControlLabel
-					key={`${idx}-${item.key}`}
-					id={item.key}
-					name={item.key}
-					control={
-						<Checkbox
-							checked={formik.values[item.key]}
-							onChange={(e, checked) => {
-								const se = e;
-								// @ts-ignore
-								se.target.value = se.target.checked ? 'true' : 'false';
-								//console.log('Checked',e.target.checked,e.target.value,checked);
-								formik.handleChange(se)
-							}}
-							style={{padding: '9px 9px 9px 0'}}
-						/>
-					}
-					label={formik.values[item.key] ? item.options[0] : item.options[1]}
-					className={styles.formItem}
-					style={{display: item.hidden ? 'none' : undefined, margin: 0}}
-				/>
-			</FormControl>
-		)
-	}
-
-	const DateField = (item:any, idx:number) => {
-		return (
-			<TextField
-				size={'small'}
-				fullWidth
-				key={`${idx}-${item.key}`}
-				id={item.key}
-				name={item.key}
-				//label={item.label}
-				value={formik.values[item.key]}
-				onChange={formik.handleChange}
-				placeholder={item.placeholder}
-				error={formik.touched[item.key] && Boolean(formik.errors[item.key])}
-				helperText={formik.touched[item.key] && formik.errors[item.key]}
-				className={styles.formItem}
-				style={{display: item.hidden ? 'none' : undefined}}
-				type={'date'}
-				lang={'es'}
-			/>
-		)
-	}
-
-	const OneSelectionOfMultipleField = (item:any, idx:number) => {
-		const FormControlLabels = item.options.map((option:any, i:number) => {
-			return (
-				<FormControlLabel
-					key={`${i}-${item.key}`}
-					value={option.value}
-					control={<Radio style={{padding: '0px 9px 0 0', margin: '0 0 0 0'}}/>}
-					label={option.label}
-					className={styles.formItem}
-					style={{padding: '9px 9px 0 0', margin: '0 0 0 0'}}
-				/>
-			);
-		})
-		return (
-			<Grid key={`one_selection_radio-${idx}`}>
-				<FormControl component="fieldset" className={styles.formItem} key={`${idx}-${item.key}`}>
-					<FormLabel component="legend" required={item.required}>{item.label}</FormLabel>
-					<RadioGroup row aria-label="options" name={item.key} onChange={formik.handleChange}>
-						{FormControlLabels}
-					</RadioGroup>
-				</FormControl>
-			</Grid>
-		)
-	}
-
-	const SelectField = (item:any, idx:number) => {
-		const options = item.options.map((option:any) => {
-			return <MenuItem key={`option-${idx}-${option.value}`} value={option.value}>{option.label}</MenuItem>;
-		})
-		return (
-			<FormControl
-				fullWidth key={`select-${idx}`}
-				className={styles.formItem}
-				required={item.required}
-			>
-				<InputLabel id="demo-simple-select-label">{item.label}</InputLabel>
-				<Select
-					size={'small'}
-					name={item.key}
-					value={formik.values[item.key]}
-					label={item.label}
-					onChange={formik.handleChange}
-					error={Boolean(formik.errors[item.key])}
-				>
-					{options}
-				</Select>
-				{Boolean(formik.errors[item.key])
-				&& <FormHelperText error={true}>{formik.errors[item.key]}</FormHelperText>
-				}
-			</FormControl>
-		)
-	}
-
 	const formItems = config.map((item:any, idx:number) => {
 		switch (item._template) {
 			case 'string':
-				return StringField(item, idx);
+				return <StringField item={item} idx={idx} formik={formik}/>;
 			case 'string_long':
-				return LongStringField(item, idx);
+				return <LongStringField item={item} idx={idx} formik={formik}/>;
 			case 'boolean':
-				return BooleanField(item, idx);
+				return <BooleanField item={item} idx={idx} formik={formik}/>;
 			case 'one_selection_radio':
-				return OneSelectionOfMultipleField(item, idx);
+				return <OneSelectionOfMultipleField item={item} idx={idx} formik={formik}/>;
 			case 'select':
-				return SelectField(item, idx);
+				return <SelectField item={item} idx={idx} formik={formik}/>;
 			case 'date':
-				return DateField(item, idx);
+				return <DateField item={item} idx={idx} formik={formik}/>;
 		}
 	})
 
