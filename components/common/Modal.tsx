@@ -5,7 +5,7 @@ import Grid from "@mui/material/Grid";
 import CloseIcon from '@mui/icons-material/Close';
 
 type actionsModalProps = {
-	children?: React.ReactElement
+	children?: React.ReactElement | React.ReactElement[]
 	open: boolean,
 	setOpen: any,
 	width?: number
