@@ -149,7 +149,7 @@ const Drawer: React.FunctionComponent<drawerProps> = ({}) => {
 							}}
 						/>
 					</ListItemButton>
-				) : <Divider />;
+				) : <Divider key={item.loc}/>;
 				break;
 			case 'subject':
 				if(me.read[item.subject]) {

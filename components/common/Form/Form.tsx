@@ -29,6 +29,7 @@ import SelectField from "./components/SelectField";
 import OneSelectionOfMultipleField from "./components/OneSelectionOfMultipleField";
 import DateField from "./components/DateField";
 import BooleanField from "./components/BooleanField";
+import Autocomplete from "./components/Autocomplete";
 
 type props = {
 	method?: 'POST' | 'PATCH' | 'DELETE',
@@ -144,12 +145,14 @@ const Form: FC<props> = (
 				return <SelectField item={item} idx={idx} formik={formik}/>;
 			case 'date':
 				return <DateField item={item} idx={idx} formik={formik}/>;
+			case 'autocomplete':
+				return <Autocomplete item={item} idx={idx} formik={formik}/>;
 		}
 	})
 
 	const FormLayout = () => {
 		if(layout) {
-			console.log(':::Form: ', layout);
+			//console.log(':::Form: ', layout);
 			return layout({...layoutProps, children: formItems})
 		}
 		return formItems;

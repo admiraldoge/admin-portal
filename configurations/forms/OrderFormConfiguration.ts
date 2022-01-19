@@ -25,6 +25,14 @@ export const createConfiguration = [
 		label: 'Descripción',
 		required: true
 	},
+	{
+		_template: 'autocomplete',
+		key: 'item',
+		label: 'Item',
+		required: true,
+		index: 'item',
+		fields: [ "name", "code" ]
+	},
 ]
 
 export const editConfiguration = [
@@ -49,6 +57,12 @@ export const editConfiguration = [
 	{
 		_template: 'string_long',
 		key: 'description',
+		label: 'Descripción',
+		required: true
+	},
+	{
+		_template: 'autocomplete',
+		key: 'item',
 		label: 'Descripción',
 		required: true
 	},
