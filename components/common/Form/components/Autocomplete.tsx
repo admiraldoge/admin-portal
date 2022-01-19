@@ -2,6 +2,7 @@ import React from "react";
 import {CircularProgress, TextField} from "@mui/material";
 import {Autocomplete as MuiAutocomplete} from '@mui/material';
 import throttle from 'lodash/throttle';
+import styles from "../../../../styles/components/Form.module.scss";
 
 type formType = {
 	item: any,
@@ -25,17 +26,19 @@ interface PlaceType {
 
 const LOADING = 'Cargando...';
 const NO_RESULTS = 'No hay coincidencias';
+const NO_INPUT = 'Escriba...';
 
 const Autocomplete = ({formik, item, idx}:formType) => {
 	const [value, setValue] = React.useState(null);
 	const [open, setOpen] = React.useState(false);
 	const [options, setOptions] = React.useState([] as any);
-	const [loadingText, setLoadingText] = React.useState(LOADING);
-	const loading = open && options.length === 0;
+	const [loadingText, setLoadingText] = React.useState(NO_INPUT);
+	const loading = open;
 
 	const getData = React.useMemo(() => throttle(
 		async (value) => {
 			//console.log(':::Service query:', value);
+			setLoadingText(LOADING);
 			const queryBody = {
 				"query": {
 					"query_string": {
@@ -70,6 +73,7 @@ const Autocomplete = ({formik, item, idx}:formType) => {
 			//console.log(':::Executing getData on value: ',formik.values[item.key]);
 			getData(formik.values[item.key]);
 		} else {
+			setLoadingText(NO_INPUT);
 			setOptions([]);
 			//console.log(':::Not executed getData on value: ',formik.values[item.key]);
 		}
@@ -92,7 +96,6 @@ const Autocomplete = ({formik, item, idx}:formType) => {
 	return (
 		<MuiAutocomplete
 			id={`autocomplete-${idx}`}
-			sx={{ width: 300 }}
 			open={open}
 			onOpen={() => {
 				setOpen(true);
@@ -124,6 +127,7 @@ const Autocomplete = ({formik, item, idx}:formType) => {
 			renderInput={(params:any) => (
 				<TextField
 					{...params}
+					size={'small'}
 					fullWidth
 					label={item.label}
 					id={item.key}
@@ -139,6 +143,8 @@ const Autocomplete = ({formik, item, idx}:formType) => {
 							</React.Fragment>
 						),
 					}}
+					required={item.required}
+					className={styles.formItem}
 				/>
 			)}
 		/>
