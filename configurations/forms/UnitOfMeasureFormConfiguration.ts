@@ -22,7 +22,19 @@ export const createConfiguration = [
 		label: 'Descripción',
 		type: 'text',
 		placeholder: 'ABC...'
-	}
+	},
+	{
+		_template: 'string',
+		key: 'scalar',
+		label: 'Escalar',
+		type: 'number',
+		placeholder: '1'
+	},
+	{
+		_template: 'select',
+		key: 'referenceUnitOfMeasureId',
+		label: 'Referencia'
+	},
 ]
 
 export const editConfiguration = [
@@ -47,7 +59,19 @@ export const editConfiguration = [
 		label: 'Descripción',
 		type: 'text',
 		placeholder: 'ABC...'
-	}
+	},
+	{
+		_template: 'string',
+		key: 'scalar',
+		label: 'Escalar',
+		type: 'number',
+		placeholder: '1'
+	},
+	{
+		_template: 'select',
+		key: 'referenceUnitOfMeasureId',
+		label: 'Referencia'
+	},
 ]
 export const validationSchema = {
 	name: yup
@@ -56,5 +80,4 @@ export const validationSchema = {
 		.required('El nombre es obligatorio.'),
 	code: yup
 		.string()
-		.min(3,'El código debe tener al menos 3 carácteres.')
 }

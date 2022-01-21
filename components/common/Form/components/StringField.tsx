@@ -14,7 +14,7 @@ const StringField = ({formik, item, idx}:formType) => {
 			type={item.type ? item.type : 'text'}
 			size={'small'}
 			fullWidth
-			key={`${idx}-${item.key}`}
+			key={`form-item-${idx}-string-field`}
 			id={item.key}
 			name={item.key}
 			label={item.label}

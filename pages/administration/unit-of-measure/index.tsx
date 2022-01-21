@@ -16,6 +16,14 @@ import {
 	editConfiguration,
 	validationSchema
 } from "../../../configurations/forms/UnitOfMeasureFormConfiguration";
+import {
+	BRAND_LIST,
+	CATEGORY_LIST,
+	CHART_ACCOUNT_LIST,
+	EXPENSE_TYPE_LIST,
+	UNIT_OF_MEASURE_LIST
+} from "../../../constants/lists";
+import {getList} from "../../../services/listService";
 
 const UnitOfMeasure: NextPage = () => {
 	const dispatch = useAppDispatch();
@@ -50,11 +58,13 @@ const UnitOfMeasure: NextPage = () => {
 	]
 
 	function onRowCreate(callback:any){
+		dispatch(getList(UNIT_OF_MEASURE_LIST));
 		setCreateModalOpen(true);
 		setReloadCallback(() => () => callback());
 	}
 
 	function onRowEdit(row:any, callback:any){
+		dispatch(getList(UNIT_OF_MEASURE_LIST));
 		setEditModalOpen(true);
 		setEntityId(row.id);
 		setReloadCallback(() => () => callback());
@@ -62,6 +72,17 @@ const UnitOfMeasure: NextPage = () => {
 
 	function onRowDelete(row:any, callback:any){
 		dispatch(deleteRow(subject, row.id, callback));
+	}
+
+	const getConfiguration = (initialConf:any) => {
+		const conf = JSON.parse(JSON.stringify(initialConf));
+		conf[4].options = list[UNIT_OF_MEASURE_LIST.name].map((item:any,idx:number) => {
+			return {
+				label: item.name,
+				value: item.id
+			}
+		})
+		return conf;
 	}
 
 	return (
@@ -75,24 +96,24 @@ const UnitOfMeasure: NextPage = () => {
 					onRowDelete={onRowDelete}
 					onRowUpdate={onRowEdit}
 				/>
+				<Modal open={createModalOpen} setOpen={setCreateModalOpen}>
+					<Form
+						method={'POST'}
+						config={getConfiguration(createConfiguration)}
+						validationSchema={validationSchema}
+						resourcePath={`${subject.path}`}
+						onSubmit={() => {setCreateModalOpen(false); reloadCallback();}}
+					/>
+				</Modal>
 				<Modal open={editModalOpen} setOpen={setEditModalOpen}>
 					<ResourceContainer path={entityId ? `${subject.path}/${entityId}` : null} resourceName={'initialData'}>
 						<Form
-							config={editConfiguration}
+							config={getConfiguration(editConfiguration)}
 							validationSchema={validationSchema}
 							resourcePath={`${subject.path}/${entityId}`}
 							onSubmit={() => {setEditModalOpen(false); reloadCallback();}}
 						/>
 					</ResourceContainer>
-				</Modal>
-				<Modal open={createModalOpen} setOpen={setCreateModalOpen}>
-					<Form
-						method={'POST'}
-						config={createConfiguration}
-						validationSchema={validationSchema}
-						resourcePath={`${subject.path}`}
-						onSubmit={() => {setCreateModalOpen(false); reloadCallback();}}
-					/>
 				</Modal>
 			</Grid>
 
