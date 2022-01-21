@@ -513,7 +513,7 @@ const Table:FC<TableProps> = (
 							labelRowsPerPage={'Filas por página:'}
 							rowsPerPageOptions={[10, 25, 50, 100]}
 							component={"div"}
-							count={table.total}
+							count={serverData ? table.total : data?.length}
 							rowsPerPage={pageSize}
 							page={pageIndex}
 							onPageChange={(event, value) => {gotoPage(value)}}

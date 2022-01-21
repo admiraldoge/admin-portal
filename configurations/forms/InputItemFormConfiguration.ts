@@ -11,13 +11,11 @@ export const createConfiguration = [
 		_template: 'select',
 		key: 'categoryId',
 		label: 'Categoría',
-		required: true
 	},
 	{
 		_template: 'select',
 		key: 'brandId',
 		label: 'Marca',
-		required: true
 	},
 	{
 		_template: 'select',
@@ -58,13 +56,11 @@ export const createConfiguration = [
 		_template: 'select',
 		key: 'giveChartAccountId',
 		label: 'Cuenta contable',
-		required: true
 	},
 	{
 		_template: 'select',
 		key: 'receiveChartAccountId',
 		label: 'Cuenta contable',
-		required: true
 	},
 	{
 		_template: 'boolean',
@@ -114,7 +110,6 @@ export const editConfiguration = [
 		label: 'Nombre',
 		type: 'text',
 		placeholder: 'abc...',
-		required: true
 	},
 	{
 		_template: 'string',
@@ -158,12 +153,10 @@ export const validationSchema = {
 		.required('El plan de cuentas es obligatorio.'),
 	categoryId: yup
 		.string()
-		.min(0,'El plan de cuentas es obligatorio.')
-		.required('El plan de cuentas es obligatorio.'),
+		.min(0,'El plan de cuentas es obligatorio.'),
 	brandId: yup
 		.string()
-		.min(0,'El plan de cuentas es obligatorio.')
-		.required('El plan de cuentas es obligatorio.'),
+		.min(0,'El plan de cuentas es obligatorio.'),
 	unitOfMeasureId: yup
 		.string()
 		.min(0,'El plan de cuentas es obligatorio.')
@@ -177,10 +170,8 @@ export const validationSchema = {
 		.min(3,'El código debe tener al menos 3 carácteres.'),
 	giveChartAccountId: yup
 		.string()
-		.min(0,'El plan de cuentas es obligatorio.')
-		.required('El plan de cuentas es obligatorio.'),
+		.min(0,'El plan de cuentas es obligatorio.'),
 	receiveChartAccountId: yup
 		.string()
-		.min(0,'El plan de cuentas es obligatorio.')
-		.required('El plan de cuentas es obligatorio.')
+		.min(0,'El plan de cuentas es obligatorio.'),
 }

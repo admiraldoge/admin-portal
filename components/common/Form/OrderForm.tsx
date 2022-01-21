@@ -58,7 +58,11 @@ const Form: FC<props> = (
 	const getInitialValues = () => {
 		const res = {} as any;
 		config.forEach((item:{key: string, type:string}, idx:number) => {
+			//console.log('Proccesing: ',item.key, ' of type',item.type);
 			switch(item.type) {
+				case 'array':
+					res[item.key] = initialData[item.key] ? initialData[item.key] : []
+					break;
 				default:
 					res[item.key] = _.isEmpty(initialData) ? '' : (initialData[item.key] ? initialData[item.key] : undefined);
 			}
@@ -159,7 +163,7 @@ const Form: FC<props> = (
 			},
 			disableSortBy: true,
 			disableFilters: true,
-			width: 10
+			width: 10,
 		},
 		{
 			Header: 'Unidad',
@@ -171,7 +175,8 @@ const Form: FC<props> = (
 				);
 			},
 			width: 20,
-			align: 'center'
+			disableSortBy: true,
+			disableFilters: true
 		},
 		{
 			Header: 'Cantidad',
@@ -184,7 +189,9 @@ const Form: FC<props> = (
 			},
 			type: 'number',
 			width: 8,
-			align: 'flex-start'
+			align: 'flex-start',
+			disableSortBy: true,
+			disableFilters: true
 		}
 	]
 
@@ -216,7 +223,7 @@ const Form: FC<props> = (
 				{FormLayout()}
 				<Grid container direction={'row'} justifyContent={'center'} className={styles.spreadsheet}>
 					<Table
-						data={[testItem]}
+						data={formik.values['items']}
 						serverData={false}
 						columns={itemTableColumns}
 						defaultPageSize={25} pageQuery={getPage}

@@ -5,24 +5,28 @@ export const createConfiguration = [
 		_template: 'select',
 		key: 'activityId',
 		label: 'Proyecto',
+		type: 'number',
 		required: true
 	},
 	{
 		_template: 'select',
 		key: 'expenseTypeId',
 		label: 'Tipo de gasto',
+		type: 'string',
 		required: true
 	},
 	{
 		_template: 'date',
 		key: 'date',
 		label: 'Fecha',
+		type: 'date',
 		required: true
 	},
 	{
 		_template: 'string',
 		key: 'description',
 		label: 'Descripción',
+		type: 'string',
 		required: true
 	},
 	{
@@ -31,7 +35,14 @@ export const createConfiguration = [
 		label: 'Item',
 		required: true,
 		index: 'item',
+		type: 'number',
 		fields: [ "name", "code" ]
+	},
+	{
+		_template: 'array',
+		key: 'items',
+		type: 'array',
+		label: 'Items'
 	},
 ]
 

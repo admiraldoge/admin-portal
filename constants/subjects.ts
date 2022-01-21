@@ -19,7 +19,7 @@ export const ADMINISTRATION_INPUT_ITEM = {name: 'ADMINISTRATION_INPUT_ITEM', pat
 export const ADMINISTRATION_OUTPUT_ITEM = {name: 'ADMINISTRATION_OUTPUT_ITEM', path: '/output-items'};
 export const ADMINISTRATION_ACTIVITY = {name: 'ADMINISTRATION_ACTIVITY', path: '/activities'};
 export const ADMINISTRATION_ACTIVITY_TYPE = {name: 'ADMINISTRATION_ACTIVITY_TYPE', path: '/activity-types'};
-export const PURCHASE_ORDER = {name: 'PURCHASE_ORDER', path: '/items'};
+export const PURCHASE_ORDER = {name: 'PURCHASE_ORDER', path: '/orders'};
 
 
 export const SUBJECTS = [USER, ROLE, CURRENCY, LAYOUT, COMPANY];
