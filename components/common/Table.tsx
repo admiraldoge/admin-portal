@@ -170,7 +170,7 @@ const Table:FC<TableProps> = (
 	const searchStyles = useColumnSearchStyles();
 	const classes = useStyles();
 	const dispatch = useAppDispatch();
-	const table = useAppSelector((state: RootState) => state.table[subject.name]);
+	const table = useAppSelector((state: RootState) => subject ? state.table[subject.name] : []);
 	const isMobile = useMediaQuery('(max-width:600px)');
 
 	function GlobalFilter({ preGlobalFilteredRows, globalFilter, setGlobalFilter}:any) {
@@ -327,7 +327,7 @@ const Table:FC<TableProps> = (
 					<Grid item xs={12}>
 						<TableContainer component={Paper}>
 							<MuiTable
-								{...getTableProps()} sx={{ minWidth: isMobile ? 'calc(100vw - 57px - 48px)' : 1024 }}
+								{...getTableProps()} sx={{ minWidth: isMobile ? 'calc(100vw - 57px - 48px)' : 600 }}
 								size="small"
 								aria-label="a dense table"
 								padding={'none'}

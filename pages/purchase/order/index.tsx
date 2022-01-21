@@ -32,6 +32,7 @@ import {
 import {getList} from "../../../services/listService";
 import GridLayout from "../../../components/layouts/GridLayout";
 import SpreadSheet from "../../../components/common/spreadsheet/SpreadSheet";
+import OrderForm from "../../../components/common/Form/OrderForm";
 const Item: NextPage = () => {
 	const dispatch = useAppDispatch();
 	const router = useRouter();
@@ -113,7 +114,7 @@ const Item: NextPage = () => {
 					onRowUpdate={onRowEdit}
 				/>
 				<Modal open={createModalOpen} setOpen={setCreateModalOpen} width={800}>
-					<Form
+					<OrderForm
 						method={'POST'}
 						config={getConfiguration(createConfiguration)}
 						validationSchema={validationSchema}
@@ -122,7 +123,6 @@ const Item: NextPage = () => {
 						layout={GridLayout}
 						layoutProps={{columns: 2}}
 					/>
-					<SpreadSheet/>
 				</Modal>
 				<Modal open={editModalOpen} setOpen={setEditModalOpen}>
 					<ResourceContainer path={entityId ? `${PURCHASE_ORDER.path}/${entityId}` : null} resourceName={'initialData'}>
