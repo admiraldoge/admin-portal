@@ -21,13 +21,7 @@ import {
 } from "../../../configurations/forms/OrderFormConfiguration";
 import {
 	ACTIVITY_LIST,
-	BRAND_LIST,
-	CATEGORY_LIST,
-	CHART_ACCOUNT_LIST,
 	EXPENSE_TYPE_LIST,
-	INCOME_TYPE_LIST,
-	TRANSACTION_TYPE_LIST,
-	UNIT_OF_MEASURE_LIST
 } from "../../../constants/lists";
 import {getList} from "../../../services/listService";
 import GridLayout from "../../../components/layouts/GridLayout";
@@ -82,7 +76,7 @@ const Item: NextPage = () => {
 	}
 
 	function onRowDelete(row:any, callback:any){
-		dispatch(deleteRow(ADMINISTRATION_INPUT_ITEM, row.id, callback));
+		dispatch(deleteRow(PURCHASE_ORDER, row.id, callback));
 	}
 
 	const getConfiguration = (initialConf:any) => {

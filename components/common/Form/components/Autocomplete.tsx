@@ -97,6 +97,8 @@ const Autocomplete = ({formik, item, idx}:formType) => {
 		<MuiAutocomplete
 			id={`autocomplete-${idx}`}
 			open={open}
+			autoComplete
+			autoSelect
 			onOpen={() => {
 				setOpen(true);
 			}}
@@ -105,9 +107,12 @@ const Autocomplete = ({formik, item, idx}:formType) => {
 			}}
 			onChange={(event: any, newValue: any) => {
 				setOptions([]);
-				setValue(newValue);
+				event.target.name = item.key;
+				event.target.value = newValue._source.id;
+				//console.log('Autocomplete change: newValue', newValue, event.target);
+				formik.handleChange(event);
 			}}
-			isOptionEqualToValue={(option:any, value:any) => option.title === value.title}
+			isOptionEqualToValue={(option:any, value:any) => option._source.name === value._source.name}
 			getOptionLabel={(option:any) => {
 				//console.log('Option label:', option)
 				return option._source.name;
@@ -122,7 +127,7 @@ const Autocomplete = ({formik, item, idx}:formType) => {
 			options={options}
 			loading={loading}
 			loadingText={loadingText}
-			inputValue={formik.values[item.key]}
+			//inputValue={formik.values[item.key]}
 			filterOptions={(x:any) => x}
 			renderInput={(params:any) => (
 				<TextField
@@ -132,8 +137,10 @@ const Autocomplete = ({formik, item, idx}:formType) => {
 					label={item.label}
 					id={item.key}
 					name={item.key}
-					value={formik.values[item.key]}
-					onChange={formik.handleChange}
+					onChange={(e) => {
+						//console.log('Event of change in textField', e);
+						formik.handleChange(e);
+					}}
 					InputProps={{
 						...params.InputProps,
 						endAdornment: (
