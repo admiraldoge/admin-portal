@@ -61,7 +61,7 @@ const Form: FC<props> = (
 			//console.log('Proccesing: ',item.key, ' of type',item.type);
 			switch(item.type) {
 				case 'array':
-					res[item.key] = initialData[item.key] ? initialData[item.key] : []
+					res[item.key] = initialData[item.key] ? initialData[item.key] : [{itemId: null, quantity: 0, unitOfMeasure: null, totalPrice: 0},{itemId: null, quantity: 0, unitOfMeasure: null, totalPrice: 0}]
 					break;
 				default:
 					res[item.key] = _.isEmpty(initialData) ? '' : (initialData[item.key] ? initialData[item.key] : undefined);

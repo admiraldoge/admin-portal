@@ -40,12 +40,7 @@ const Autocomplete = ({formik, item, idx}:formType) => {
 			//console.log(':::Service query:', value);
 			setLoadingText(LOADING);
 			const queryBody = {
-				"query": {
-					"query_string": {
-						"query": `*${value}*`,
-						"fields": item.fields
-					}
-				}
+				text: value
 			}
 			const request
 				= await fetch(`${process.env.NEXT_PUBLIC_PANAMA_HOST}/search/${item.index}`,
@@ -59,7 +54,7 @@ const Autocomplete = ({formik, item, idx}:formType) => {
 					}
 				});
 			const response = await request.json();
-			const opt = response.data.body.hits.hits;
+			const opt = response.data;
 			//console.log(':::Service respons from: ',value,'is', opt);
 			if(opt.length === 0) setLoadingText(NO_RESULTS);
 			setOptions(opt);
@@ -108,19 +103,19 @@ const Autocomplete = ({formik, item, idx}:formType) => {
 			onChange={(event: any, newValue: any) => {
 				setOptions([]);
 				event.target.name = item.key;
-				event.target.value = newValue._source.id;
+				event.target.value = newValue.id;
 				//console.log('Autocomplete change: newValue', newValue, event.target);
 				formik.handleChange(event);
 			}}
-			isOptionEqualToValue={(option:any, value:any) => option._source.name === value._source.name}
+			isOptionEqualToValue={(option:any, value:any) => option.name === value.name}
 			getOptionLabel={(option:any) => {
 				//console.log('Option label:', option)
-				return option._source.name;
+				return option.name;
 			}}
 			renderOption={(props, option:any) => {
 				return (
-					<li {...props} key={option._source.id}>
-						{option._source.name}
+					<li {...props} key={option.id}>
+						{option.name}
 					</li>
 				);
 			}}
