@@ -80,7 +80,7 @@ const Form: FC<props> = (
 	const processValues = (values:any) => {
 		const res = {} as any;
 		config.forEach((item:{key: string, type:string}, idx:number) => {
-			//console.log('Proccesing: ',input-item.key,values[input-item.key], typeof values[input-item.key],values[input-item.key] === 'true');
+			//console.log('Proccesing: ',item.key,values[item.key], typeof values[item.key],values[item.key] === 'true');
 			switch(item.type) {
 				case 'boolean':
 					if(typeof values[item.key] === 'boolean') {

@@ -26,7 +26,7 @@ import {
 	ADMINISTRATION_CATEGORY, ADMINISTRATION_CITY,
 	ADMINISTRATION_COUNTRY,
 	ADMINISTRATION_EXPENSE_TYPE,
-	ADMINISTRATION_INCOME_TYPE, ADMINISTRATION_INPUT_ITEM, ADMINISTRATION_OUTPUT_ITEM,
+	ADMINISTRATION_INCOME_TYPE, ADMINISTRATION_ITEM, ADMINISTRATION_OUTPUT_ITEM,
 	ADMINISTRATION_PAYMENT_METHOD,
 	ADMINISTRATION_TAX_TYPE,
 	ADMINISTRATION_TRANSACTION_TYPE,
@@ -71,9 +71,9 @@ export const conf = [
 		children: [
 			{
 				_template: 'subject',
-				path: '/administration/input-item',
+				path: '/administration/item',
 				icon: <InventoryIcon/>,
-				subject: ADMINISTRATION_INPUT_ITEM.name,
+				subject: ADMINISTRATION_ITEM.name,
 				loc: 'Items',
 				selected: false
 			},

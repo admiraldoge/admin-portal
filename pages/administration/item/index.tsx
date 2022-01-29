@@ -5,7 +5,7 @@ import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
 import {useRouter} from "next/router";
 import Table from "../../../components/common/Table";
 import {
-	ADMINISTRATION_INPUT_ITEM,
+	ADMINISTRATION_ITEM,
 } from "../../../constants/subjects";
 import Grid from "@mui/material/Grid";
 import {RootState} from "../../../redux/store";
@@ -81,7 +81,7 @@ const InputItem: NextPage = () => {
 	}
 
 	function onRowDelete(row:any, callback:any){
-		dispatch(deleteRow(ADMINISTRATION_INPUT_ITEM, row.id, callback));
+		dispatch(deleteRow(ADMINISTRATION_ITEM, row.id, callback));
 	}
 
 	const getConfiguration = (initialConf:any) => {
@@ -129,7 +129,7 @@ const InputItem: NextPage = () => {
 		<Grid className={styles.ctn}>
 			<Grid item xs={12}>
 				<Table
-					subject={ADMINISTRATION_INPUT_ITEM}
+					subject={ADMINISTRATION_ITEM}
 					columns={columns} defaultPageSize={25} pageQuery={getPage} serverData={true}
 					globalFilterEnabled={true}
 					onRowCreate={onRowCreate}
@@ -141,16 +141,16 @@ const InputItem: NextPage = () => {
 						method={'POST'}
 						config={getConfiguration(createConfiguration)}
 						validationSchema={validationSchema}
-						resourcePath={`${ADMINISTRATION_INPUT_ITEM.path}`}
+						resourcePath={`${ADMINISTRATION_ITEM.path}`}
 						onSubmit={() => {setCreateModalOpen(false); reloadCallback();}}
 					/>
 				</Modal>
 				<Modal open={editModalOpen} setOpen={setEditModalOpen}>
-					<ResourceContainer path={entityId ? `${ADMINISTRATION_INPUT_ITEM.path}/${entityId}` : null} resourceName={'initialData'}>
+					<ResourceContainer path={entityId ? `${ADMINISTRATION_ITEM.path}/${entityId}` : null} resourceName={'initialData'}>
 						<Form
 							config={getConfiguration(editConfiguration)}
 							validationSchema={validationSchema}
-							resourcePath={`${ADMINISTRATION_INPUT_ITEM.path}/${entityId}`}
+							resourcePath={`${ADMINISTRATION_ITEM.path}/${entityId}`}
 							onSubmit={() => {setEditModalOpen(false); reloadCallback();}}
 						/>
 					</ResourceContainer>

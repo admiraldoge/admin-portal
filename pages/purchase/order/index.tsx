@@ -5,7 +5,7 @@ import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
 import {useRouter} from "next/router";
 import Table from "../../../components/common/Table";
 import {
-	ADMINISTRATION_INPUT_ITEM,
+	ADMINISTRATION_ITEM,
 	ADMINISTRATION_TAX_TYPE, PURCHASE_ORDER,
 } from "../../../constants/subjects";
 import Grid from "@mui/material/Grid";
