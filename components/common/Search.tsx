@@ -106,7 +106,7 @@ const Search = ({index, value, setValue}:autocompleteProps) => {
 				//event.target.value = newValue;
 				//console.log('Search change: newValue', newValue, event.target);
 				console.log(':::Search change value', event);
-				setValue(event, newValue.id);
+				setValue(event, newValue.id, newValue);
 			}}
 			isOptionEqualToValue={(option:any, value:any) => option.name === value.name}
 			getOptionLabel={(option:any) => {

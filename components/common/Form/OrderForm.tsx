@@ -6,8 +6,8 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import styles from '../../../styles/components/OrderForm.module.scss';
 import _ from 'lodash';
-import {useAppDispatch} from "../../../redux/hooks";
-import {setLayout} from "../../../redux/actions";
+import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
+import {setItem, setLayout} from "../../../redux/actions";
 import Typography from "@mui/material/Typography";
 import StringField from "./components/StringField";
 import LongStringField from "./components/LongStringField";
@@ -24,6 +24,7 @@ import {GridEditRowsModel, GridRenderCellParams} from "@mui/x-data-grid";
 import Rating from "@mui/material/Rating";
 import Box from "@mui/material/Box";
 import Search from '../Search';
+import {RootState} from "../../../redux/store";
 
 type props = {
 	method?: 'POST' | 'PATCH' | 'DELETE',
@@ -40,67 +41,26 @@ type props = {
 	layoutProps?: any
 }
 
-function renderRating(params: GridRenderCellParams<number>) {
-	return <Rating readOnly value={params.value} />;
-}
-
-function RatingEditInputCell(props: GridRenderCellParams<number>) {
-	const { id, value, api, field } = props;
-
-	const handleChange = async (event:any) => {
-		api.setEditCellValue({ id, field, value: Number(event.target.value) }, event);
-		// Check if the event is not from the keyboard
-		// https://github.com/facebook/react/issues/7407
-		if (event.nativeEvent.clientX !== 0 && event.nativeEvent.clientY !== 0) {
-			// Wait for the validation to run
-			const isValid = await api.commitCellChange({ id, field });
-			if (isValid) {
-				api.setCellMode(id, field, 'view');
-			}
-		}
-	};
-
-	const handleRef = (element:any) => {
-		if (element) {
-			element.querySelector(`input[value="${value}"]`).focus();
-		}
-	};
-
-	return (
-		<Box sx={{ display: 'flex', alignItems: 'center', pr: 2 }}>
-			<Rating
-				ref={handleRef}
-				name="rating"
-				precision={1}
-				value={value}
-				onChange={handleChange}
-			/>
-		</Box>
-	);
-}
-
-function renderRatingEditInputCell(params:any) {
-	return <RatingEditInputCell {...params} />;
-}
-
-function renderItem(params: GridRenderCellParams<number>) {
-	console.log('::: params', params);
-	return <p>{params.value}</p>;
+function ItemCell(params: GridRenderCellParams<number>, item:any) {
+	//const items = useAppSelector((state: RootState) => state.item);
+	console.log('::: params', params, 'with item: ',item);
+	/*
+	const items = useAppSelector((state: RootState) => state.item);
+	return <p>{items[params.value] ? items[params.value] : params.value}</p>;
+	 */
+	return <p>{item[params.value] ? item[params.value].name : params.value}</p>;
 }
 
 function ItemEditInputCell(props: GridRenderCellParams<number>) {
 	console.log(':::Item, edit iput cell props: ', props);
 	const { id, value, api, field } = props;
-
-	const handleChange = async (event:any, value:any) => {
-		console.log(':::Render item handle change event to ', value);
-		api.setEditCellValue({ id, field, value: value }, event);
-	};
-
-	const handleRef = (element:any) => {
-		if (element) {
-			element.querySelector(`input[value="${value}"]`).focus();
+	const dispatch = useAppDispatch();
+	const handleChange = async (event:any, value:any, entity:any) => {
+		console.log(':::: Render item handle change event to ', value, entity);
+		if(entity) {
+			dispatch(setItem({[entity.id]: entity}))
 		}
+		api.setEditCellValue({ id, field, value: value }, event);
 	};
 
 	return (
@@ -130,6 +90,7 @@ const Form: FC<props> = (
 ) => {
 	const yupValidationSchema = yup.object(validationSchema);
 	const dispatch = useAppDispatch();
+	const item = useAppSelector((state: RootState) => state.item);
 	const [snackbarState, setSnackbarState] = useState({open: false, message: ''});
 	const emptyOrderItem = { id: 1, itemId: 1, places: 'Barcelona', rating: 5, quantity: 10, price: 20.323, total: 203.23 };
 	const [tableValues, setTableValues] = useState([emptyOrderItem] as any);
@@ -238,20 +199,11 @@ const Form: FC<props> = (
 		{
 			field: 'itemId',
 			headerName: 'Item',
-			renderCell: renderItem,
+			renderCell: (params:any) => ItemCell(params, item),
 			renderEditCell: renderItemEditInputCell,
 			width: 250,
 			editable: true,
 			type: 'string'
-		},
-		{
-			field: 'rating',
-			headerName: 'Rating',
-			renderCell: renderRating,
-			renderEditCell: renderRatingEditInputCell,
-			editable: true,
-			width: 180,
-			type: 'number',
 		},
 		{
 			field: 'quantity',

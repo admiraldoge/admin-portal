@@ -1,5 +1,5 @@
 import { configureStore, createReducer } from '@reduxjs/toolkit'
-import {cleanMe, deleteRowFromTable, setLayout, setList, setMe, setTable} from "./actions";
+import {cleanMe, deleteRowFromTable, setItem, setLayout, setList, setMe, setTable} from "./actions";
 import {
 	ADMINISTRATION_ACTIVITY, ADMINISTRATION_ACTIVITY_TYPE,
 	ADMINISTRATION_BRAND,
@@ -149,12 +149,27 @@ const listsReducer = createReducer(
 	}
 )
 
+const itemReducer = createReducer(
+	{
+
+	},
+	(builder) => {
+		builder
+			.addCase(setItem, (state, action) => {
+				return {...state, ...action.payload};
+			})
+			.addDefaultCase((state, action) => {
+			})
+	}
+)
+
 const store = configureStore({
 	reducer: {
 		layout: layoutReducer,
 		me: meReducer,
 		table: tableReducer,
-		list: listsReducer
+		list: listsReducer,
+		item: itemReducer
 	}
 }) as any
 

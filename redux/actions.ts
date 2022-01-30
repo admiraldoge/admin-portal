@@ -14,3 +14,6 @@ export const deleteRowFromTable = createAction<object>('deleteRowFromTable');
 
 //TABLE
 export const setList = createAction<object>('setList');
+
+//ITEM
+export const setItem = createAction<object>('setItem');
