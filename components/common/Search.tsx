@@ -116,7 +116,7 @@ const Search = ({index, value, setValue}:autocompleteProps) => {
 			renderOption={(props, option:any) => {
 				return (
 					<li {...props} key={option.id}>
-						{option.name}
+						{`${option.code} - ${option.name}`}
 					</li>
 				);
 			}}

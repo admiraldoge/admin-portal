@@ -37,6 +37,7 @@ type props = {
 }
 
 function ItemCell(params: GridRenderCellParams<number>, item:any) {
+	if(params.value === 0) return <p></p>;
 	//console.log('::: params', params, 'with item: ',item);
 	return <p>{item[params.value] ? item[params.value].name : params.value}</p>;
 }
@@ -82,7 +83,7 @@ const Form: FC<props> = (
 	const dispatch = useAppDispatch();
 	const item = useAppSelector((state: RootState) => state.item);
 	const [snackbarState, setSnackbarState] = useState({open: false, message: ''});
-	const emptyOrderItem = { id: 0, itemId: 1, places: 'Barcelona', rating: 5, quantity: 10, price: 20.323, total: 203.23 };
+	const emptyOrderItem = { id: 0, itemId: 0, quantity: 0, price: 0, total: 0, item: {}};
 	const [tableValues, setTableValues] = useState([emptyOrderItem] as any);
 	const [tableFinalValues, setTableFinalValues] = useState([emptyOrderItem] as any);
 	const [tableRowModel, setTableRowModel] = useState({} as any);
@@ -235,17 +236,17 @@ const Form: FC<props> = (
 	}
 
 	const handleEditRowsModelChange = React.useCallback((model: GridEditRowsModel) => {
-		console.log('::::: Table model updated: ', model);
-		console.log('::::: Table values: ', tableValues);
+		//console.log('::::: Table model updated: ', model);
+		//console.log('::::: Table values: ', tableValues);
 		let newTableValues = [];
 		for(const [key,value] of Object.entries(model)) {
 			const newData = {id: parseInt(key)} as any;
 			for(const [key,field] of Object.entries(value)) {
 				newData[key] = field.value;
 			}
-			console.log('::: NewData', newData);
+			//console.log('::: NewData', newData);
 			newTableValues = updateObjectInArrayById(tableValues, newData);
-			console.log('::: New table values', newTableValues);
+			//console.log('::: New table values', newTableValues);
 			setTableValues(newTableValues);
 		}
 		//setTableValues(updateObjectInArrayById(tableFinalValues, model))
