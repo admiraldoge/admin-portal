@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { DataGrid, GridRenderCellParams } from '@mui/x-data-grid';
+import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
 type TableProps = {
 	subject?: any,
 	columns: any,
@@ -17,18 +19,26 @@ type TableProps = {
 
 }
 
-const EditableCell = ({columns, data, rowModel, onRowUpdate}: TableProps) => {
+const EditableTable = ({columns, data, rowModel, onRowCreate, onRowUpdate}: TableProps) => {
 	return (
-		<div style={{ height: 400, width: '100%' }}>
-			<DataGrid
-				rows={data}
-				columns={columns}
-				density={'compact'}
-				editRowsModel={rowModel}
-				onEditRowsModelChange={onRowUpdate}
-			/>
-		</div>
+		<Grid container direction={'column'} spacing={2}>
+			<Grid item>
+				<Grid container direction={'row'} justifyContent={'flex-end'}>
+					<Button variant="contained" size={'small'} onClick={ () => {onRowCreate()}}>Agregar</Button>
+				</Grid>
+			</Grid>
+			<Grid item style={{ height: 400, width: '100%' }}>
+				<DataGrid
+					rows={data}
+					columns={columns}
+					density={'compact'}
+					editRowsModel={rowModel}
+					onEditRowsModelChange={onRowUpdate}
+					editMode={'row'}
+				/>
+			</Grid>
+		</Grid>
 	);
 }
 
-export default EditableCell;
+export default EditableTable;

@@ -2,7 +2,6 @@ import Grid from "@mui/material/Grid";
 import React, {Component, FC, useEffect, useState} from "react";
 import * as yup from "yup";
 import {useFormik} from "formik";
-import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import styles from '../../../styles/components/OrderForm.module.scss';
 import _ from 'lodash';
@@ -16,15 +15,11 @@ import OneSelectionOfMultipleField from "./components/OneSelectionOfMultipleFiel
 import DateField from "./components/DateField";
 import BooleanField from "./components/BooleanField";
 import Autocomplete from "./components/Autocomplete";
-import Table from "../Table";
-import {getPage} from "../../../services/tableService";
-import {updateObjectInArray} from "../../../utils/state";
 import EditableTable from "../EditableTable";
 import {GridEditRowsModel, GridRenderCellParams} from "@mui/x-data-grid";
-import Rating from "@mui/material/Rating";
-import Box from "@mui/material/Box";
 import Search from '../Search';
 import {RootState} from "../../../redux/store";
+import {updateObjectInArray, updateObjectInArrayById} from "../../../utils/state";
 
 type props = {
 	method?: 'POST' | 'PATCH' | 'DELETE',
@@ -42,21 +37,16 @@ type props = {
 }
 
 function ItemCell(params: GridRenderCellParams<number>, item:any) {
-	//const items = useAppSelector((state: RootState) => state.item);
-	console.log('::: params', params, 'with item: ',item);
-	/*
-	const items = useAppSelector((state: RootState) => state.item);
-	return <p>{items[params.value] ? items[params.value] : params.value}</p>;
-	 */
+	//console.log('::: params', params, 'with item: ',item);
 	return <p>{item[params.value] ? item[params.value].name : params.value}</p>;
 }
 
 function ItemEditInputCell(props: GridRenderCellParams<number>) {
-	console.log(':::Item, edit iput cell props: ', props);
+	//console.log(':::Item, edit iput cell props: ', props);
 	const { id, value, api, field } = props;
 	const dispatch = useAppDispatch();
 	const handleChange = async (event:any, value:any, entity:any) => {
-		console.log(':::: Render item handle change event to ', value, entity);
+		//console.log(':::: Render item handle change event to ', value, entity);
 		if(entity) {
 			dispatch(setItem({[entity.id]: entity}))
 		}
@@ -92,8 +82,9 @@ const Form: FC<props> = (
 	const dispatch = useAppDispatch();
 	const item = useAppSelector((state: RootState) => state.item);
 	const [snackbarState, setSnackbarState] = useState({open: false, message: ''});
-	const emptyOrderItem = { id: 1, itemId: 1, places: 'Barcelona', rating: 5, quantity: 10, price: 20.323, total: 203.23 };
+	const emptyOrderItem = { id: 0, itemId: 1, places: 'Barcelona', rating: 5, quantity: 10, price: 20.323, total: 203.23 };
 	const [tableValues, setTableValues] = useState([emptyOrderItem] as any);
+	const [tableFinalValues, setTableFinalValues] = useState([emptyOrderItem] as any);
 	const [tableRowModel, setTableRowModel] = useState({} as any);
 	const getInitialValues = () => {
 		const res = {} as any;
@@ -137,6 +128,8 @@ const Form: FC<props> = (
 		onSubmit: async (values) => {
 			const cleanValues = processValues(values);
 			console.log('Submit: ',cleanValues);
+			console.log('Submit table values: ',tableValues);
+			/*
 			try {
 				const request
 					= await fetch(`${process.env.NEXT_PUBLIC_PANAMA_HOST}${resourcePath}`,
@@ -150,8 +143,6 @@ const Form: FC<props> = (
 						}
 					});
 				const response = await request.json();
-				console.log('Request', request, response);
-				console.log('Response', response);
 				if(response.statusCode === 201 || response.statusCode === 200) {
 					onSubmit();
 					dispatch(setLayout({snackbar: {open: true, type: 'success', message: onSubmitMessage}}));
@@ -161,6 +152,8 @@ const Form: FC<props> = (
 			} catch (error) {
 				dispatch(setLayout({snackbar: {open: true, type: 'error', message: onSubmitErrorMessage}}));
 			}
+
+			 */
 		},
 	});
 
@@ -230,7 +223,7 @@ const Form: FC<props> = (
 	];
 
 	function onRowCreate(callback:any){
-
+		setTableValues([...tableValues, {...emptyOrderItem, id: tableValues[tableValues.length - 1].id +1}] )
 	}
 
 	function onRowEdit(row:any, callback:any){
@@ -242,9 +235,22 @@ const Form: FC<props> = (
 	}
 
 	const handleEditRowsModelChange = React.useCallback((model: GridEditRowsModel) => {
-		console.log('Table model updated: ', model);
+		console.log('::::: Table model updated: ', model);
+		console.log('::::: Table values: ', tableValues);
+		let newTableValues = [];
+		for(const [key,value] of Object.entries(model)) {
+			const newData = {id: parseInt(key)} as any;
+			for(const [key,field] of Object.entries(value)) {
+				newData[key] = field.value;
+			}
+			console.log('::: NewData', newData);
+			newTableValues = updateObjectInArrayById(tableValues, newData);
+			console.log('::: New table values', newTableValues);
+			setTableValues(newTableValues);
+		}
+		//setTableValues(updateObjectInArrayById(tableFinalValues, model))
 		setTableRowModel(model);
-	}, []);
+	}, [tableValues]);
 
 	return (
 		<Grid container direction={"column"} justifyContent={"stretch"} alignContent={"center"}
