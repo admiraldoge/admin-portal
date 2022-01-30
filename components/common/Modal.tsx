@@ -36,7 +36,7 @@ const Modal: FC<actionsModalProps> = ({children, open, setOpen, width= 400}) => 
 			aria-labelledby="modal-modal-title"
 			aria-describedby="modal-modal-description"
 		>
-			<Box sx={style}>
+			<Box sx={style} style={{maxHeight: '100vh', overflowY: 'scroll'}}>
 				<Grid container direction={'row'} justifyContent={'flex-end'}>
 					<CloseIcon style={{cursor: 'pointer'}} onClick={() => setOpen(false)}/>
 				</Grid>

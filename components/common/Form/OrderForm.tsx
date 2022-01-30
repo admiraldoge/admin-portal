@@ -9,7 +9,6 @@ import _ from 'lodash';
 import {useAppDispatch} from "../../../redux/hooks";
 import {setLayout} from "../../../redux/actions";
 import Typography from "@mui/material/Typography";
-import MenuItem from "@mui/material/MenuItem";
 import StringField from "./components/StringField";
 import LongStringField from "./components/LongStringField";
 import SelectField from "./components/SelectField";
@@ -19,6 +18,12 @@ import BooleanField from "./components/BooleanField";
 import Autocomplete from "./components/Autocomplete";
 import Table from "../Table";
 import {getPage} from "../../../services/tableService";
+import {updateObjectInArray} from "../../../utils/state";
+import EditableTable from "../EditableTable";
+import {GridEditRowsModel, GridRenderCellParams} from "@mui/x-data-grid";
+import Rating from "@mui/material/Rating";
+import Box from "@mui/material/Box";
+import Search from '../Search';
 
 type props = {
 	method?: 'POST' | 'PATCH' | 'DELETE',
@@ -33,6 +38,78 @@ type props = {
 	onSubmitErrorMessage?: string,
 	layout?: any,
 	layoutProps?: any
+}
+
+function renderRating(params: GridRenderCellParams<number>) {
+	return <Rating readOnly value={params.value} />;
+}
+
+function RatingEditInputCell(props: GridRenderCellParams<number>) {
+	const { id, value, api, field } = props;
+
+	const handleChange = async (event:any) => {
+		api.setEditCellValue({ id, field, value: Number(event.target.value) }, event);
+		// Check if the event is not from the keyboard
+		// https://github.com/facebook/react/issues/7407
+		if (event.nativeEvent.clientX !== 0 && event.nativeEvent.clientY !== 0) {
+			// Wait for the validation to run
+			const isValid = await api.commitCellChange({ id, field });
+			if (isValid) {
+				api.setCellMode(id, field, 'view');
+			}
+		}
+	};
+
+	const handleRef = (element:any) => {
+		if (element) {
+			element.querySelector(`input[value="${value}"]`).focus();
+		}
+	};
+
+	return (
+		<Box sx={{ display: 'flex', alignItems: 'center', pr: 2 }}>
+			<Rating
+				ref={handleRef}
+				name="rating"
+				precision={1}
+				value={value}
+				onChange={handleChange}
+			/>
+		</Box>
+	);
+}
+
+function renderRatingEditInputCell(params:any) {
+	return <RatingEditInputCell {...params} />;
+}
+
+function renderItem(params: GridRenderCellParams<number>) {
+	console.log('::: params', params);
+	return <p>{params.value}</p>;
+}
+
+function ItemEditInputCell(props: GridRenderCellParams<number>) {
+	console.log(':::Item, edit iput cell props: ', props);
+	const { id, value, api, field } = props;
+
+	const handleChange = async (event:any, value:any) => {
+		console.log(':::Render item handle change event to ', value);
+		api.setEditCellValue({ id, field, value: value }, event);
+	};
+
+	const handleRef = (element:any) => {
+		if (element) {
+			element.querySelector(`input[value="${value}"]`).focus();
+		}
+	};
+
+	return (
+		<Search index={'item'} value={value} setValue={handleChange}/>
+	);
+}
+
+function renderItemEditInputCell(params:any) {
+	return <ItemEditInputCell {...params} />;
 }
 
 const Form: FC<props> = (
@@ -54,14 +131,16 @@ const Form: FC<props> = (
 	const yupValidationSchema = yup.object(validationSchema);
 	const dispatch = useAppDispatch();
 	const [snackbarState, setSnackbarState] = useState({open: false, message: ''});
-
+	const emptyOrderItem = { id: 1, itemId: 1, places: 'Barcelona', rating: 5, quantity: 10, price: 20.323, total: 203.23 };
+	const [tableValues, setTableValues] = useState([emptyOrderItem] as any);
+	const [tableRowModel, setTableRowModel] = useState({} as any);
 	const getInitialValues = () => {
 		const res = {} as any;
 		config.forEach((item:{key: string, type:string}, idx:number) => {
 			//console.log('Proccesing: ',item.key, ' of type',item.type);
 			switch(item.type) {
 				case 'array':
-					res[item.key] = initialData[item.key] ? initialData[item.key] : [{itemId: null, quantity: 0, unitOfMeasure: null, totalPrice: 0},{itemId: null, quantity: 0, unitOfMeasure: null, totalPrice: 0}]
+					res[item.key] = initialData[item.key] ? initialData[item.key] : [emptyOrderItem, emptyOrderItem];
 					break;
 				default:
 					res[item.key] = _.isEmpty(initialData) ? '' : (initialData[item.key] ? initialData[item.key] : undefined);
@@ -151,49 +230,52 @@ const Form: FC<props> = (
 		return formItems;
 	}
 
+	function getTotal(params:any) {
+		return params.row.quantity * params.row.price;
+	}
+
 	const itemTableColumns = [
 		{
-			Header: 'Item',
-			accessor: (row:any, index:any) => {
-				return (
-					<Grid container direction={"row"} justifyContent={"center"} alignItems={"center"}>
-						<TextField size={'small'} value={row.name}/>
-					</Grid>
-				);
-			},
-			disableSortBy: true,
-			disableFilters: true,
-			width: 10,
+			field: 'itemId',
+			headerName: 'Item',
+			renderCell: renderItem,
+			renderEditCell: renderItemEditInputCell,
+			width: 250,
+			editable: true,
+			type: 'string'
 		},
 		{
-			Header: 'Unidad',
-			accessor: (row:any, index:any) => {
-				return (
-					<Grid container direction={"row"} justifyContent={"center"} alignItems={"center"}>
-						<TextField size={'small'} value={row.unitOfMeasureId}/>
-					</Grid>
-				);
-			},
-			width: 20,
-			disableSortBy: true,
-			disableFilters: true
-		},
-		{
-			Header: 'Cantidad',
-			accessor: (row:any, index:any) => {
-				return (
-					<Grid container direction={"row"} justifyContent={"center"} alignItems={"center"}>
-						<TextField size={'small'} value={row.quantity}/>
-					</Grid>
-				);
-			},
+			field: 'rating',
+			headerName: 'Rating',
+			renderCell: renderRating,
+			renderEditCell: renderRatingEditInputCell,
+			editable: true,
+			width: 180,
 			type: 'number',
-			width: 8,
-			align: 'flex-start',
-			disableSortBy: true,
-			disableFilters: true
-		}
-	]
+		},
+		{
+			field: 'quantity',
+			headerName: 'Cantidad',
+			editable: true,
+			width: 100,
+			type: 'number',
+		},
+		{
+			field: 'price',
+			headerName: 'Precio',
+			editable: true,
+			width: 100,
+			type: 'number',
+		},
+		{
+			field: 'total',
+			headerName: 'Total',
+			editable: false,
+			width: 100,
+			type: 'number',
+			valueGetter: getTotal,
+		},
+	];
 
 	function onRowCreate(callback:any){
 
@@ -207,12 +289,10 @@ const Form: FC<props> = (
 
 	}
 
-	const testItem = {
-		id: 10,
-		name: 'Peluche de pug',
-		quantity: '10',
-		unitOfMeasureId: 12
-	}
+	const handleEditRowsModelChange = React.useCallback((model: GridEditRowsModel) => {
+		console.log('Table model updated: ', model);
+		setTableRowModel(model);
+	}, []);
 
 	return (
 		<Grid container direction={"column"} justifyContent={"stretch"} alignContent={"center"}
@@ -222,14 +302,13 @@ const Form: FC<props> = (
 			<form onSubmit={formik.handleSubmit} className={styles.form}>
 				{FormLayout()}
 				<Grid container direction={'row'} justifyContent={'center'} className={styles.spreadsheet}>
-					<Table
-						data={formik.values['items']}
-						serverData={false}
+					<EditableTable
+						data={tableValues}
 						columns={itemTableColumns}
-						defaultPageSize={25} pageQuery={getPage}
+						rowModel={tableRowModel}
 						onRowCreate={onRowCreate}
 						onRowDelete={onRowDelete}
-						onRowUpdate={onRowEdit}
+						onRowUpdate={handleEditRowsModelChange}
 					/>
 				</Grid>
 				<Button color="primary" variant="contained" fullWidth type="submit" className={styles.submitBtn}>

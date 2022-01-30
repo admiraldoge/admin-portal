@@ -107,7 +107,7 @@ const Item: NextPage = () => {
 					onRowDelete={onRowDelete}
 					onRowUpdate={onRowEdit}
 				/>
-				<Modal open={createModalOpen} setOpen={setCreateModalOpen} width={800}>
+				<Modal open={createModalOpen} setOpen={setCreateModalOpen} width={1000}>
 					<OrderForm
 						method={'POST'}
 						config={getConfiguration(createConfiguration)}

@@ -6,34 +6,34 @@ export const createConfiguration = [
 		key: 'activityId',
 		label: 'Proyecto',
 		type: 'number',
-		required: true
+		required: false
 	},
 	{
 		_template: 'select',
 		key: 'expenseTypeId',
 		label: 'Tipo de gasto',
 		type: 'string',
-		required: true
+		required: false
 	},
 	{
 		_template: 'date',
 		key: 'date',
 		label: 'Fecha',
 		type: 'date',
-		required: true
+		required: false
 	},
 	{
 		_template: 'string',
 		key: 'description',
 		label: 'Descripción',
 		type: 'string',
-		required: true
+		required: false
 	},
 	{
 		_template: 'autocomplete',
 		key: 'item',
 		label: 'Item',
-		required: true,
+		required: false,
 		index: 'item',
 		type: 'number',
 		fields: [ "name", "code" ]
@@ -51,31 +51,31 @@ export const editConfiguration = [
 		_template: 'select',
 		key: 'activityId',
 		label: 'Proyecto',
-		required: true
+		required: false
 	},
 	{
 		_template: 'select',
 		key: 'expenseTypeId',
 		label: 'Tipo de gasto',
-		required: true
+		required: false
 	},
 	{
 		_template: 'date',
 		key: 'date',
 		label: 'Fecha',
-		required: true
+		required: false
 	},
 	{
 		_template: 'string_long',
 		key: 'description',
 		label: 'Descripción',
-		required: true
+		required: false
 	},
 	{
 		_template: 'autocomplete',
 		key: 'item',
 		label: 'Descripción',
-		required: true
+		required: false
 	},
 ]
 export const validationSchema = {

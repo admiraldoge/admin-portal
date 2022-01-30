@@ -2,12 +2,12 @@ import React from "react";
 import {CircularProgress, TextField} from "@mui/material";
 import {Autocomplete as MuiAutocomplete} from '@mui/material';
 import throttle from 'lodash/throttle';
-import styles from "../../../../styles/components/Form.module.scss";
+import styles from '../../styles/components/Search.module.scss';
 
-type formType = {
-	item: any,
-	idx: number,
-	formik: any
+type autocompleteProps = {
+	index: string,
+	value: any,
+	setValue: any,
 }
 
 interface MainTextMatchedSubstrings {
@@ -28,8 +28,7 @@ const LOADING = 'Cargando...';
 const NO_RESULTS = 'No hay coincidencias';
 const NO_INPUT = 'Escriba...';
 
-const Autocomplete = ({formik, item, idx}:formType) => {
-	const [value, setValue] = React.useState(null);
+const Search = ({index, value, setValue}:autocompleteProps) => {
 	const [open, setOpen] = React.useState(false);
 	const [options, setOptions] = React.useState([] as any);
 	const [loadingText, setLoadingText] = React.useState(NO_INPUT);
@@ -43,7 +42,7 @@ const Autocomplete = ({formik, item, idx}:formType) => {
 				text: value
 			}
 			const request
-				= await fetch(`${process.env.NEXT_PUBLIC_PANAMA_HOST}/search/${item.index}`,
+				= await fetch(`${process.env.NEXT_PUBLIC_PANAMA_HOST}/search/${index}`,
 				{
 					method: "POST",
 					credentials: 'include',
@@ -61,16 +60,16 @@ const Autocomplete = ({formik, item, idx}:formType) => {
 		},500),[]);
 
 	React.useEffect(() => {
-		//console.log('useEffect value changed: ',formik.values[item.key]);
+		//console.log('useEffect value changed: ',value);
 		let active = true;
 
-		if(formik.values[item.key].length > 0) {
-			//console.log(':::Executing getData on value: ',formik.values[item.key]);
-			getData(formik.values[item.key]);
+		if(value.length > 0) {
+			//console.log(':::Executing getData on value: ',value);
+			getData(value);
 		} else {
 			setLoadingText(NO_INPUT);
 			setOptions([]);
-			//console.log(':::Not executed getData on value: ',formik.values[item.key]);
+			//console.log(':::Not executed getData on value: ',value);
 		}
 
 		if (!loading) {
@@ -80,7 +79,7 @@ const Autocomplete = ({formik, item, idx}:formType) => {
 		return () => {
 			active = false;
 		};
-	}, [loading, formik.values[item.key]]);
+	}, [loading, value]);
 
 	React.useEffect(() => {
 		if (!open) {
@@ -90,7 +89,8 @@ const Autocomplete = ({formik, item, idx}:formType) => {
 
 	return (
 		<MuiAutocomplete
-			id={`autocomplete-${idx}`}
+			id={`autocomplete-${value.id}`}
+			className={styles.ctn}
 			open={open}
 			autoComplete
 			autoSelect
@@ -102,10 +102,11 @@ const Autocomplete = ({formik, item, idx}:formType) => {
 			}}
 			onChange={(event: any, newValue: any) => {
 				setOptions([]);
-				event.target.name = item.key;
-				event.target.value = newValue.id;
+				//event.target.name = item.key;
+				//event.target.value = newValue;
 				//console.log('Search change: newValue', newValue, event.target);
-				formik.handleChange(event);
+				console.log(':::Search change value', event);
+				setValue(event, newValue.id);
 			}}
 			isOptionEqualToValue={(option:any, value:any) => option.name === value.name}
 			getOptionLabel={(option:any) => {
@@ -122,19 +123,16 @@ const Autocomplete = ({formik, item, idx}:formType) => {
 			options={options}
 			loading={loading}
 			loadingText={loadingText}
-			//inputValue={formik.values[item.key]}
+			//inputValue={value}
 			filterOptions={(x:any) => x}
 			renderInput={(params:any) => (
 				<TextField
 					{...params}
 					size={'small'}
 					fullWidth
-					label={item.label}
-					id={item.key}
-					name={item.key}
 					onChange={(e) => {
-						//console.log('Event of change in textField', e);
-						formik.handleChange(e);
+						setValue(e, e.target.value);
+						console.log(':::Search TextField change value', e.target.value);
 					}}
 					InputProps={{
 						...params.InputProps,
@@ -145,12 +143,10 @@ const Autocomplete = ({formik, item, idx}:formType) => {
 							</React.Fragment>
 						),
 					}}
-					required={item.required}
-					className={styles.formItem}
 				/>
 			)}
 		/>
 	);
 }
 
-export default Autocomplete;
+export default Search;
