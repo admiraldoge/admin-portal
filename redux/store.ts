@@ -203,7 +203,8 @@ const store = configureStore({
 		list: listsReducer,
 		item: itemReducer,
 		form: formReducer,
-	}
+	},
+
 }) as any
 
 export default store

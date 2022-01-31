@@ -126,13 +126,11 @@ export const editConfiguration = [
 		_template: 'select',
 		key: 'giveChartAccountId',
 		label: 'Cuenta contable',
-		required: true
 	},
 	{
 		_template: 'select',
 		key: 'receiveChartAccountId',
 		label: 'Cuenta contable',
-		required: true
 	},
 	{
 		_template: 'boolean',
