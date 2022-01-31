@@ -1,22 +1,15 @@
 import * as React from 'react';
-import { DataGrid, GridRenderCellParams } from '@mui/x-data-grid';
+import { DataGrid } from '@mui/x-data-grid';
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 type TableProps = {
-	subject?: any,
 	columns: any,
-	defaultPageSize?: number,
-	pageQuery?: any,
-	queryParams?: any,
-	serverData?: boolean,
 	data: any,
-	globalFilterEnabled?: boolean,
 	onRowCreate?: any,
 	onRowDelete?: any,
 	onRowUpdate?: any,
 	onRowEnable?: any,
 	rowModel: any,
-
 }
 
 const EditableTable = ({columns, data, rowModel, onRowCreate, onRowUpdate}: TableProps) => {
