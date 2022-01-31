@@ -176,7 +176,9 @@ const itemReducer = createReducer(
 
 const formReducer = createReducer(
 	{
-		sets: {}
+		sets: {
+			'ORDER_ITEMS': []
+		}
 	},
 	(builder) => {
 		builder

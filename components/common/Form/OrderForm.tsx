@@ -21,11 +21,13 @@ import Search from '../Search';
 import {RootState} from "../../../redux/store";
 import {updateObjectInArray, updateObjectInArrayById} from "../../../utils/state";
 import {TextField} from "@mui/material";
-import SearchManual from "../SearchManual";
+import SearchText from "../SearchText";
 import Checkbox from "@mui/material/Checkbox";
 import {onSetIsActive} from "../../../services/tableService";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import {INFINITE} from "../../../constants/numbers";
+import {ORDER_ITEMS_SET} from "../../../constants/forms";
 
 type props = {
 	method?: 'POST' | 'PATCH' | 'DELETE',
@@ -42,35 +44,7 @@ type props = {
 	layoutProps?: any
 }
 
-function ItemCell(params: GridRenderCellParams<number>, item:any) {
-	if(params.value === 0) return <p></p>;
-	//console.log('::: params', params, 'with item: ',item);
-	return <p>{item[params.value] ? item[params.value].name : params.value}</p>;
-}
-
-function ItemEditInputCell(props: GridRenderCellParams<number>) {
-	//console.log(':::Item, edit iput cell props: ', props);
-	const { id, value, api, field } = props;
-	const dispatch = useAppDispatch();
-	const handleChange = async (event:any, value:any, entity:any) => {
-		//console.log(':::: Render item handle change event to ', value, entity);
-		if(entity) {
-			dispatch(setItem({[entity.id]: entity}))
-			dispatch(addElementToSet({setName: 'ORDER_FORM_ITEMS', value: {id: id, item: entity}}))
-		}
-		api.setEditCellValue({ id, field, value: value }, event);
-	};
-
-	return (
-		<Search index={'item'} value={value} setValue={handleChange}/>
-	);
-}
-
-function renderItemEditInputCell(params:any) {
-	return <ItemEditInputCell {...params} />;
-}
-
-function TestItemCell(params: GridRenderCellParams<number>, item:any) {
+function TestItemCell(params: GridRenderCellParams<number>) {
 	return <p>{params.value}</p>;
 }
 
@@ -83,13 +57,13 @@ function TestItemEditInputCell(props: GridRenderCellParams<number>) {
 		//console.log(':::: Render item handle change event to ', value, entity);
 		if(entity) {
 			dispatch(setItem({[entity.id]: entity}));
-			dispatch(addElementToSet({setName: 'ORDER_ITEMS', value: {id, item: entity}}));
+			dispatch(addElementToSet({setName: ORDER_ITEMS_SET, value: {id, item: entity}}));
 		}
 		api.setEditCellValue({ id, field, value: value }, event);
 	};
 
 	return (
-		<SearchManual index={'item'} value={value} setValue={handleChange}/>
+		<SearchText index={'item'} value={value} setValue={handleChange}/>
 	);
 }
 
@@ -115,11 +89,9 @@ const Form: FC<props> = (
 ) => {
 	const yupValidationSchema = yup.object(validationSchema);
 	const dispatch = useAppDispatch();
-	const item = useAppSelector((state: RootState) => state.item);
-	const [snackbarState, setSnackbarState] = useState({open: false, message: ''});
-	const emptyOrderItem = { id: 0, itemId: 0, quantity: 0, price: 0, total: 0, item: {}, itemName: ""};
-	const [tableValues, setTableValues] = useState([emptyOrderItem] as any);
-	const [tableFinalValues, setTableFinalValues] = useState([emptyOrderItem] as any);
+	const orderItems = useAppSelector((state: RootState) => state.form.sets[ORDER_ITEMS_SET]);
+	const emptyOrderItem = { id: 0, itemId: 0, quantity: null, price: null, total: 0, item: {}, itemName: ""};
+	const [orderItemId, setOrderItemId] = useState(INFINITE)
 	const [tableRowModel, setTableRowModel] = useState({} as any);
 
 	const getInitialValues = () => {
@@ -164,7 +136,6 @@ const Form: FC<props> = (
 		onSubmit: async (values) => {
 			const cleanValues = processValues(values);
 			console.log('Submit: ',cleanValues);
-			console.log('Submit table values: ',tableValues);
 			/*
 			try {
 				const request
@@ -228,7 +199,7 @@ const Form: FC<props> = (
 		{
 			field: 'itemName',
 			headerName: 'Nombre de item',
-			renderCell: (params:any) => TestItemCell(params, item),
+			renderCell: TestItemCell,
 			renderEditCell: testRenderItemEditInputCell,
 			width: 250,
 			editable: true,
@@ -276,9 +247,8 @@ const Form: FC<props> = (
 					e.stopPropagation(); // don't select this row after clicking
 
 					const api: GridApi = params.api;
-					const thisRow: Record<string, GridCellValue> = {};
 					console.log('Data grid api : ', api.getAllColumns(), params, params.id);
-					dispatch(removeElementFromSet({setName: 'ORDER_ITEMS', value: {id: params.id}}));
+					dispatch(removeElementFromSet({setName: ORDER_ITEMS_SET, value: {id: params.id}}));
 				};
 
 				return (
@@ -294,7 +264,8 @@ const Form: FC<props> = (
 	];
 
 	function onRowCreate(callback:any){
-		setTableValues([...tableValues, {...emptyOrderItem, id: tableValues[tableValues.length - 1].id +1}] )
+		dispatch(addElementToSet({setName: ORDER_ITEMS_SET, value: {...emptyOrderItem, id: orderItemId} }));
+		setOrderItemId(orderItemId+1);
 	}
 
 	function onRowEdit(row:any, callback:any){
@@ -308,21 +279,21 @@ const Form: FC<props> = (
 	const handleEditRowsModelChange = React.useCallback((model: GridEditRowsModel) => {
 		//console.log('::::: Table model updated: ', model);
 		//console.log('::::: Table values: ', tableValues);
-		let newTableValues = [];
+		//let newTableValues = [];
 		for(const [key,value] of Object.entries(model)) {
 			const newData = {id: parseInt(key)} as any;
 			for(const [key,field] of Object.entries(value)) {
 				newData[key] = field.value;
 			}
 			//console.log('::: NewData', newData);
-			newTableValues = updateObjectInArrayById(tableValues, newData);
-			dispatch(addElementToSet({setName: 'ORDER_ITEMS', value: {id: parseInt(key), ...newData}}))
+			//newTableValues = updateObjectInArrayById(tableValues, newData);
+			dispatch(addElementToSet({setName: ORDER_ITEMS_SET, value: {id: parseInt(key), ...newData}}))
 			//console.log('::: New table values', newTableValues);
-			setTableValues(newTableValues);
+			//setTableValues(newTableValues);
 		}
 		//setTableValues(updateObjectInArrayById(tableFinalValues, model))
 		setTableRowModel(model);
-	}, [tableValues]);
+	}, [orderItems]);
 
 	return (
 		<Grid container direction={"column"} justifyContent={"stretch"} alignContent={"center"}
@@ -333,7 +304,7 @@ const Form: FC<props> = (
 				{FormLayout()}
 				<Grid container direction={'row'} justifyContent={'center'} className={styles.spreadsheet}>
 					<EditableTable
-						data={tableValues}
+						data={orderItems}
 						columns={itemTableColumns}
 						rowModel={tableRowModel}
 						onRowCreate={onRowCreate}

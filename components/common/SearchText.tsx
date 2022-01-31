@@ -28,7 +28,7 @@ const LOADING = 'Cargando...';
 const NO_RESULTS = 'No hay coincidencias';
 const NO_INPUT = 'Escriba...';
 
-const SearchManual = ({index, value, setValue}:autocompleteProps) => {
+const SearchText = ({index, value, setValue}:autocompleteProps) => {
 	const [open, setOpen] = React.useState(false);
 	const [options, setOptions] = React.useState([] as any);
 	const [loadingText, setLoadingText] = React.useState(NO_INPUT);
@@ -133,7 +133,7 @@ const SearchManual = ({index, value, setValue}:autocompleteProps) => {
 					fullWidth
 					onChange={(e) => {
 						setValue(e, e.target.value);
-						console.log(':::Search TextField change value', e.target.value);
+						//console.log(':::Search TextField change value', e.target.value);
 					}}
 					InputProps={{
 						...params.InputProps,
@@ -150,4 +150,4 @@ const SearchManual = ({index, value, setValue}:autocompleteProps) => {
 	);
 }
 
-export default SearchManual;
+export default SearchText;

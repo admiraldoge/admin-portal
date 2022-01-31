@@ -1,0 +1,1 @@
+export const INFINITE = 9007199254740;
