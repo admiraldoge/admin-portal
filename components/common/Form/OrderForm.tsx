@@ -29,6 +29,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import {INFINITE} from "../../../constants/numbers";
 import {ORDER_ITEMS_SET} from "../../../constants/forms";
 import {config} from "react-transition-group";
+import {FormItems, processValues} from "../../../utils/form";
 
 type props = {
 	method?: 'POST' | 'PATCH' | 'DELETE',
@@ -72,54 +73,12 @@ function testRenderItemEditInputCell(params:any) {
 	return <TestItemEditInputCell {...params} />;
 }
 
-const formItems = (formik:any, config:any) => {
-	return config.map((item:any, idx:number) => {
-		switch (item._template) {
-			case 'string':
-				return <StringField item={item} idx={idx} formik={formik}/>;
-			case 'string_long':
-				return <LongStringField item={item} idx={idx} formik={formik}/>;
-			case 'boolean':
-				return <BooleanField item={item} idx={idx} formik={formik}/>;
-			case 'one_selection_radio':
-				return <OneSelectionOfMultipleField item={item} idx={idx} formik={formik}/>;
-			case 'select':
-				return <SelectField item={item} idx={idx} formik={formik}/>;
-			case 'date':
-				return <DateField item={item} idx={idx} formik={formik}/>;
-			case 'autocomplete':
-				return <Autocomplete item={item} idx={idx} formik={formik}/>;
-		}
-	})
-}
-
-const processValues = (config:any, values:any) => {
-	const res = {} as any;
-	config.forEach((item:{key: string, type:string}, idx:number) => {
-		//console.log('Proccesing: ',item.key,values[item.key], typeof values[item.key],values[item.key] === 'true');
-		switch(item.type) {
-			case 'boolean':
-				if(typeof values[item.key] === 'boolean') {
-					res[item.key] =  values[item.key];
-				} else {
-					res[item.key] = values[item.key] === 'true';
-				}
-				break;
-			default:
-				if(values[item.key] !== '') {
-					res[item.key] = values[item.key];
-				}
-		}
-	})
-	return res;
-}
-
-const FormLayout = (layout:any, layoutProps:any, formik: any, config:any) => {
+const FormLayout = (layout:any, layoutProps:any, formik: any, config:any, children:any) => {
 	if(layout) {
 		//console.log(':::Form: ', layout)
-		return layout({...layoutProps, children: formItems(formik, config)})
+		return layout({...layoutProps, children: children})
 	}
-	return formItems;
+	return children;
 }
 
 function getTotal(params:any) {
@@ -304,7 +263,7 @@ const Form: FC<props> = (
 		>
 			<Typography variant="h6">{title}</Typography>
 			<form onSubmit={formik.handleSubmit} className={styles.form}>
-				{FormLayout(layout, layoutProps, formik, config)}
+				{FormLayout(layout, layoutProps, formik, config, FormItems(formik, config))}
 				<Grid container direction={'row'} justifyContent={'center'} className={styles.spreadsheet}>
 					<EditableTable
 						data={orderItems}
