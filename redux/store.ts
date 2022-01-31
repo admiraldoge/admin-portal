@@ -1,5 +1,5 @@
 import { configureStore, createReducer } from '@reduxjs/toolkit'
-import {cleanMe, deleteRowFromTable, setItem, setLayout, setList, setMe, setTable} from "./actions";
+import {addElementToSet, cleanMe, deleteRowFromTable, setItem, setLayout, setList, setMe, setTable} from "./actions";
 import {
 	ADMINISTRATION_ACTIVITY, ADMINISTRATION_ACTIVITY_TYPE,
 	ADMINISTRATION_BRAND,
@@ -27,6 +27,7 @@ import {
 	TAX_TYPE_LIST,
 	TRANSACTION_TYPE_LIST, UNIT_OF_MEASURE_LIST
 } from "../constants/lists";
+import {atRule} from "postcss";
 
 const layoutReducer = createReducer(
 	{
@@ -163,13 +164,45 @@ const itemReducer = createReducer(
 	}
 )
 
+const formReducer = createReducer(
+	{
+		sets: {}
+	},
+	(builder) => {
+		builder
+			.addCase(addElementToSet, (state, action: any) => {
+				const {setName, value} = action.payload;
+				const newSets = JSON.parse(JSON.stringify(state.sets));
+				if(newSets[setName]) {
+					let found = false;
+					for(let i in newSets[setName]) {
+						if(newSets[setName][i].id === value.id) {
+							newSets[setName][i] = {...newSets[setName][i], ...value};
+							found = true;
+							break;
+						}
+					}
+					if(!found) {
+						newSets[setName].push(value);
+					}
+				} else {
+					newSets[setName] = [value];
+				}
+				return {...state, sets: newSets};
+			})
+			.addDefaultCase((state, action) => {
+			})
+	}
+)
+
 const store = configureStore({
 	reducer: {
 		layout: layoutReducer,
 		me: meReducer,
 		table: tableReducer,
 		list: listsReducer,
-		item: itemReducer
+		item: itemReducer,
+		form: formReducer,
 	}
 }) as any
 

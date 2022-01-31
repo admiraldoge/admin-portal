@@ -12,8 +12,13 @@ export const cleanMe = createAction('cleanMe');
 export const setTable = createAction<object>('setTable');
 export const deleteRowFromTable = createAction<object>('deleteRowFromTable');
 
-//TABLE
+//LIST
 export const setList = createAction<object>('setList');
 
 //ITEM
 export const setItem = createAction<object>('setItem');
+
+//FORM
+export const setForm = createAction<object>('setForm');
+export const addElementToSet = createAction<object>('addElementToSet');
+

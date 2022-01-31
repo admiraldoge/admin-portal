@@ -83,19 +83,16 @@ export const editConfiguration = [
 		_template: 'select',
 		key: 'categoryId',
 		label: 'Categoría',
-		required: true
 	},
 	{
 		_template: 'select',
 		key: 'brandId',
 		label: 'Marca',
-		required: true
 	},
 	{
 		_template: 'select',
 		key: 'unitOfMeasureId',
 		label: 'Unidad de medida',
-		required: true
 	},
 	{
 		_template: 'string',

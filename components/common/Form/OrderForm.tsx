@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import styles from '../../../styles/components/OrderForm.module.scss';
 import _ from 'lodash';
 import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
-import {setItem, setLayout} from "../../../redux/actions";
+import {addElementToSet, setItem, setLayout} from "../../../redux/actions";
 import Typography from "@mui/material/Typography";
 import StringField from "./components/StringField";
 import LongStringField from "./components/LongStringField";
@@ -20,6 +20,8 @@ import {GridEditRowsModel, GridRenderCellParams} from "@mui/x-data-grid";
 import Search from '../Search';
 import {RootState} from "../../../redux/store";
 import {updateObjectInArray, updateObjectInArrayById} from "../../../utils/state";
+import {TextField} from "@mui/material";
+import SearchManual from "../SearchManual";
 
 type props = {
 	method?: 'POST' | 'PATCH' | 'DELETE',
@@ -50,6 +52,7 @@ function ItemEditInputCell(props: GridRenderCellParams<number>) {
 		//console.log(':::: Render item handle change event to ', value, entity);
 		if(entity) {
 			dispatch(setItem({[entity.id]: entity}))
+			dispatch(addElementToSet({setName: 'ORDER_FORM_ITEMS', value: {id: id, item: entity}}))
 		}
 		api.setEditCellValue({ id, field, value: value }, event);
 	};
@@ -61,6 +64,33 @@ function ItemEditInputCell(props: GridRenderCellParams<number>) {
 
 function renderItemEditInputCell(params:any) {
 	return <ItemEditInputCell {...params} />;
+}
+
+function TestItemCell(params: GridRenderCellParams<number>, item:any) {
+	return <p>{params.value}</p>;
+}
+
+function TestItemEditInputCell(props: GridRenderCellParams<number>) {
+	//console.log(':::Item, edit iput cell props: ', props);
+	const { id, value, api, field } = props;
+	const dispatch = useAppDispatch();
+	const form = useAppSelector((state: RootState) => state.form);
+	const handleChange = async (event:any, value:any, entity:any) => {
+		//console.log(':::: Render item handle change event to ', value, entity);
+		if(entity) {
+			dispatch(setItem({[entity.id]: entity}));
+			dispatch(addElementToSet({setName: 'ORDER_ITEMS', value: {id, item: entity}}));
+		}
+		api.setEditCellValue({ id, field, value: value }, event);
+	};
+
+	return (
+		<SearchManual index={'item'} value={value} setValue={handleChange}/>
+	);
+}
+
+function testRenderItemEditInputCell(params:any) {
+	return <TestItemEditInputCell {...params} />;
 }
 
 const Form: FC<props> = (
@@ -83,10 +113,11 @@ const Form: FC<props> = (
 	const dispatch = useAppDispatch();
 	const item = useAppSelector((state: RootState) => state.item);
 	const [snackbarState, setSnackbarState] = useState({open: false, message: ''});
-	const emptyOrderItem = { id: 0, itemId: 0, quantity: 0, price: 0, total: 0, item: {}};
+	const emptyOrderItem = { id: 0, itemId: 0, quantity: 0, price: 0, total: 0, item: {}, itemName: ""};
 	const [tableValues, setTableValues] = useState([emptyOrderItem] as any);
 	const [tableFinalValues, setTableFinalValues] = useState([emptyOrderItem] as any);
 	const [tableRowModel, setTableRowModel] = useState({} as any);
+
 	const getInitialValues = () => {
 		const res = {} as any;
 		config.forEach((item:{key: string, type:string}, idx:number) => {
@@ -200,11 +231,27 @@ const Form: FC<props> = (
 			type: 'string'
 		},
 		{
+			field: 'itemName',
+			headerName: 'Nombre de item',
+			renderCell: (params:any) => TestItemCell(params, item),
+			renderEditCell: testRenderItemEditInputCell,
+			width: 250,
+			editable: true,
+			type: 'string'
+		},
+		{
 			field: 'quantity',
 			headerName: 'Cantidad',
 			editable: true,
 			width: 100,
 			type: 'number',
+		},
+		{
+			field: 'unitOfMeasure',
+			headerName: 'Unidad',
+			editable: true,
+			width: 100,
+			type: 'string',
 		},
 		{
 			field: 'price',
@@ -246,6 +293,7 @@ const Form: FC<props> = (
 			}
 			//console.log('::: NewData', newData);
 			newTableValues = updateObjectInArrayById(tableValues, newData);
+			dispatch(addElementToSet({setName: 'ORDER_ITEMS', value: {id: parseInt(key), ...newData}}))
 			//console.log('::: New table values', newTableValues);
 			setTableValues(newTableValues);
 		}

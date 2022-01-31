@@ -74,7 +74,10 @@ const InputItem: NextPage = () => {
 
 	function onRowEdit(row:any, callback:any){
 		dispatch(getList(CHART_ACCOUNT_LIST));
-		dispatch(getList(TRANSACTION_TYPE_LIST));
+		dispatch(getList(EXPENSE_TYPE_LIST));
+		dispatch(getList(UNIT_OF_MEASURE_LIST));
+		dispatch(getList(CATEGORY_LIST));
+		dispatch(getList(BRAND_LIST));
 		setEditModalOpen(true);
 		setEntityId(row.id);
 		setReloadCallback(() => () => callback());
