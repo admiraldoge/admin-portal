@@ -1,5 +1,15 @@
 import { configureStore, createReducer } from '@reduxjs/toolkit'
-import {addElementToSet, cleanMe, deleteRowFromTable, setItem, setLayout, setList, setMe, setTable} from "./actions";
+import {
+	addElementToSet,
+	cleanMe,
+	deleteRowFromTable,
+	removeElementFromSet,
+	setItem,
+	setLayout,
+	setList,
+	setMe,
+	setTable
+} from "./actions";
 import {
 	ADMINISTRATION_ACTIVITY, ADMINISTRATION_ACTIVITY_TYPE,
 	ADMINISTRATION_BRAND,
@@ -187,6 +197,19 @@ const formReducer = createReducer(
 					}
 				} else {
 					newSets[setName] = [value];
+				}
+				return {...state, sets: newSets};
+			})
+			.addCase(removeElementFromSet, (state, action: any) => {
+				const {setName, value} = action.payload;
+				const newSets = JSON.parse(JSON.stringify(state.sets));
+				if(newSets[setName]) {
+					for(let i = 0; i < newSets[setName].length; i++) {
+						if(newSets[setName][i].id === value.id) {
+							newSets[setName].splice(i, 1);
+							break;
+						}
+					}
 				}
 				return {...state, sets: newSets};
 			})

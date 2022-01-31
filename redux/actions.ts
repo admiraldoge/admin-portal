@@ -21,4 +21,5 @@ export const setItem = createAction<object>('setItem');
 //FORM
 export const setForm = createAction<object>('setForm');
 export const addElementToSet = createAction<object>('addElementToSet');
+export const removeElementFromSet = createAction<object>('removeElementFromSet');
 

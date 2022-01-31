@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import styles from '../../../styles/components/OrderForm.module.scss';
 import _ from 'lodash';
 import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
-import {addElementToSet, setItem, setLayout} from "../../../redux/actions";
+import {addElementToSet, removeElementFromSet, setItem, setLayout} from "../../../redux/actions";
 import Typography from "@mui/material/Typography";
 import StringField from "./components/StringField";
 import LongStringField from "./components/LongStringField";
@@ -16,12 +16,16 @@ import DateField from "./components/DateField";
 import BooleanField from "./components/BooleanField";
 import Autocomplete from "./components/Autocomplete";
 import EditableTable from "../EditableTable";
-import {GridEditRowsModel, GridRenderCellParams} from "@mui/x-data-grid";
+import {GridApi, GridCellValue, GridEditRowsModel, GridRenderCellParams} from "@mui/x-data-grid";
 import Search from '../Search';
 import {RootState} from "../../../redux/store";
 import {updateObjectInArray, updateObjectInArrayById} from "../../../utils/state";
 import {TextField} from "@mui/material";
 import SearchManual from "../SearchManual";
+import Checkbox from "@mui/material/Checkbox";
+import {onSetIsActive} from "../../../services/tableService";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 type props = {
 	method?: 'POST' | 'PATCH' | 'DELETE',
@@ -222,15 +226,6 @@ const Form: FC<props> = (
 
 	const itemTableColumns = [
 		{
-			field: 'itemId',
-			headerName: 'Item',
-			renderCell: (params:any) => ItemCell(params, item),
-			renderEditCell: renderItemEditInputCell,
-			width: 250,
-			editable: true,
-			type: 'string'
-		},
-		{
 			field: 'itemName',
 			headerName: 'Nombre de item',
 			renderCell: (params:any) => TestItemCell(params, item),
@@ -268,6 +263,34 @@ const Form: FC<props> = (
 			type: 'number',
 			valueGetter: getTotal,
 		},
+		{
+			field: 'actions',
+			headerName: 'Acciones',
+			editable: false,
+			sortable: false,
+			filterable: false,
+			hideable: false,
+			width: 100,
+			renderCell: (params:any) => {
+				const onClick = (e:any) => {
+					e.stopPropagation(); // don't select this row after clicking
+
+					const api: GridApi = params.api;
+					const thisRow: Record<string, GridCellValue> = {};
+					console.log('Data grid api : ', api.getAllColumns(), params, params.id);
+					dispatch(removeElementFromSet({setName: 'ORDER_ITEMS', value: {id: params.id}}));
+				};
+
+				return (
+					<Grid container direction={"row"} justifyContent={"center"} alignItems={"center"}>
+						<DeleteIcon
+							onClick={onClick}
+							style={{cursor: "pointer"}}
+						/>
+					</Grid>
+				);
+			}
+		}
 	];
 
 	function onRowCreate(callback:any){
