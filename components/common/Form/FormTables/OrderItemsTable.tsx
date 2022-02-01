@@ -29,7 +29,7 @@ function TestItemEditInputCell(props: GridRenderCellParams<number>) {
 		if(entity) {
 			dispatch(setItem({[entity.id]: entity}));
 			dispatch(loadItem(entity.id));
-			dispatch(addElementToSet({setName: ORDER_ITEMS_SET, value: {id, item: entity}}));
+			dispatch(addElementToSet({setName: ORDER_ITEMS_SET, value: {id, itemId: entity.id, item: entity}}));
 		}
 		api.setEditCellValue({ id, field, value: value }, event);
 	};
