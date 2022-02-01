@@ -1,4 +1,4 @@
-import { configureStore, createReducer } from '@reduxjs/toolkit'
+import {configureStore, createAsyncThunk, createReducer} from '@reduxjs/toolkit'
 import {
 	addElementToSet,
 	cleanMe,
@@ -38,6 +38,7 @@ import {
 	TRANSACTION_TYPE_LIST, UNIT_OF_MEASURE_LIST
 } from "../constants/lists";
 import {atRule} from "postcss";
+import {getItem} from "../services/items";
 
 const layoutReducer = createReducer(
 	{
@@ -160,6 +161,13 @@ const listsReducer = createReducer(
 	}
 )
 
+
+export const loadItem = createAsyncThunk('item.addItem', async (itemId: number) => {
+	console.log('Thunk laoding item,', itemId);
+	const response = await getItem(itemId);
+	console.log('Response')
+	return response;
+})
 const itemReducer = createReducer(
 	{
 
@@ -168,6 +176,12 @@ const itemReducer = createReducer(
 		builder
 			.addCase(setItem, (state, action) => {
 				return {...state, ...action.payload};
+			})
+
+			.addCase(loadItem.fulfilled, (state, action:any) => {
+				console.log('Thunk action fullfilled: ', action);
+				const { id } = action.payload;
+				return {...state, [id]: action.payload};
 			})
 			.addDefaultCase((state, action) => {
 			})
