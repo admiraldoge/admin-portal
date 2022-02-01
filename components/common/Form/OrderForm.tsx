@@ -1,35 +1,13 @@
 import Grid from "@mui/material/Grid";
-import React, {Component, FC, useEffect, useState} from "react";
+import React from "react";
 import * as yup from "yup";
 import {useFormik} from "formik";
 import Button from "@mui/material/Button";
 import styles from '../../../styles/components/OrderForm.module.scss';
 import _ from 'lodash';
-import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
-import {addElementToSet, removeElementFromSet, setItem, setLayout} from "../../../redux/actions";
 import Typography from "@mui/material/Typography";
-import StringField from "./components/StringField";
-import LongStringField from "./components/LongStringField";
-import SelectField from "./components/SelectField";
-import OneSelectionOfMultipleField from "./components/OneSelectionOfMultipleField";
-import DateField from "./components/DateField";
-import BooleanField from "./components/BooleanField";
-import Autocomplete from "./components/Autocomplete";
-import EditableTable from "../EditableTable";
-import {GridApi, GridCellValue, GridEditRowsModel, GridRenderCellParams} from "@mui/x-data-grid";
-import Search from '../Search';
-import {RootState} from "../../../redux/store";
-import {updateObjectInArray, updateObjectInArrayById} from "../../../utils/state";
-import {TextField} from "@mui/material";
-import SearchText from "../SearchText";
-import Checkbox from "@mui/material/Checkbox";
-import {onSetIsActive} from "../../../services/tableService";
-import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import {INFINITE} from "../../../constants/numbers";
-import {ORDER_ITEMS_SET} from "../../../constants/forms";
-import {config} from "react-transition-group";
 import {FormItems, processValues} from "../../../utils/form";
+import OrderItemsTable from "./FormTables/OrderItemsTable";
 
 type props = {
 	method?: 'POST' | 'PATCH' | 'DELETE',
@@ -46,43 +24,12 @@ type props = {
 	layoutProps?: any
 }
 
-function TestItemCell(params: GridRenderCellParams<number>) {
-	return <p>{params.value}</p>;
-}
-
-function TestItemEditInputCell(props: GridRenderCellParams<number>) {
-	//console.log(':::Item, edit iput cell props: ', props);
-	const { id, value, api, field } = props;
-	const dispatch = useAppDispatch();
-	const form = useAppSelector((state: RootState) => state.form);
-	const handleChange = async (event:any, value:any, entity:any) => {
-		//console.log(':::: Render item handle change event to ', value, entity);
-		if(entity) {
-			dispatch(setItem({[entity.id]: entity}));
-			dispatch(addElementToSet({setName: ORDER_ITEMS_SET, value: {id, item: entity}}));
-		}
-		api.setEditCellValue({ id, field, value: value }, event);
-	};
-
-	return (
-		<SearchText index={'item'} value={value} setValue={handleChange}/>
-	);
-}
-
-function testRenderItemEditInputCell(params:any) {
-	return <TestItemEditInputCell {...params} />;
-}
-
 const FormLayout = (layout:any, layoutProps:any, formik: any, config:any, children:any) => {
 	if(layout) {
 		//console.log(':::Form: ', layout)
 		return layout({...layoutProps, children: children})
 	}
 	return children;
-}
-
-function getTotal(params:any) {
-	return params.row.quantity * params.row.price;
 }
 
 const getInitialValues = (config:any, initialData:any) => {
@@ -100,7 +47,7 @@ const getInitialValues = (config:any, initialData:any) => {
 	return res;
 }
 
-const Form: FC<props> = (
+const Form = (
 	{
 		method = 'PATCH',
 		config,
@@ -114,14 +61,9 @@ const Form: FC<props> = (
 		submitButtonLabel = 'Enviar',
 		layout,
 		layoutProps
-	}
+	}:props
 ) => {
 	const yupValidationSchema = yup.object(validationSchema);
-	const dispatch = useAppDispatch();
-	const orderItems = useAppSelector((state: RootState) => state.form.sets[ORDER_ITEMS_SET]);
-	const emptyOrderItem = { id: 0, itemId: 0, quantity: null, price: null, total: 0, item: {}, itemName: ""};
-	const [orderItemId, setOrderItemId] = useState(INFINITE)
-	const [tableRowModel, setTableRowModel] = useState({} as any);
 
 	const formik = useFormik({
 		initialValues: getInitialValues(config, initialData),
@@ -157,106 +99,6 @@ const Form: FC<props> = (
 		},
 	});
 
-	const itemTableColumns = React.useMemo(() => ([
-		{
-			field: 'itemName',
-			headerName: 'Nombre de item',
-			renderCell: TestItemCell,
-			renderEditCell: testRenderItemEditInputCell,
-			width: 250,
-			editable: true,
-			type: 'string'
-		},
-		{
-			field: 'quantity',
-			headerName: 'Cantidad',
-			editable: true,
-			width: 100,
-			type: 'number',
-		},
-		{
-			field: 'unitOfMeasure',
-			headerName: 'Unidad',
-			editable: true,
-			width: 100,
-			type: 'string',
-		},
-		{
-			field: 'price',
-			headerName: 'Precio',
-			editable: true,
-			width: 100,
-			type: 'number',
-		},
-		{
-			field: 'total',
-			headerName: 'Total',
-			editable: false,
-			width: 100,
-			type: 'number',
-			valueGetter: getTotal,
-		},
-		{
-			field: 'actions',
-			headerName: 'Acciones',
-			editable: false,
-			sortable: false,
-			filterable: false,
-			hideable: false,
-			width: 100,
-			renderCell: (params:any) => {
-				const onClick = (e:any) => {
-					e.stopPropagation(); // don't select this row after clicking
-
-					const api: GridApi = params.api;
-					console.log('Data grid api : ', api.getAllColumns(), params, params.id);
-					dispatch(removeElementFromSet({setName: ORDER_ITEMS_SET, value: {id: params.id}}));
-				};
-
-				return (
-					<Grid container direction={"row"} justifyContent={"center"} alignItems={"center"}>
-						<DeleteIcon
-							onClick={onClick}
-							style={{cursor: "pointer"}}
-						/>
-					</Grid>
-				);
-			}
-		}
-	]),[]);
-
-	function onRowCreate(callback:any){
-		dispatch(addElementToSet({setName: ORDER_ITEMS_SET, value: {...emptyOrderItem, id: orderItemId} }));
-		setOrderItemId(orderItemId+1);
-	}
-
-	function onRowEdit(row:any, callback:any){
-
-	}
-
-	function onRowDelete(row:any){
-
-	}
-
-	const handleEditRowsModelChange = React.useCallback((model: GridEditRowsModel) => {
-		//console.log('::::: Table model updated: ', model);
-		//console.log('::::: Table values: ', tableValues);
-		//let newTableValues = [];
-		for(const [key,value] of Object.entries(model)) {
-			const newData = {id: parseInt(key)} as any;
-			for(const [key,field] of Object.entries(value)) {
-				newData[key] = field.value;
-			}
-			//console.log('::: NewData', newData);
-			//newTableValues = updateObjectInArrayById(tableValues, newData);
-			dispatch(addElementToSet({setName: ORDER_ITEMS_SET, value: {id: parseInt(key), ...newData}}))
-			//console.log('::: New table values', newTableValues);
-			//setTableValues(newTableValues);
-		}
-		//setTableValues(updateObjectInArrayById(tableFinalValues, model))
-		setTableRowModel(model);
-	}, [orderItems]);
-
 	return (
 		<Grid container direction={"column"} justifyContent={"stretch"} alignContent={"center"}
 		      style={{backgroundColor: "transparent"}}
@@ -265,14 +107,7 @@ const Form: FC<props> = (
 			<form onSubmit={formik.handleSubmit} className={styles.form}>
 				{FormLayout(layout, layoutProps, formik, config, FormItems(formik, config))}
 				<Grid container direction={'row'} justifyContent={'center'} className={styles.spreadsheet}>
-					<EditableTable
-						data={orderItems}
-						columns={itemTableColumns}
-						rowModel={tableRowModel}
-						onRowCreate={onRowCreate}
-						onRowDelete={onRowDelete}
-						onRowUpdate={handleEditRowsModelChange}
-					/>
+					<OrderItemsTable/>
 				</Grid>
 				<Button color="primary" variant="contained" fullWidth type="submit" className={styles.submitBtn}>
 					{submitButtonLabel}
