@@ -8,6 +8,10 @@ import _ from 'lodash';
 import Typography from "@mui/material/Typography";
 import {FormItems, processValues} from "../../../utils/form";
 import OrderItemsTable from "./FormTables/OrderItemsTable";
+import {useAppDispatch, useAppSelector} from "../../../redux/hooks";
+import {RootState} from "../../../redux/store";
+import {ORDER_ITEMS_SET} from "../../../constants/forms";
+import {setLayout} from "../../../redux/actions";
 
 type props = {
 	method?: 'POST' | 'PATCH' | 'DELETE',
@@ -63,15 +67,19 @@ const Form = (
 		layoutProps
 	}:props
 ) => {
+
+	const orderItems = useAppSelector((state: RootState) => state.form.sets[ORDER_ITEMS_SET]);
 	const yupValidationSchema = yup.object(validationSchema);
+	const dispatch = useAppDispatch();
 
 	const formik = useFormik({
 		initialValues: getInitialValues(config, initialData),
 		validationSchema: yupValidationSchema,
 		onSubmit: async (values) => {
 			const cleanValues = processValues(config, values);
+			cleanValues.orderItems = orderItems;
 			console.log('Submit: ',cleanValues);
-			/*
+
 			try {
 				const request
 					= await fetch(`${process.env.NEXT_PUBLIC_PANAMA_HOST}${resourcePath}`,
@@ -95,7 +103,6 @@ const Form = (
 				dispatch(setLayout({snackbar: {open: true, type: 'error', message: onSubmitErrorMessage}}));
 			}
 
-			 */
 		},
 	});
 

@@ -4,6 +4,19 @@ import {Autocomplete as MuiAutocomplete} from '@mui/material';
 import throttle from 'lodash/throttle';
 import styles from "../../../../styles/components/Form.module.scss";
 
+/*
+	Configuration example:
+	{
+		_template: 'autocomplete',
+		key: 'item',
+		label: 'Item',
+		required: false,
+		index: 'item',
+		type: 'number',
+		fields: [ "name", "code" ]
+	},
+ */
+
 type formType = {
 	item: any,
 	idx: number,

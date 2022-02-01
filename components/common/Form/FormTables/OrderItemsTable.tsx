@@ -23,7 +23,6 @@ function TestItemEditInputCell(props: GridRenderCellParams<number>) {
 	//console.log(':::Item, edit iput cell props: ', props);
 	const { id, value, api, field } = props;
 	const dispatch = useAppDispatch();
-	const form = useAppSelector((state: RootState) => state.form);
 	const handleChange = async (event:any, value:any, entity:any) => {
 		//console.log(':::: Render item handle change event to ', value, entity);
 		if(entity) {

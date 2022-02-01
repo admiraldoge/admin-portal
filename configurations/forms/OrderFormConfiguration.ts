@@ -17,7 +17,7 @@ export const createConfiguration = [
 	},
 	{
 		_template: 'date',
-		key: 'date',
+		key: 'deadline',
 		label: 'Fecha',
 		type: 'date',
 		required: false
@@ -28,15 +28,6 @@ export const createConfiguration = [
 		label: 'Descripción',
 		type: 'string',
 		required: false
-	},
-	{
-		_template: 'autocomplete',
-		key: 'item',
-		label: 'Item',
-		required: false,
-		index: 'item',
-		type: 'number',
-		fields: [ "name", "code" ]
 	},
 	{
 		_template: 'array',
@@ -51,31 +42,35 @@ export const editConfiguration = [
 		_template: 'select',
 		key: 'activityId',
 		label: 'Proyecto',
+		type: 'number',
 		required: false
 	},
 	{
 		_template: 'select',
 		key: 'expenseTypeId',
 		label: 'Tipo de gasto',
+		type: 'string',
 		required: false
 	},
 	{
 		_template: 'date',
-		key: 'date',
+		key: 'deadline',
 		label: 'Fecha',
+		type: 'date',
 		required: false
 	},
 	{
-		_template: 'string_long',
+		_template: 'string',
 		key: 'description',
 		label: 'Descripción',
+		type: 'string',
 		required: false
 	},
 	{
-		_template: 'autocomplete',
-		key: 'item',
-		label: 'Descripción',
-		required: false
+		_template: 'array',
+		key: 'items',
+		type: 'array',
+		label: 'Items'
 	},
 ]
 export const validationSchema = {

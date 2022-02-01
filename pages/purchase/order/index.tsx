@@ -53,10 +53,22 @@ const Item: NextPage = () => {
 			align: 'center'
 		},
 		{
-			Header: 'Nombre',
-			accessor: 'name',
+			Header: 'Fecha',
+			accessor: 'deadline',
 			width: 62,
 			align: 'flex-start'
+		},
+		{
+			Header: 'Tipo',
+			accessor: 'expense_type_id',
+			width: 62,
+			align: 'center'
+		},
+		{
+			Header: 'Total',
+			accessor: 'total',
+			width: 62,
+			align: 'center'
 		}
 	]
 
