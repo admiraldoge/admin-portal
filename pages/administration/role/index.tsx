@@ -4,10 +4,16 @@ import styles from '../../../styles/pages/Role.module.scss';
 import {useAppDispatch} from "../../../redux/hooks";
 import {useRouter} from "next/router";
 import Table from "../../../components/common/Table";
-import {ADMINISTRATION_ROLE} from "../../../constants/subjects";
+import {ADMINISTRATION_ROLE, ROLE} from "../../../constants/subjects";
 import Grid from "@mui/material/Grid";
 import RoleModal from "../../../components/common/configuration/RoleModal";
 import {deleteRow, getPage} from "../../../services/tableService";
+import {DataGrid, GridApi} from "@mui/x-data-grid";
+import {removeElementFromSet} from "../../../redux/actions";
+import {ORDER_ITEMS_SET} from "../../../constants/forms";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ServerTable from "../../../components/common/ServerTable";
+import IconButton from "@mui/material/IconButton";
 
 const Role: NextPage = () => {
 	const dispatch = useAppDispatch();
@@ -19,19 +25,66 @@ const Role: NextPage = () => {
 	const [reloadCallback, setReloadCallback] = useState(() => function (){});
 	const [entityId, setEntityId] = useState(null);
 
-	const columns = [
+	const itemTableColumns = React.useMemo(() => ([
 		{
-			Header: 'ID',
-			accessor: 'id',
-			width: 10,
-			align: 'center'
+			field: 'name',
+			headerName: 'Nombre de item',
+			width: 250,
+			type: 'string',
+			sortable: true,
+			filterable: true,
 		},
 		{
-			Header: 'Nombre',
-			accessor: 'loc',
-			width: 50,
+			field: 'userCount',
+			headerName: '#Usuarios',
+			width: 100,
+			type: 'number',
+		},
+		{
+			field: 'actions',
+			headerName: 'Acciones',
+			editable: false,
+			sortable: false,
+			filterable: false,
+			hideable: false,
+			width: 100,
+			renderCell: (params:any) => {
+				const onClick = (e:any) => {
+					e.stopPropagation(); // don't select this row after clicking
+
+					const api: GridApi = params.api;
+					console.log('Data grid api : ', api.getAllColumns(), params, params.id);
+					dispatch(removeElementFromSet({setName: ORDER_ITEMS_SET, value: {id: params.id}}));
+				};
+
+				return (
+					<Grid container direction={"row"} justifyContent={"center"} alignItems={"center"}>
+						<DeleteIcon
+							onClick={onClick}
+							style={{cursor: "pointer"}}
+						/>
+					</Grid>
+				);
+			}
+		},
+		{
+			field: "delete",
+			width: 75,
+			sortable: false,
+			disableColumnMenu: true,
+			renderHeader: () => {
+				return (
+					<IconButton
+						onClick={() => {
+							console.log('Delete selected rows!');
+						}}
+					>
+						<DeleteIcon />
+					</IconButton>
+				);
+			}
 		}
-	]
+	]),[]);
 
 	function onRowCreate(callback:any){
 
@@ -50,14 +103,7 @@ const Role: NextPage = () => {
 	return (
 		<Grid className={styles.ctn}>
 			<Grid item xs={12}>
-				<Table
-					subject={ADMINISTRATION_ROLE}
-					columns={columns} defaultPageSize={10} pageQuery={getPage} serverData={true}
-					globalFilterEnabled={true}
-					onRowCreate={onRowCreate}
-					onRowDelete={onRowDelete}
-					onRowUpdate={onRowEdit}
-				/>
+				<ServerTable subject={ADMINISTRATION_ROLE} columns={itemTableColumns}/>
 			</Grid>
 			<RoleModal state={subjectsModal} setState={setSubjectsModal}/>
 		</Grid>

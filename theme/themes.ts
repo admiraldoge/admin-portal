@@ -1,5 +1,6 @@
 import { createTheme } from '@mui/material/styles';
 import { esES } from '@mui/material/locale';
+import { esES as dataGridEsLocalization } from '@mui/x-data-grid';
 import { green, purple } from '@mui/material/colors';
 
 const lightTheme = createTheme({
@@ -11,7 +12,7 @@ const lightTheme = createTheme({
 			main: '#f50057',
 		},
 	},
-}, esES);
+}, esES, dataGridEsLocalization);
 
 const darkTheme = createTheme({
 	palette: {
