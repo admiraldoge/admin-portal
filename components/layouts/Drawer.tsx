@@ -21,6 +21,7 @@ import {
 } from "./DrawerConfiguration";
 import {getPath} from "../../utils/router";
 import {updateObjectInArray} from "../../utils/state";
+import Typography from "@mui/material/Typography";
 
 type drawerProps = {
 
@@ -186,6 +187,7 @@ const Drawer: React.FunctionComponent<drawerProps> = ({}) => {
 									fontSize: 14,
 									fontWeight: 'medium',
 									letterSpacing: 0,
+									whiteSpace: 'normal'
 								}}
 							/>}
 						</ListItemButton>
