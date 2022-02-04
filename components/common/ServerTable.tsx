@@ -1,9 +1,10 @@
 import * as React from 'react';
-import {DataGrid, GridRowModel} from '@mui/x-data-grid';
+import {DataGrid, GridRowModel, GridToolbar} from '@mui/x-data-grid';
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import {useState} from "react";
 import {getPage, getSubjectPage} from "../../services/tableService";
+import {useRouter} from "next/router";
 type TableProps = {
 	subject: any,
 	columns: any,
@@ -22,7 +23,7 @@ interface RowsState {
 
 const ServerTable = ({subject, columns, onRowCreate, onRowUpdate, onRowDelete}: TableProps) => {
 
-
+	const router = useRouter();
 	const [sortModel, setSortModel] = useState([] as any);
 	const [filterModel, setFilterModel] = useState({items: []} as any);
 	const [selectionModel, setSelectionModel] = useState([] as any);
@@ -74,6 +75,11 @@ const ServerTable = ({subject, columns, onRowCreate, onRowUpdate, onRowDelete}: 
 		setFilterModel(model);
 	}
 
+	const handleRowClick = (model:any) => {
+		console.log('Row click: ', model);
+		router.push(`${router.pathname}/${model.id}`);
+	}
+
 	return (
 		<Grid container direction={'column'} spacing={2}>
 			<Grid item>
@@ -81,9 +87,9 @@ const ServerTable = ({subject, columns, onRowCreate, onRowUpdate, onRowDelete}: 
 					<Button variant="contained" size={'small'} onClick={ () => {onRowCreate()}}>Agregar</Button>
 				</Grid>
 			</Grid>
-			<p>Row count: {rowsState.rowCount}</p>
 			<Grid item style={{ height: 400, width: '100%' }}>
 				<DataGrid
+					components={{ Toolbar: GridToolbar }}
 					columns={columns}
 					{...rowsState}
 					page={rowsState.page-1}
@@ -98,6 +104,7 @@ const ServerTable = ({subject, columns, onRowCreate, onRowUpdate, onRowDelete}: 
 					pagination={true}
 					paginationMode='server'
 					filterMode={'server'}
+					density={'compact'}
 					onPageChange={(page) => {
 						setRowsState((prev) => ({ ...prev, page: Math.max(page,1) }))
 					}}
@@ -105,6 +112,7 @@ const ServerTable = ({subject, columns, onRowCreate, onRowUpdate, onRowDelete}: 
 					onPageSizeChange={(pageSize) =>
 						setRowsState((prev) => ({ ...prev, pageSize }))
 					}
+					onRowClick={handleRowClick}
 				/>
 			</Grid>
 		</Grid>

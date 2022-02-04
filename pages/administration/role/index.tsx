@@ -37,35 +37,8 @@ const Role: NextPage = () => {
 		{
 			field: 'userCount',
 			headerName: '#Usuarios',
-			width: 100,
+			width: 150,
 			type: 'number',
-		},
-		{
-			field: 'actions',
-			headerName: 'Acciones',
-			editable: false,
-			sortable: false,
-			filterable: false,
-			hideable: false,
-			width: 100,
-			renderCell: (params:any) => {
-				const onClick = (e:any) => {
-					e.stopPropagation(); // don't select this row after clicking
-
-					const api: GridApi = params.api;
-					console.log('Data grid api : ', api.getAllColumns(), params, params.id);
-					dispatch(removeElementFromSet({setName: ORDER_ITEMS_SET, value: {id: params.id}}));
-				};
-
-				return (
-					<Grid container direction={"row"} justifyContent={"center"} alignItems={"center"}>
-						<DeleteIcon
-							onClick={onClick}
-							style={{cursor: "pointer"}}
-						/>
-					</Grid>
-				);
-			}
 		},
 		{
 			field: "delete",
@@ -79,7 +52,7 @@ const Role: NextPage = () => {
 							console.log('Delete selected rows!');
 						}}
 					>
-						<DeleteIcon />
+						<DeleteIcon style={{color: 'black'}}/>
 					</IconButton>
 				);
 			}
