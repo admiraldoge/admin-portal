@@ -41,7 +41,7 @@ const ServerTable = ({subject, columns, onRowCreate, onRowUpdate, onRowDelete}: 
 		console.log('ServerTable useEffect with rowsState', rowsState);
 		(async () => {
 			setRowsState((prev:any) => ({ ...prev, loading: true }));
-			const pageData = await getSubjectPage(subject, rowsState.page, rowsState.pageSize, undefined, [], [], []);
+			const pageData = await getSubjectPage(subject, rowsState.page, rowsState.pageSize, 'undefined', [], [], []);
 			const {total:rowCount, items:rows } = pageData;
 			console.log('ServerTable newRows', rowCount, rows);
 			if (!active) {
@@ -77,7 +77,7 @@ const ServerTable = ({subject, columns, onRowCreate, onRowUpdate, onRowDelete}: 
 
 	const handleRowClick = (model:any) => {
 		console.log('Row click: ', model);
-		router.push(`${router.pathname}/${model.id}`);
+		router.push('/administration/role/[id]',`/administration/role/${model.id}`);
 	}
 
 	return (
